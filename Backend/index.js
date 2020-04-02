@@ -11,10 +11,10 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var cors = require('cors');
 app.set('view engine', 'ejs');
-var encrypt = require('./src/helpers/passwordEncryption.js');
 const mongoose = require('mongoose');
 const db = require('./src/helpers/settings').mongoURI;
-var passport = require('passport');
+//var passport = require('passport');
+//var encrypt = require('./src/helpers/passwordEncryption.js');
 var jwt = require('jsonwebtoken');
  
 
@@ -23,7 +23,7 @@ mongoose
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
-require('./src/helpers/passport')(passport);
+//require('./src/helpers/passport')(passport);
 
 
 app.use(session({
@@ -45,7 +45,7 @@ app.use(function(req, res, next) {
 
 //Routes
 
-var loginsignup = require('./src/routes/loginsignup');
+/*var loginsignup = require('./src/routes/loginsignup');
 var profileupdate = require('./src/routes/profileupdate');
 var transcripts = require('./src/routes/transcript');
 var getCountryData = require('./src/routes/countryData');
@@ -62,7 +62,7 @@ app.use(basePath, loginsignup);
 app.use(basePath, profileupdate);
 app.use(basePath, transcripts);
 app.use(basePath,getCountryData);
-app.use('/uploads', express.static(path.join(__dirname, '/uploads/')));
+app.use('/uploads', express.static(path.join(__dirname, '/uploads/'))); */
 
 
 app.listen(port);
