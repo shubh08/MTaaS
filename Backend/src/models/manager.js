@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator')
 const { Schema } = mongoose;
 
@@ -12,11 +12,11 @@ const managerSchema = new Schema(
       type: String,
       default: '',
     },
-    technologies: {
+    company: {
         type: String,
         default: '',
     },
-    emailID: {
+    email: {
         type: String,
         default: '',
         required: [true, 'Manager emailid is mandatory'],
@@ -45,4 +45,4 @@ const managerSchema = new Schema(
 managerSchema.plugin(uniqueValidator);
 const manager = mongoose.model('manager', managerSchema);
 
-export default manager;
+module.exports= manager;
