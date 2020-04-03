@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator')
 const { Schema } = mongoose;
 
@@ -16,7 +16,7 @@ const testerSchema = new Schema(
         type: String,
         default: '',
     },
-    emailID: {
+    email: {
         type: String,
         default: '',
         required: [true, 'Tester emailid is mandatory'],
@@ -45,4 +45,4 @@ const testerSchema = new Schema(
 testerSchema.plugin(uniqueValidator);
 const tester = mongoose.model('tester', testerSchema);
 
-export default tester;
+module.exports=tester;

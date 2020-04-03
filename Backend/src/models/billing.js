@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
@@ -25,4 +25,4 @@ const billingSchema = new Schema(
 
 const billing = mongoose.model('billing', billingSchema);
 
-export default billing;
+module.exports= billing;
