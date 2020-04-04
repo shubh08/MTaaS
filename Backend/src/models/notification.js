@@ -16,6 +16,9 @@ const notificationSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'project',
     },
+    createdOn :{
+      type: Date,
+    }
   }
 );
 
