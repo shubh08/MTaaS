@@ -60,8 +60,8 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads/')));
 
 const s3 = new AWS.S3({
   apiVersion: '2006-03-01',
-  accessKeyId: '',
-  secretAccessKey: ''
+  accessKeyId: 'AKIA6N3UPZHSOLL3YCM5',
+  secretAccessKey: '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'
 });
 
 const commonFileUpload = multer({

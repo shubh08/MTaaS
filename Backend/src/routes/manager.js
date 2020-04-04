@@ -2,8 +2,31 @@ var express = require('express');
 var router = express.Router();
 var manager = require('../models/manager');
 var project = require('../models/project');
+const AWS=require('aws-sdk');
+var tester = require('../models/tester');
+const multerS3 = require('multer-s3')
+const multer = require('multer')
+const awsConfig = require('../helpers/AWSConfig')
+ 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+
+
+const s3 = new AWS.S3({
+    apiVersion: '2006-03-01',
+    accessKeyId: awsConfig.AWS_KEY,
+    secretAccessKey: awsConfig.AWS_SECRET
+  });
+
+const commonFilesUploadToS3 = multer({
+    storage: multerS3({
+      s3: s3,
+      bucket: 'mtaasbucket',
+      key: function (req, file, cb) {
+          cb(null, req.body.name+'/'+'Common/'+file.originalname)
+      }
+    })
+    })
 
 
 router.post('/signup', function (req, res, next) {
@@ -61,13 +84,62 @@ router.post('/login', function (req, res, next) {
     })
 });
 
-router.put('/update', function (req, res, next) {
-    var update = { name: req.body.name, about: req.body.about, DOB: req.body.DOB, company: req.body.company, email: req.body.email }
-    manager.findByIdAndUpdate(req.body.id , update).exec((err, manager) => {
+router.post('/upload',commonFilesUploadToS3.single('file'),function (req, res, next) {
+    console.log('File here')
+    let filePath = {filePath:req.body.name+'/'+'Common/'+req.file.originalname,fileName:req.file.originalname}
+    console.log(filePath)
+    console.log('id',req.body.id)
+    project.findByIdAndUpdate(new ObjectId(req.body.id) ,{$push: {filePaths: filePath}}).exec((err, project) => {
         if (err) {
             next();
         } else {
-            res.status(200).send({ message: "Succesfully Updated"});
+            console.log('File Uploaded');
+            res.status(200).send({ message: "Succesfully Uploaded file to AWS S3"});
+        }
+    });
+});
+
+router.get('/viewFiles/:id', function (req, res, next) {
+    project.findById(req.params.id).exec((err, project) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({ filePaths: project.filePaths });
+        }
+    });
+});
+
+router.post('/approve', function (req, res, next) {
+    console.log('In Approved request')
+    project.findByIdAndUpdate({"_id":req.body.projectID}, {$push: {testerID: req.body.testerID},
+    $pull:[{activeApplication: req.body.testerID},{rejectedApplication: req.body.testerID}],
+}).exec((err, project) => {
+        if (err) {
+           console.log(err)
+        } else {
+            tester.findByIdAndUpdate({"_id":req.body.testerID}, {
+                $push:{projectID: req.body.projectID}
+            }).exec((err, project) => {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        console.log('Approved')
+                        res.status(200).send({ message: 'Application Approved'});
+                    }
+                });
+        }
+    });
+});
+
+router.post('/reject', function (req, res, next) {
+    project.findByIdAndUpdate({"_id":req.body.projectID}, {
+    $pull:{activeApplication: req.body.testerID},
+    $push:{rejectedApplication:req.body.testerID}
+}).exec((err, project) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({ message: 'Application Rejected'});
         }
     });
 });
@@ -105,6 +177,16 @@ router.post('/createProject', function (req, res, next) {
     })
 });
 
+router.put('/update',function (req, res, next) {
+    var update = { name: req.body.name, about: req.body.about, DOB: req.body.DOB, company: req.body.company, email: req.body.email }
+    manager.findByIdAndUpdate(req.body.id , update).exec((err, manager) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({ message: "Succesfully Updated"});
+        }
+    });
+});
 
 router.use((error, req, res, next) => {
     res.writeHead(500, {

@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var tester = require('../models/tester');
+var project = require('../models/project');
+
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -70,6 +72,38 @@ router.put('/update', function (req, res, next) {
             res.status(200).send({ message: "Succesfully Updated"});
         }
     });
+});
+
+
+router.get('/loadProjects', function (req, res, next) {
+    project.find().populate("managerID").exec((err, project) => {
+        if (err) {
+            console.log("err")
+            next();
+        } else {
+            console.log("project")
+            res.status(200).send(project);
+        }
+    });
+});
+
+router.post('/applyProject', function (req, res, next) {
+    console.log('here in the loadprpjects')
+    project.findOneAndUpdate(
+        {"_id":req.body.projectID},
+        {$push: {activeApplication: req.body.testerID},
+    $pull:{rejectedApplication: req.body.testerID}},
+            function(err,tester) {
+                if (err) {
+                    console.log("err")
+                    next();
+                }
+                else{
+                    console.log('Applied to project')
+                    res.status(200).send({status:true});
+                  }
+            }
+        );
 });
 
 router.use((error, req, res, next) => {
