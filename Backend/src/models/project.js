@@ -37,6 +37,15 @@ const projectSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: 'tester',
     }],
+    activeApplication:[{
+      type: Schema.Types.ObjectId,
+      ref: 'tester',
+    }],
+    rejectedApplication:[{
+      type: Schema.Types.ObjectId,
+      ref: 'tester',
+    }],
+    commanfiles: [],
   }
 );
 projectSchema.plugin(uniqueValidator);
