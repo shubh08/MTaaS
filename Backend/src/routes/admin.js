@@ -3,6 +3,7 @@ var router = express.Router();
 var admin = require('../models/admin');
 var manager = require('../models/manager');
 var tester = require('../models/tester');
+var project = require('../models/project');
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -108,6 +109,25 @@ router.put('/unblockManager', function (req, res, next) {
             next();
         } else {
             res.status(200).send({ message: "Succesfully Unblocked"});
+        }
+    });
+});
+
+router.put('/blockProject', function (req, res, next) {
+    project.findByIdAndUpdate(req.body.id , {active : false}).exec((err, project) => {
+        if (err) {
+            next(err);
+        } else {
+            res.status(200).send({ message: "Succesfully Blocked"});
+        }
+    });
+});
+router.put('/unblockProject', function (req, res, next) {
+    project.findByIdAndUpdate(req.body.id , {active : true}).exec((err, project) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({ message: "Succesfully unblocked"});
         }
     });
 });

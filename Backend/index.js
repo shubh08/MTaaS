@@ -52,10 +52,11 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.use("/", commonRoute);
 app.use("/admin", adminRoute);
 app.use("/manager", managerRoute);
 app.use("/tester", testerRoute);
+app.use("/", commonRoute);
+
 app.use('/uploads', express.static(path.join(__dirname, '/uploads/'))); 
 
 
