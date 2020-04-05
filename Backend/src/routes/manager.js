@@ -124,11 +124,13 @@ router.put('/createNotification', function (req, res, next) {
     const createdOn = moment.now();
     const managerID = req.body.managerID;
     const projectID = req.body.projectID;
+    const severity = req.body.severity;
     const newNotification = new notification({
         description,
         createdOn,
         managerID,
-        projectID
+        projectID,
+        severity
     });
     newNotification.save((err, notification) => {
         if (err || notification == null) {  
@@ -150,6 +152,30 @@ router.put('/createNotification', function (req, res, next) {
             })
         }
     })
+});
+router.delete('/deleteProject', function (req, res, next) {
+    project.findByIdAndDelete(req.body.projectID).exec((err, project) => {
+        if (err) {
+            next();
+        } else {
+            manager.findByIdAndUpdate(req.body.managerID,{'$pull':{ "projectID": req.body.projectID }}).exec((err,manager) =>{
+                if(err){
+                    next(err);
+                }else{
+                    res.status(200).send({ message: "Succesfully Deleted the project"});
+                }
+            })
+        }
+    });
+});
+router.get('/notification/(:id)', function (req, res, next) {
+    manager.findById( req.params.id).populate({path : "notificationID", populate :[{ path : 'managerID', model : 'manager'}, {path : 'projectID', model : 'project'}]}).exec((err, manager) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({  notifications : manager.notificationID});
+        }
+    });
 });
 router.use((error, req, res, next) => {
     res.writeHead(500, {

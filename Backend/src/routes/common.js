@@ -79,6 +79,24 @@ router.get('/projectsForTester/(:id)', function (req, res, next) {
         }
     });
 });
+router.put('/insertProjectIntoTester', function (req, res, next) {
+    tester.findByIdAndUpdate(req.body.id,{'$push':{'projectID': req.body.projID}}).exec((err, tester) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({tester : tester});
+        }
+    });
+});
+router.put('/insertTesterIntoProject', function (req, res, next) {
+    project.findByIdAndUpdate(req.body.id,{'$push':{'testerID': req.body.testerID}}).exec((err, project) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({project : project});
+        }
+    });
+});
 
 router.use((error, req, res, next) => {
     res.writeHead(500, {
