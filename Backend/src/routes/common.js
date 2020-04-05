@@ -43,16 +43,7 @@ router.get('/allTesters', function (req, res, next) {
         }
     });
 });
-router.get('/tester/(:id)', function (req, res, next) {
-    tester.findById(req.params.id).populate("projectID").exec((err, testers) => {
-        if (err) {
-            next();
-        } else {
-            res.status(200).send({testers : testers});
-        }
-    });
-});
-router.get('/testerForProjectID/(:id)', function (req, res, next) {
+router.get('/testerByTesterID/(:id)', function (req, res, next) {
     tester.findById(req.params.id).populate("projectID").exec((err, testers) => {
         if (err) {
             next();
@@ -62,23 +53,33 @@ router.get('/testerForProjectID/(:id)', function (req, res, next) {
     });
 });
 router.get('/allProjects', function (req, res, next) {
-    project.find().populate("managerID").exec((err, testers) => {
+    project.find().populate("managerID").exec((err, projects) => {
         if (err) {
             next();
         } else {
-            res.status(200).send({testers : testers});
+            res.status(200).send({projects : projects});
         }
     });
 });
-router.get('/project', function (req, res, next) {
-    project.findById(req.params.id).populate("managerID").exec((err, testers) => {
+router.get('/projectsForManager/(:id)', function (req, res, next) {
+    project.find({managerID : req.params.id }).populate("managerID").exec((err, projects) => {
         if (err) {
             next();
         } else {
-            res.status(200).send({testers : testers});
+            res.status(200).send({projects : projects});
         }
     });
 });
+router.get('/projectsForTester/(:id)', function (req, res, next) {
+    project.find({testerID : {$in: [req.params.id] }}).populate("managerID").exec((err, projects) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({projects : projects});
+        }
+    });
+});
+
 router.use((error, req, res, next) => {
     res.writeHead(500, {
         'Content-Type': 'text/plain'
