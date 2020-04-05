@@ -32,6 +32,10 @@ const testerSchema = new Schema(
         default: '',
         required: [true, 'Tester date of birth is mandatory'],
     },
+    active: {
+      type: Boolean,
+      default: true
+  },
     projectID: [{
         type: Schema.Types.ObjectId,
         ref: 'project',

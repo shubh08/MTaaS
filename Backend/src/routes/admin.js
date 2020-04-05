@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var admin = require('../models/admin');
 var manager = require('../models/manager');
+var tester = require('../models/tester');
+var project = require('../models/project');
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -68,12 +70,64 @@ router.put('/update', function (req, res, next) {
         }
     });
 });
-router.get('/allManagers', function (req, res, next) {
-    manager.find().populate("projectID").exec((err, managers) => {
+
+router.put('/blockTester', function (req, res, next) {
+    tester.findByIdAndUpdate(req.body.id , {active : false} ).exec((err, tester) => {
         if (err) {
             next();
         } else {
-            res.status(200).send({managers : managers});
+            res.status(200).send({ message: "Succesfully Blocked"});
+        }
+    });
+});
+router.put('/unblockTester', function (req, res, next) {
+    
+    tester.findByIdAndUpdate(req.body.id , {active : true}).exec((err, tester) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({ message: "Succesfully Unblocked"});
+        }
+    });
+});
+
+router.put('/blockManager', function (req, res, next) {
+    
+    manager.findByIdAndUpdate(req.body.id , {active : false}).exec((err, manager) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({ message: "Succesfully Blocked"});
+        }
+    });
+});
+
+
+router.put('/unblockManager', function (req, res, next) {
+    manager.findByIdAndUpdate(req.body.id , {active : true}).exec((err, manager) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({ message: "Succesfully Unblocked"});
+        }
+    });
+});
+
+router.put('/blockProject', function (req, res, next) {
+    project.findByIdAndUpdate(req.body.id , {active : false}).exec((err, project) => {
+        if (err) {
+            next(err);
+        } else {
+            res.status(200).send({ message: "Succesfully Blocked"});
+        }
+    });
+});
+router.put('/unblockProject', function (req, res, next) {
+    project.findByIdAndUpdate(req.body.id , {active : true}).exec((err, project) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({ message: "Succesfully unblocked"});
         }
     });
 });
