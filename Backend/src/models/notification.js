@@ -18,6 +18,9 @@ const notificationSchema = new Schema(
     },
     createdOn :{
       type: Date,
+    },
+    severity: {
+      type: String
     }
   }
 );
