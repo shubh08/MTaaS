@@ -2,31 +2,32 @@ var express = require('express');
 var router = express.Router();
 var manager = require('../models/manager');
 var project = require('../models/project');
-const AWS=require('aws-sdk');
+const AWS = require('aws-sdk');
 var tester = require('../models/tester');
 const multerS3 = require('multer-s3')
 const multer = require('multer')
 const awsConfig = require('../helpers/AWSConfig')
- 
+
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+var application = require('../models/application');
 
 
 const s3 = new AWS.S3({
     apiVersion: '2006-03-01',
     accessKeyId: awsConfig.AWS_KEY,
     secretAccessKey: awsConfig.AWS_SECRET
-  });
+});
 
 const commonFilesUploadToS3 = multer({
     storage: multerS3({
-      s3: s3,
-      bucket: 'mtaasbucket',
-      key: function (req, file, cb) {
-          cb(null, req.body.name+'/'+'Common/'+file.originalname)
-      }
+        s3: s3,
+        bucket: 'mtaasbucket',
+        key: function (req, file, cb) {
+            cb(null, req.body.name + '/' + 'Common/' + file.originalname)
+        }
     })
-    })
+})
 
 
 router.post('/signup', function (req, res, next) {
@@ -36,7 +37,7 @@ router.post('/signup', function (req, res, next) {
             const about = req.body.about;
             const company = req.body.company;
             const email = req.body.email;
-            const password =hash;
+            const password = hash;
             const DOB = req.body.DOB;
 
             const newManager = new manager({
@@ -49,34 +50,34 @@ router.post('/signup', function (req, res, next) {
             });
             newManager.save((err, manager) => {
                 if (err) {
-                    var error = { message: "Manager already registered"}
+                    var error = { message: "Manager already registered" }
                     next(error);
                 } else if (manager == null) {
-                   next();
+                    next();
                 } else {
-                    res.status(200).send({ message: "Successful Sign Up", id:manager._id});
+                    res.status(200).send({ message: "Successful Sign Up", id: manager._id });
                 }
             })
         } else {
             next();
         }
-    }); 
+    });
 });
 
 router.post('/login', function (req, res, next) {
     manager.findOne({ email: req.body.email }).exec((err, manager) => {
         if (err) {
-           next();
+            next();
         }
         else if (manager == null) {
-            var error = { message: "Manager does not exist"}
+            var error = { message: "Manager does not exist" }
             next(error);
         } else {
             bcrypt.compare(req.body.password, manager.password, function (err, result) {
                 if (result) {
-                    res.status(200).send({ message: "Logged In succesfully", id:manager._id});
+                    res.status(200).send({ message: "Logged In succesfully", id: manager._id });
                 } else {
-                    var error = { message: "Invalid Password"}
+                    var error = { message: "Invalid Password" }
                     next(error);
                 }
             });
@@ -84,17 +85,17 @@ router.post('/login', function (req, res, next) {
     })
 });
 
-router.post('/upload',commonFilesUploadToS3.single('file'),function (req, res, next) {
+router.post('/upload', commonFilesUploadToS3.single('file'), function (req, res, next) {
     console.log('File here')
-    let filePath = {filePath:req.body.name+'/'+'Common/'+req.file.originalname,fileName:req.file.originalname}
+    let filePath = { filePath: req.body.name + '/' + 'Common/' + req.file.originalname, fileName: req.file.originalname }
     console.log(filePath)
-    console.log('id',req.body.id)
-    project.findByIdAndUpdate(new ObjectId(req.body.id) ,{$push: {filePaths: filePath}}).exec((err, project) => {
+    console.log('id', req.body.id)
+    project.findByIdAndUpdate(new ObjectId(req.body.id), { $push: { filePaths: filePath } }).exec((err, project) => {
         if (err) {
             next();
         } else {
             console.log('File Uploaded');
-            res.status(200).send({ message: "Succesfully Uploaded file to AWS S3"});
+            res.status(200).send({ message: "Succesfully Uploaded file to AWS S3" });
         }
     });
 });
@@ -111,37 +112,39 @@ router.get('/viewFiles/:id', function (req, res, next) {
 
 router.post('/approve', function (req, res, next) {
     console.log('In Approved request')
-    project.findByIdAndUpdate({"_id":req.body.projectID}, {$push: {testerID: req.body.testerID},
-    $pull:[{activeApplication: req.body.testerID},{rejectedApplication: req.body.testerID}],
-}).exec((err, project) => {
+    application.findOneAndUpdate({ _id: req.body.applicationID }, { $set: { status: 'Approved' } }).exec((err, app) => {
         if (err) {
-           console.log(err)
+            next(err);
         } else {
-            tester.findByIdAndUpdate({"_id":req.body.testerID}, {
-                $push:{projectID: req.body.projectID}
-            }).exec((err, project) => {
-                    if (err) {
-                        console.log(err)
-                    } else {
-                        console.log('Approved')
-                        res.status(200).send({ message: 'Application Approved'});
-                    }
-                });
+            project.findByIdAndUpdate({ "_id": req.body.projectID }, { $push: { testerID: req.body.testerID } }).exec((err, project) => {
+                if (err) {
+                    next(err);
+                }
+                else {
+                    tester.findByIdAndUpdate({ "_id": req.body.testerID }, {
+                        $push: { projectID: req.body.projectID }
+                    }).exec((err, tester) => {
+                        if (err) {
+                            console.log(err)
+                        } else {
+                            console.log('Approved')
+                            res.status(200).send({ message: 'Application Approved', tester: tester });
+                        }
+                    });
+                }
+            })
         }
-    });
-});
+    })
+})
 
 router.post('/reject', function (req, res, next) {
-    project.findByIdAndUpdate({"_id":req.body.projectID}, {
-    $pull:{activeApplication: req.body.testerID},
-    $push:{rejectedApplication:req.body.testerID}
-}).exec((err, project) => {
+    application.findOneAndUpdate({ _id: req.body.applicationID }, { $set: { status: 'Reject' } }).exec((err, app) => {
         if (err) {
-            next();
+            next(err);
         } else {
-            res.status(200).send({ message: 'Application Rejected'});
+            res.status(200).send({ message: 'Application Rejected', app: app });
         }
-    });
+    })
 });
 
 router.post('/createProject', function (req, res, next) {
@@ -163,27 +166,27 @@ router.post('/createProject', function (req, res, next) {
     });
 
     newProject.save((err, project) => {
-        if (err || project == null) {  
-           next();
+        if (err || project == null) {
+            next();
         } else {
-            manager.findByIdAndUpdate(managerID,{'$push':{ "projectID": project._id }}).exec((err,manager) =>{
-                if(err || manager == null){
+            manager.findByIdAndUpdate(managerID, { '$push': { "projectID": project._id } }).exec((err, manager) => {
+                if (err || manager == null) {
                     next();
-                }else{
-                    res.status(200).send({ message: "Project Created Successfully"});
+                } else {
+                    res.status(200).send({ message: "Project Created Successfully" });
                 }
             })
         }
     })
 });
 
-router.put('/update',function (req, res, next) {
+router.put('/update', function (req, res, next) {
     var update = { name: req.body.name, about: req.body.about, DOB: req.body.DOB, company: req.body.company, email: req.body.email }
-    manager.findByIdAndUpdate(req.body.id , update).exec((err, manager) => {
+    manager.findByIdAndUpdate(req.body.id, update).exec((err, manager) => {
         if (err) {
             next();
         } else {
-            res.status(200).send({ message: "Succesfully Updated"});
+            res.status(200).send({ message: "Succesfully Updated" });
         }
     });
 });

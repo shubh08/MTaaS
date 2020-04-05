@@ -18,30 +18,22 @@ const projectSchema = new Schema(
       required: [true, 'Project end date is mandatory'],
     },
     description: {
-        type: String,
-        default: '',
+      type: String,
+      default: '',
     },
     technologies: {
-        type: String,
-        default: '',
+      type: String,
+      default: '',
     },
     testCriteria: {
       type: String,
       default: '',
-  },
+    },
     managerID: {
-        type: Schema.Types.ObjectId,
-        ref: 'manager',
+      type: Schema.Types.ObjectId,
+      ref: 'manager',
     },
     testerID: [{
-        type: Schema.Types.ObjectId,
-        ref: 'tester',
-    }],
-    activeApplication:[{
-      type: Schema.Types.ObjectId,
-      ref: 'tester',
-    }],
-    rejectedApplication:[{
       type: Schema.Types.ObjectId,
       ref: 'tester',
     }],
@@ -51,4 +43,4 @@ const projectSchema = new Schema(
 projectSchema.plugin(uniqueValidator);
 const project = mongoose.model('project', projectSchema);
 
-module.exports= project;
+module.exports = project;

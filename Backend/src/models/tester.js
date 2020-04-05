@@ -13,36 +13,40 @@ const testerSchema = new Schema(
       default: '',
     },
     technologies: {
-        type: String,
-        default: '',
+      type: String,
+      default: '',
     },
     email: {
-        type: String,
-        default: '',
-        required: [true, 'Tester emailid is mandatory'],
-        unique : true,
+      type: String,
+      default: '',
+      required: [true, 'Tester emailid is mandatory'],
+      unique: true,
     },
     password: {
-        type: String,
-        default: '',
-        required: [true, 'Tester password is mandatory'],
+      type: String,
+      default: '',
+      required: [true, 'Tester password is mandatory'],
     },
     DOB: {
-        type: Date,
-        default: '',
-        required: [true, 'Tester date of birth is mandatory'],
+      type: Date,
+      default: '',
+      required: [true, 'Tester date of birth is mandatory'],
     },
     projectID: [{
-        type: Schema.Types.ObjectId,
-        ref: 'project',
+      type: Schema.Types.ObjectId,
+      ref: 'project',
     }],
     notificationID: [{
-        type: Schema.Types.ObjectId,
-        ref: 'notification',
+      type: Schema.Types.ObjectId,
+      ref: 'notification',
     }],
+    appliedTo: [{
+      type: Schema.Types.ObjectId,
+      ref: 'project',
+    }]
   }
 );
 testerSchema.plugin(uniqueValidator);
 const tester = mongoose.model('tester', testerSchema);
 
-module.exports=tester;
+module.exports = tester;
