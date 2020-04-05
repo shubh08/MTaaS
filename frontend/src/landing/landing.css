@@ -1,0 +1,49 @@
+.landing {
+  text-align: center;
+}
+
+.landing-signup {
+  padding-top: 10%;
+  margin: 10%;
+}
+
+.landing-login {
+  padding: 10%;
+  margin: 10%;
+}
+
+.landing-logo {
+  height: 40vmin;
+  pointer-events: none;
+  background-color: #282c34;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .landing-logo {
+    animation: landing-logo-spin infinite 20s linear;
+  }
+}
+
+.landing-header {
+  background-color: #282c34;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.landing-link {
+  color: #61dafb;
+}
+
+@keyframes landing-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
