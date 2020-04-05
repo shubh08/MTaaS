@@ -1,7 +1,6 @@
 const port = process.env.PORT || 3010;
 const rooturl = "http://3.17.152.109:3006";
 //const rooturl = "";
-const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 var express = require('express');
@@ -14,6 +13,9 @@ app.set('view engine', 'ejs');
 const mongoose = require('mongoose');
 const db = require('./src/helpers/settings').mongoURI;
 var jwt = require('jsonwebtoken');
+const AWS=require('aws-sdk');
+const multerS3 = require('multer-s3')
+const multer = require('multer')
  
 
 mongoose
@@ -59,6 +61,25 @@ app.use("/", commonRoute);
 
 app.use('/uploads', express.static(path.join(__dirname, '/uploads/'))); 
 
+const s3 = new AWS.S3({
+  apiVersion: '2006-03-01',
+  accessKeyId: 'AKIA6N3UPZHSOLL3YCM5',
+  secretAccessKey: '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'
+});
+
+const commonFileUpload = multer({
+storage: multerS3({
+  s3: s3,
+  bucket: 'mtaasbucket',//'mtaas-course-project-nachiket',
+  key: function (req, file, cb) {
+      cb(null, req.body.name+'/'+'Common/'+file.originalname)
+  }
+})
+})
+
+app.post("/addProject",commonFileUpload.single('file'), function(req, res) {
+  console.log('File Upload success',req.body)
+});
 
 app.listen(port);
 console.log("Server Listening on port " + port);
