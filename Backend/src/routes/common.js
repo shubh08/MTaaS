@@ -52,12 +52,30 @@ router.get('/testerByTesterID/(:id)', function (req, res, next) {
         }
     });
 });
+router.get('/testersforProject/(:id)', function (req, res, next) {
+    project.findById(req.params.id).populate("testerID").exec((err, project) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({testers : project.testerID});
+        }
+    });
+});
 router.get('/allProjects', function (req, res, next) {
     project.find().populate("managerID").exec((err, projects) => {
         if (err) {
             next();
         } else {
             res.status(200).send({projects : projects});
+        }
+    });
+});
+router.get('/projectByProjectID/(:id)', function (req, res, next) {
+    project.findById(req.params.id).populate("managerID").exec((err, project) => {
+        if (err) {
+            next(err);
+        } else {
+            res.status(200).send({project : project});
         }
     });
 });
