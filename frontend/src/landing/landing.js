@@ -14,11 +14,10 @@ class Landing extends React.Component{
           </Container>
           <header className="landing-header">
             <img src={logo} className="landing-logo" alt="logo" />
-            <Button classname="landing-signup" href="/signup">Sign up!</Button>
-            <Button classname="landing-login" href="/login">Login</Button>
+            <div classname="landing-signup"><Button href="/signup">Sign up!</Button></div>
+            <div classname="landing-login"><Button href="/login">Login</Button></div>
           </header>
         </Jumbotron>
-
       </div>
     )
   }
