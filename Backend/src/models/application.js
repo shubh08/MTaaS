@@ -6,7 +6,7 @@ const applicationSchema = new Schema(
   {
     status: {
       type: String,
-      default : ''
+      default : 'Pending'
     },
     managerID:{
       type: Schema.Types.ObjectId,
