@@ -53,7 +53,7 @@ router.post('/login', function (req, res, next) {
         } else {
             bcrypt.compare(req.body.password, tester.password, function (err, result) {
                 if (result) {
-                    res.status(200).send({ message: "Logged In succesfully", id: tester._id });
+                    res.status(200).send({ message: "Logged In succesfully", id:tester._id, active: tester.active});
                 } else {
                     var error = { message: "Invalid Password" }
                     next(error);
@@ -125,6 +125,16 @@ router.post('/applyProject', function (req, res, next) {
 
         }
     })
+});
+
+router.delete('/deleteNotification', function (req, res, next) {
+    tester.findByIdAndUpdate( req.body.id , {'$pull':{ "notificationID": req.body.notificationID }}).exec((err, tester) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({ message: "Succesfully Deleted"});
+        }
+    });
 });
 
 router.use((error, req, res, next) => {

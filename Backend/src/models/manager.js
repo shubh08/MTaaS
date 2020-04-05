@@ -32,6 +32,10 @@ const managerSchema = new Schema(
         default: '',
         required: [true, 'Manager date of birth is mandatory'],
     },
+    active: {
+      type: Boolean,
+      default: true
+  },
     projectID: [{
         type: Schema.Types.ObjectId,
         ref: 'project',

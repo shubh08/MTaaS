@@ -33,6 +33,10 @@ const projectSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'manager',
     },
+    active: {
+      type: Boolean,
+      default: true
+  },
     testerID: [{
       type: Schema.Types.ObjectId,
       ref: 'tester',
