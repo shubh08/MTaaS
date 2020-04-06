@@ -14,7 +14,7 @@ class SideNav extends React.Component {
         </div>
 
         <div className="Button-Padding">
-          <Button className="NavButton" href="/bookmarks">Bug Tracker</Button>
+          <Button className="NavButton" href="/bugtracker">Bug Tracker</Button>
         </div>
 
         <div className="Button-Padding">
