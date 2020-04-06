@@ -1,18 +1,28 @@
 import React from 'react';
 import TopNav from '../navigation/topnav.js';
+import SideNav from '../navigation/sidenav.js';
 import './homepage.css';
+
 
 class Homepage extends React.Component{
   render(){
     return(
     <div className="homepage">
-      <TopNav/>
-      <header className="homepage-header">
+      <div>
+        <TopNav/>
+      </div>
+      <div>
+        <SideNav/>
+      </div>
 
-      </header>
     </div>
     )
   }
 }
 
 export default Homepage;
+
+{/*
+<header className="homepage-header">
+
+</header>*/}
