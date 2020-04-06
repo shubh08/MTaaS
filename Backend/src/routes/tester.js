@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var tester = require('../models/tester');
+var notification = require('../models/notification');
 var project = require('../models/project');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -136,7 +137,15 @@ router.delete('/deleteNotification', function (req, res, next) {
         }
     });
 });
-
+router.get('/notification/(:id)', function (req, res, next) {
+    tester.findById( req.params.id).populate({path : "notificationID", populate :[{ path : 'managerID', model : 'manager'}, {path : 'projectID', model : 'project'}]}).exec((err, tester) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({  notifications : tester.notificationID});
+        }
+    });
+});
 router.use((error, req, res, next) => {
     res.writeHead(500, {
         'Content-Type': 'text/plain'
