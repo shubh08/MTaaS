@@ -40,3 +40,12 @@
     transform: rotate(360deg);
   }
 }
+
+.textLeftSignup {
+  text-align: left;
+}
+
+.textCenterSignup {
+  text-align: center;
+  width: 100%;
+}
