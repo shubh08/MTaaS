@@ -5,9 +5,11 @@ import Landing from './landing/landing.js';
 import Homepage from './homepage/homepage.js';
 import SignUp from './signup/signup.js';
 import Login from './login/login.js';
-
+import { ToastContainer } from 'react-toastify';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 class Routes extends React.Component {
@@ -15,6 +17,7 @@ class Routes extends React.Component {
   render(){
     return(
       <Router>
+        <ToastContainer autoClose={3000} />
         <Switch>
           <Route exact path='/' component={Landing}/>
           <Route exact path='/home' component={Homepage}/>

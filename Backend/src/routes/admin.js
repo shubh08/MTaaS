@@ -132,7 +132,7 @@ router.put('/unblockProject', function (req, res, next) {
     });
 });
 router.use((error, req, res, next) => {
-    res.writeHead(500, {
+    res.writeHead(201, {
         'Content-Type': 'text/plain'
     });
     res.end(JSON.stringify(error));
@@ -142,7 +142,7 @@ router.use((req, res, next) => {
     var message = [];
     var errors = "Something went wrong!";
     message.push(errors);
-    res.writeHead(500, {
+    res.writeHead(201, {
         'Content-Type': 'text/plain'
     });
     res.end(JSON.stringify(message));
