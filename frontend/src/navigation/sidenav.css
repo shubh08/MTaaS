@@ -1,26 +1,27 @@
 .App-header {
-  background-color: #15202B;
+  background-color: #343a40;
   min-height: 100vh;
-  width: 20%;
+  width: 100%;
   //float: none;
   display: flex;
   flex-direction: column;
   align-items:flex-start;
   justify-content:flex-start;
   color: white;
-  padding-left: 5%;
+  padding-left: 15%;
+  padding-top: 10%;
 }
 
 .Button-Padding{
-  padding-top: 20%;
+  padding-top: 10%;
   padding-right: 10%;
-  background-color: #15202B;
+  background-color: #343a40;
 }
 
 .NavButton{
-  background-color: #15202B;
+  background-color: #343a40;
   border-radius: 30px;
-  border: 1px solid #00acee;
+  border: 1px solid #343a40;
   color: white;
-  border-color: #15202B;
+  border-color: #343a40;
 }
