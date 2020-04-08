@@ -53,14 +53,15 @@ const LoginTabs = (props) => {
     };
     axios.post(ROOT_URL + '/tester/login', testerDetails).then((response) => {
       if (response.status == 200 && response.data.active) {
-        window.location = "/home"
+        localStorage.setItem('TesterID',response.data.id);
+        window.location = "/homeTester"
         setTimeout(() => {
           toast.success(response.data.message, {
             position: toast.POSITION.TOP_CENTER
           });
         }, 2000);
       } else if (response.status == 200 && !response.data.active) {
-        toast.success("Your account has been blocked ! Please contact the customer care .", {
+        toast.error("Your account has been blocked !", {
           position: toast.POSITION.TOP_CENTER
         });
       } else {
@@ -82,7 +83,8 @@ const LoginTabs = (props) => {
     };
     axios.post(ROOT_URL + '/manager/login', managerDetails).then((response) => {
       if (response.status == 200 && response.data.active) {
-        window.location = "/home"
+        localStorage.setItem('ManagerID',response.data.id);
+        window.location = "/homeManager"
         setTimeout(() => {
           toast.success(response.data.message, {
             position: toast.POSITION.TOP_CENTER
@@ -111,7 +113,8 @@ const LoginTabs = (props) => {
     };
     axios.post(ROOT_URL + '/admin/login', adminDetails).then((response) => {
       if (response.status == 200) {
-        window.location = "/home"
+        localStorage.setItem('AdminID',response.data.id);
+        window.location = "/homeAdmin"
         setTimeout(() => {
           toast.success(response.data.message, {
             position: toast.POSITION.TOP_CENTER

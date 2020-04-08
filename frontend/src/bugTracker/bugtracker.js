@@ -3,8 +3,8 @@ import './bugtracker.css';
 import { Button } from 'reactstrap';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Badge } from 'reactstrap';
-import TopNav from '../navigation/topnav.js';
-import SideNav from '../navigation/sidenav.js';
+import TopNav from '../navigation/topnavTester';
+import SideNav from '../navigation/sidenavTester';
 
 class BugTracker extends React.Component{
   render(){
