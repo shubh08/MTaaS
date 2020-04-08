@@ -1,0 +1,56 @@
+.createProject {
+  text-align: center;
+  background-color: #e9ecef;
+  width: 100%;
+  overflow: hidden;
+}
+
+.createProject-left {
+  text-align: center;
+  position: fixed;
+  top: 6.9%;
+  left: 0;
+  background-color: #282c34;
+  width: 20%;
+  float: left;
+}
+
+.createProject-right {
+  text-align: left;
+  top: 20%;
+  right: 0;
+  background-color: white;
+  width: 80%;
+  float: right;
+}
+
+.createProject-header {
+  background-color: #282c34;
+  width: auto;
+  float: right;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+.createProject-white {
+  background-color:white;
+}
+.updateButton{
+text-align: center;
+width: 100%;
+}
+.createProject-margin-increase-top {
+  margin-top: 5%;
+}
+.createProject-margin-top {
+  margin-top: 2%;
+  
+}
+.createProject-div-border {
+  border-style: ridge;
+}
+.createProject-text-center {
+  text-align: center;
+}
