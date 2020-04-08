@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import './bugtracker.css';
+import './profile.css';
 import { Button } from 'reactstrap';
 
-import TopNav from '../navigation/topnavTester';
-import SideNav from '../navigation/sidenavTester';
+import TopNav from '../navigation/topnavAdmin';
+import SideNav from '../navigation/sidenavAdmin';
 
-class BugTracker extends React.Component{
+class AdminProfile extends React.Component{
   render(){
     return (
       <div className="bugtracker">
@@ -27,4 +27,4 @@ class BugTracker extends React.Component{
   }
 }
 
-export default BugTracker;
+export default AdminProfile;
