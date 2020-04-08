@@ -253,6 +253,18 @@ router.get('/notification/(:id)', function (req, res, next) {
         }
     });
 });
+
+router.get('/loadApplications/:id', function (req, res, next) {
+    application.find({'managerID':req.params.id}).populate('testerID').populate('projectID').exec((err, apps) => {
+        if (err) {
+            next(err);
+        } else {
+            console.log('result',apps)
+            res.status(200).send({ applications: apps });
+        }
+    });
+});
+
 router.use((error, req, res, next) => {
     res.writeHead(500, {
         'Content-Type': 'text/plain'

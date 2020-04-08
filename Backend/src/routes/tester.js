@@ -80,7 +80,7 @@ router.put('/update', function (req, res, next) {
 router.get('/loadProjects/:id', function (req, res, next) {
     project.find({ 'endDate': { $gt: moment() } }).populate("managerID").exec((err, project) => {
         if (err) {
-            console.log("err")
+            console.log(err)
             next();
         } else {
             tester.findOne({ '_id': req.params.id }).exec((err, tester) => {
@@ -92,8 +92,15 @@ router.get('/loadProjects/:id', function (req, res, next) {
                     if (!tester.appliedTo.includes(el._id))
                         results.push(el)
                 })
-                console.log("project")
-                res.status(200).send(results);
+                console.log("project",results)
+                application.find({'testerID':req.params.id}).populate('projectID').exec((err,app)=>{
+                    if(err)
+                    next(err)
+                    let finalResult = {'activeprojects':results,"applications":app}
+                    res.status(200).send(finalResult);
+
+                })
+                
             })
 
         }
@@ -146,6 +153,9 @@ router.get('/notification/(:id)', function (req, res, next) {
         }
     });
 });
+
+
+
 router.use((error, req, res, next) => {
     res.writeHead(500, {
         'Content-Type': 'text/plain'
