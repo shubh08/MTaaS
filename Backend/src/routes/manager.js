@@ -195,7 +195,7 @@ router.put('/updateProject', function (req, res, next) {
     });
 });
 
-router.put('/createNotification', function (req, res, next) {
+router.post('/createNotification', function (req, res, next) {
     const description = req.body.description;
     const createdOn = moment.now();
     const managerID = req.body.managerID;
@@ -275,6 +275,7 @@ router.get('/loadApplications/:id', function (req, res, next) {
         }
     });
 });
+
 
 router.use((error, req, res, next) => {
     res.writeHead(201, {

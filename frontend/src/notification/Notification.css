@@ -1,0 +1,32 @@
+.notif-width-100{
+    text-align: center;
+    width: 100%;
+}
+.notif-margin-top-5{
+  
+    margin-top: 5%;
+}
+.notif-margin-bottom-5{
+  
+    margin-bottom: 2%;
+}
+.notif-margin-top-15{
+  
+    margin-top: 15%;
+}
+.scroll{
+    max-height: 600px;
+  overflow: scroll;
+}
+
+.scrollBig{
+    max-height: 650px;
+  overflow: scroll;
+}
+.embossed-heavy {
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 
+      inset 0 2px 3px rgba(255,255,255,0.3),
+      inset 0 -2px 3px rgba(0,0,0,0.3),
+      0 1px 1px rgba(255,255,255,0.9);
+  }
