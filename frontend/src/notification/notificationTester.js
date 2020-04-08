@@ -47,7 +47,7 @@ class NotificationTester extends React.Component {
                 var date = notif.createdOn.split("T")[0];
                 allNotifications.push(
 
-                    <Alert color="danger" >
+                    <Alert color="danger" className ="embossed-heavy">
                         <Row><strong>Project Name :</strong> {notif.projectID.name}</Row>
                         <Row><strong>Manager Name : </strong>{notif.managerID.name} </Row>
                         <Row><strong>Company Name : </strong>{notif.managerID.company} </Row>
@@ -62,7 +62,7 @@ class NotificationTester extends React.Component {
                 var date = notif.createdOn.split("T")[0];
                 allNotifications.push(
 
-                    <Alert color="warning">
+                    <Alert color="warning" className ="embossed-heavy">
                         <Row><strong>Project Name : </strong> {notif.projectID.name}</Row>
                         <Row><strong>Manager Name : </strong>{notif.managerID.name} </Row>
                         <Row><strong>Company Name : </strong>{notif.managerID.company} </Row>
@@ -77,7 +77,7 @@ class NotificationTester extends React.Component {
                 var date = notif.createdOn.split("T")[0];
                 allNotifications.push(
 
-                    <Alert body color="success">
+                    <Alert body color="success" className ="embossed-heavy">
                         <Row><strong>Project Name : </strong>{notif.projectID.name}</Row>
                         <Row><strong>Manager Name : </strong>{notif.managerID.name} </Row>
                         <Row><strong>Company Name : </strong>{notif.managerID.company} </Row>
