@@ -61,7 +61,7 @@ router.post('/login', function (req, res, next) {
 });
 
 router.put('/update', function (req, res, next) {
-    var update = { name: req.body.name, DOB: req.body.DOB, email: req.body.email }
+    var update = { name: req.body.name, email: req.body.email }
     admin.findByIdAndUpdate(req.body.id , update).exec((err, admin) => {
         if (err) {
             next();
@@ -132,7 +132,7 @@ router.put('/unblockProject', function (req, res, next) {
     });
 });
 router.use((error, req, res, next) => {
-    res.writeHead(500, {
+    res.writeHead(201, {
         'Content-Type': 'text/plain'
     });
     res.end(JSON.stringify(error));
@@ -142,7 +142,7 @@ router.use((req, res, next) => {
     var message = [];
     var errors = "Something went wrong!";
     message.push(errors);
-    res.writeHead(500, {
+    res.writeHead(201, {
         'Content-Type': 'text/plain'
     });
     res.end(JSON.stringify(message));

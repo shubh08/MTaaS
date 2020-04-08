@@ -3,6 +3,7 @@ var router = express.Router();
 var project = require('../models/project');
 var manager = require('../models/manager');
 var tester = require('../models/tester');
+var admin = require('../models/admin');
 
 
 
@@ -115,9 +116,17 @@ router.put('/insertTesterIntoProject', function (req, res, next) {
         }
     });
 });
-
+router.get('/adminByAdminID/(:id)', function (req, res, next) {
+    admin.findById(req.params.id).exec((err, admin) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({admin : admin});
+        }
+    });
+});
 router.use((error, req, res, next) => {
-    res.writeHead(500, {
+    res.writeHead(201, {
         'Content-Type': 'text/plain'
     });
     res.end(JSON.stringify(error));
@@ -127,7 +136,7 @@ router.use((req, res, next) => {
     var message = [];
     var errors = "Something went wrong!";
     message.push(errors);
-    res.writeHead(500, {
+    res.writeHead(201, {
         'Content-Type': 'text/plain'
     });
     res.end(JSON.stringify(message));
