@@ -253,6 +253,17 @@ router.get('/notification/(:id)', function (req, res, next) {
         }
     });
 });
+
+router.put('/update', function (req, res, next) {
+    var update = { name: req.body.name, about: req.body.about, email :req.body.email,company : req.body.company  }
+    manager.findByIdAndUpdate(req.body.id , update).exec((err, project) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({ message: "Succesfully Updated" });
+        }
+    });
+});
 router.use((error, req, res, next) => {
     res.writeHead(201, {
         'Content-Type': 'text/plain'
