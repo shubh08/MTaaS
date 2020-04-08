@@ -18,19 +18,19 @@ class SideNav extends React.Component {
         </div>
 
         <div className="Button-Padding">
-          <Button className="NavButton" href="/messages">Account</Button>
+          <Button className="NavButton" href="/account">Account</Button>
         </div>
 
         <div className="Button-Padding">
-          <Button className="NavButton" href='/listPage'>Tests</Button>
+          <Button className="NavButton" href='/tests'>Tests</Button>
         </div>
 
         <div className="Button-Padding">
-          <Button className="NavButton" href="/profile">Run Tracker</Button>
+          <Button className="NavButton" href="/runtracker">Run Tracker</Button>
         </div>
 
         <div className="Button-Padding">
-          <Button className="NavButton" href="/dashboard">Admin</Button>
+          <Button className="NavButton" href="/admin">Admin</Button>
         </div>
       </div>
     )}
