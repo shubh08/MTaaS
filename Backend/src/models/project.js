@@ -1,11 +1,11 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 const uniqueValidator = require('mongoose-unique-validator');
 
 const projectSchema = new Schema(
   {
-    Name: {
+    name: {
       type: String,
       required: [true, 'Project name is mandatory'],
     },
@@ -18,32 +18,33 @@ const projectSchema = new Schema(
       required: [true, 'Project end date is mandatory'],
     },
     description: {
-        type: String,
-        default: '',
+      type: String,
+      default: '',
     },
     technologies: {
-        type: String,
-        default: '',
-    },
-    company: {
-        type: String,
-        default: '',
+      type: String,
+      default: '',
     },
     testCriteria: {
       type: String,
       default: '',
+    },
+    managerID: {
+      type: Schema.Types.ObjectId,
+      ref: 'manager',
+    },
+    active: {
+      type: Boolean,
+      default: true
   },
-    managerID: [{
-        type: Schema.Types.ObjectId,
-        ref: 'manager',
-    }],
     testerID: [{
-        type: Schema.Types.ObjectId,
-        ref: 'tester',
+      type: Schema.Types.ObjectId,
+      ref: 'tester',
     }],
+    commanfiles: [],
   }
 );
 projectSchema.plugin(uniqueValidator);
 const project = mongoose.model('project', projectSchema);
 
-export default project;
+module.exports = project;

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
@@ -6,7 +6,7 @@ const applicationSchema = new Schema(
   {
     status: {
       type: String,
-      default : ''
+      default : 'Pending'
     },
     managerID:{
       type: Schema.Types.ObjectId,
@@ -25,4 +25,4 @@ const applicationSchema = new Schema(
 
 const application = mongoose.model('application', applicationSchema);
 
-export default application;
+module.exports= application;

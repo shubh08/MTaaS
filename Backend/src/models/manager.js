@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator')
 const { Schema } = mongoose;
 
@@ -12,11 +12,11 @@ const managerSchema = new Schema(
       type: String,
       default: '',
     },
-    technologies: {
+    company: {
         type: String,
         default: '',
     },
-    emailID: {
+    email: {
         type: String,
         default: '',
         required: [true, 'Manager emailid is mandatory'],
@@ -32,6 +32,10 @@ const managerSchema = new Schema(
         default: '',
         required: [true, 'Manager date of birth is mandatory'],
     },
+    active: {
+      type: Boolean,
+      default: true
+  },
     projectID: [{
         type: Schema.Types.ObjectId,
         ref: 'project',
@@ -45,4 +49,4 @@ const managerSchema = new Schema(
 managerSchema.plugin(uniqueValidator);
 const manager = mongoose.model('manager', managerSchema);
 
-export default manager;
+module.exports= manager;
