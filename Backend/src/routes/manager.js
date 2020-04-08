@@ -254,7 +254,6 @@ router.get('/notification/(:id)', function (req, res, next) {
     });
 });
 
-
 router.put('/update', function (req, res, next) {
     var update = { name: req.body.name, about: req.body.about, email :req.body.email,company : req.body.company  }
     manager.findByIdAndUpdate(req.body.id , update).exec((err, project) => {

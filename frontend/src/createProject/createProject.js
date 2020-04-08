@@ -7,6 +7,8 @@ import SideNav from '../navigation/sidenavManager';
 import axios from 'axios';
 import { ROOT_URL } from '../config/config.js'
 import { toast } from 'react-toastify';
+import { FaEdit } from 'react-icons/fa';
+
 
 class CreateProject extends React.Component {
     constructor(props) {
