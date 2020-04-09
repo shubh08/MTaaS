@@ -349,6 +349,7 @@ class UserManagement extends React.Component {
         var projManager = []
         if (this.state.manager) {
             this.state.manager.projectID.map((project) => {
+                
                 projManager.push(<p className="hyperlink" onClick={() => { this.viewProject(project._id) }}>{project.name}</p>)
             })
         }
