@@ -251,7 +251,6 @@ class UserManagement extends React.Component {
     }
 
     viewProject = (id) => {
-
         axios.get(ROOT_URL + '/projectByProjectID/' + id).then((response) => {
             if (response.status == 200) {
                 this.setState({ project: response.data.project })
@@ -350,13 +349,14 @@ class UserManagement extends React.Component {
         var projManager = []
         if (this.state.manager) {
             this.state.manager.projectID.map((project) => {
-                projManager.push(<p><a href="">{project.name}</a></p>)
+                
+                projManager.push(<p className="hyperlink" onClick={() => { this.viewProject(project._id) }}>{project.name}</p>)
             })
         }
         var projTester = []
         if (this.state.tester) {
             this.state.tester.projectID.map((project) => {
-                projTester.push(<p><a href="">{project.name}</a></p>)
+                projTester.push(<p className="hyperlink" onClick={() => { this.viewProject(project._id) }}>{project.name}</p>)
             })
         }
         
@@ -491,28 +491,28 @@ class UserManagement extends React.Component {
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td className="colorBlue">Name</td>
+                                                    <td className="colorGreen">Name</td>
                                                     <td>{this.state.project.name}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td className="colorBlue">Technologies</td>
+                                                    <td className="colorGreen">Technologies</td>
                                                     <td>{this.state.project.technologies}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td className="colorBlue">Descritption</td>
+                                                    <td className="colorGreen">Descritption</td>
                                                     <td>{this.state.project.description}</td>
 
                                                 </tr>
                                                 <tr>
-                                                    <td className="colorBlue" >Test Criteria</td>
+                                                    <td className="colorGreen" >Test Criteria</td>
                                                     <td>{this.state.project.testCriteria}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td className="colorBlue" >Manager Name</td>
+                                                    <td className="colorGreen" >Manager Name</td>
                                                     <td>{this.state.project.managerID.name}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td className="colorBlue" >Company Name</td>
+                                                    <td className="colorGreen" >Company Name</td>
                                                     <td>{this.state.project.managerID.company}</td>
                                                 </tr>
                                                 

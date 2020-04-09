@@ -65,3 +65,16 @@ overflow: scroll;
   color: blue;
   font-weight: bolder
 }
+.colorGreen{
+  color: green;
+  font-weight: bolder
+}
+
+.colorRedBold{
+  color: red;
+  font-weight: bolder
+}
+.hyperlink{
+  text-decoration: underline;
+  color: #EE0000 
+}
