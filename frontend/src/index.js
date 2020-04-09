@@ -23,6 +23,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ProjectApplications from './projectApplication/projectApplications';
 import LoadApplications from './applications/loadApplications';
 import UserManagement from './userManagement/userManagement';
+import ProjectOperations from './projectOperations/projectOperations';
 
 class Routes extends React.Component {
 
@@ -47,6 +48,7 @@ class Routes extends React.Component {
           <Route exact path='/applications' component={ProjectApplications}/>
           <Route exact path='/loadapplications' component={LoadApplications}/>
           <Route exact path='/userManagement' component={UserManagement}/>
+          <Route exact path='/projectOperation' component={ProjectOperations}/>
         </Switch>
       </Router>
     )
