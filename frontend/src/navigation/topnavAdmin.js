@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './topnav.css';
 
-class TopNav extends React.Component {
+class TopNavAdmin extends React.Component {
 
   render(){
     return (
@@ -9,7 +9,7 @@ class TopNav extends React.Component {
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <a class="nav-link" href="/home"><h5>Mobile Testing as a Service</h5></a>
+              <a class="nav-link" href="/homeAdmin"><h5>Mobile Testing as a Service</h5></a>
             </li>
           </ul>
         </nav>
@@ -18,7 +18,7 @@ class TopNav extends React.Component {
   }
 }
 
-export default TopNav;
+export default TopNavAdmin;
 
 
 {/*

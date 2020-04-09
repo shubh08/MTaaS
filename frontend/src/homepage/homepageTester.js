@@ -12,12 +12,12 @@ class HomepageTester extends React.Component{
         <TopNav/>
       </div>
       <div className="bugtracker-left">
-      <SideNav/>
+        <SideNav/>
       </div>
       <div className="bugtracker-right">
         <div>
           <div>
-            
+
           </div>
         </div>
       </div>

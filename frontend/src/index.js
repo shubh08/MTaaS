@@ -12,6 +12,9 @@ import CreateProject from './createProject/createProject';
 import SignUp from './signup/signup.js';
 import Login from './login/login.js';
 import BugTracker from './bugTracker/bugtracker.js';
+import BillingManager from './billing/billingManager.js';
+//import BillingAdmin from './billing/billingAdmin.js';
+
 import { ToastContainer } from 'react-toastify';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -37,6 +40,8 @@ class Routes extends React.Component {
           <Route exact path='/signup' component={SignUp}/>
           <Route exact path='/login' component={Login}/>
           <Route exact path='/bugtracker' component={BugTracker}/>
+          <Route exact path='/billingManager' component={BillingManager}/>
+          {/* <Route exact path='/billingAdmin' component={BillingAdmin}/> */}
         </Switch>
       </Router>
     )
