@@ -22,6 +22,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ProjectApplications from './projectApplication/projectApplications';
 import LoadApplications from './applications/loadApplications';
+import UserManagement from './userManagement/userManagement';
 
 class Routes extends React.Component {
 
@@ -45,6 +46,7 @@ class Routes extends React.Component {
           <Route exact path='/bugtracker' component={BugTracker}/>  //ProjectApplications
           <Route exact path='/applications' component={ProjectApplications}/>
           <Route exact path='/loadapplications' component={LoadApplications}/>
+          <Route exact path='/userManagement' component={UserManagement}/>
         </Switch>
       </Router>
     )
