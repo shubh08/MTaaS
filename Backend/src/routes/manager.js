@@ -19,7 +19,8 @@ var application = require('../models/application');
 const s3 = new AWS.S3({
     apiVersion: '2006-03-01',
     accessKeyId: awsConfig.AWS_KEY,
-    secretAccessKey: awsConfig.AWS_SECRET
+    secretAccessKey: awsConfig.AWS_SECRET,
+    region: 'us-east-2'
 });
 
 const commonFilesUploadToS3 = multer({
@@ -27,7 +28,7 @@ const commonFilesUploadToS3 = multer({
         s3: s3,
         bucket: 'mtaasbucket',
         key: function (req, file, cb) {
-            cb(null, req.body.name + '/' + 'Common/' + file.originalname)
+            cb(null, req.body.projectName + '/' + 'Common/' + file.originalname)
         }
     })
 })
@@ -89,13 +90,13 @@ router.post('/login', function (req, res, next) {
 });
 
 router.post('/upload', commonFilesUploadToS3.single('file'), function (req, res, next) {
-    console.log('File here')
-    let filePath = { filePath: req.body.name + '/' + 'Common/' + req.file.originalname, fileName: req.file.originalname }
+    console.log('File here', req.body)
+    let filePath = { filePath: req.body.projectName + '/' + 'Common/' + req.file.originalname, fileName: req.file.originalname }
     console.log(filePath)
     console.log('id', req.body.id)
-    project.findByIdAndUpdate(new ObjectId(req.body.id), { $push: { filePaths: filePath } }).exec((err, project) => {
+    project.findOneAndUpdate({"name":req.body.projectName}, { $push: { commanfiles: filePath } }).exec((err, project) => {
         if (err) {
-            next();
+            next(err);
         } else {
             console.log('File Uploaded');
             res.status(200).send({ message: "Succesfully Uploaded file to AWS S3" });
@@ -275,6 +276,67 @@ router.get('/loadApplications/:id', function (req, res, next) {
         }
     });
 });
+
+
+
+router.get('/loadFiles/:name', function (req, res, next) {
+    console.log('in the loadfiles',req.params.name)
+      let bucketParams={
+        Bucket:'mtaasbucket',
+        Prefix:req.params.name+'/'
+    }
+    console.log('in the loadfiles2')
+    s3.listObjects(bucketParams, function(err, data) {
+             if (err) {
+                 console.log("Error in fetching contents of Bucket: "+err);
+                 res.status(400).json("Error in fetching contents of Bucket: "+err)
+             } else {
+                 let files=[]
+                 files=data.Contents.map((el)=>{
+                     return {
+                         key:el.Key,
+                         modified:el.LastModified,
+                         size:el.Size,
+
+                     }
+                 })
+                 res.json(files)
+             }
+        });
+
+});
+
+router.post('/deleteFile',function(req,res,next){
+   deleteFile(req,res,next)
+})
+
+
+//Delete File Helper Function
+deleteFile = async(req,res,next)=>{
+    console.log('Inside Delete File',req.body.file_key[0])
+    console.log('Type',typeof req.body.file_key)
+    let str = JSON.stringify(req.body.file_key)
+    console.log('String is ',str)
+    const bucketParams={
+        Bucket:'mtaas',
+        Key:req.body.file_key[0]
+    }
+    try {
+        await s3.headObject(bucketParams).promise()
+        console.log("File Found in S3")
+        try {
+            await s3.deleteObject(bucketParams).promise()
+            console.log("file deleted from s3 Successfully")
+            res.json('File Deleted Successfully')
+        }
+        catch (err) {
+            next(err)
+        }
+    } 
+    catch (err) {
+        next(err)
+    }
+}
 
 router.use((error, req, res, next) => {
     res.writeHead(201, {

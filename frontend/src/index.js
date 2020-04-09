@@ -20,6 +20,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ProjectApplications from './projectApplication/projectApplications';
 import LoadApplications from './applications/loadApplications';
+import ManagerFilesView from './filesUpload/managerUpload';
+import TesterFilesView from './filesUpload/testerUpload';
 
 class Routes extends React.Component {
 
@@ -41,6 +43,8 @@ class Routes extends React.Component {
           <Route exact path='/bugtracker' component={BugTracker}/>  //ProjectApplications
           <Route exact path='/applications' component={ProjectApplications}/>
           <Route exact path='/loadapplications' component={LoadApplications}/>
+          <Route exact path='/managerUpload' component={ManagerFilesView}/>
+          <Route exact path='/testerUpload' component={TesterFilesView}/>
         </Switch>
       </Router>
     )
