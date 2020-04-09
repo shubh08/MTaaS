@@ -81,7 +81,7 @@ router.get('/projectByProjectID/(:id)', function (req, res, next) {
     });
 });
 router.get('/projectsForManager/(:id)', function (req, res, next) {
-    project.find({managerID : req.params.id }).populate("managerID").exec((err, projects) => {
+    project.find({managerID : req.params.id }).populate("testerID").exec((err, projects) => {
         if (err) {
             next();
         } else {
