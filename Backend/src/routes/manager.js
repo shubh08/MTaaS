@@ -79,7 +79,7 @@ router.post('/login', function (req, res, next) {
         } else {
             bcrypt.compare(req.body.password, manager.password, function (err, result) {
                 if (result) {
-                    res.status(200).send({ message: "Logged In succesfully", id:manager._id, active : manager.active });
+                    res.status(200).send({ message: "Logged In succesfully", id: manager._id, active: manager.active });
                 } else {
                     var error = { message: "Invalid Password" }
                     next(error);
@@ -186,8 +186,8 @@ router.post('/createProject', function (req, res, next) {
 
 
 router.put('/updateProject', function (req, res, next) {
-    var update = { name: req.body.name, startDate: req.body.startDate, endDate :req.body.endDate,description : req.body.description, technologies : req.body.technologies, testCriteria : req.body.testCriteria  }
-    project.findByIdAndUpdate(req.body.id , update).exec((err, project) => {
+    var update = { name: req.body.name, startDate: req.body.startDate, endDate: req.body.endDate, description: req.body.description, technologies: req.body.technologies, testCriteria: req.body.testCriteria }
+    project.findByIdAndUpdate(req.body.id, update).exec((err, project) => {
         if (err) {
             next();
         } else {
@@ -196,7 +196,7 @@ router.put('/updateProject', function (req, res, next) {
     });
 });
 
-router.put('/createNotification', function (req, res, next) {
+router.post('/createNotification', function (req, res, next) {
     const description = req.body.description;
     const createdOn = moment.now();
     const managerID = req.body.managerID;
@@ -210,18 +210,18 @@ router.put('/createNotification', function (req, res, next) {
         severity
     });
     newNotification.save((err, notification) => {
-        if (err || notification == null) {  
-           next();
+        if (err || notification == null) {
+            next();
         } else {
-            manager.findByIdAndUpdate(managerID,{'$push':{ "notificationID": notification._id }}).exec((err,manager) =>{
-                if(err || manager == null){
+            manager.findByIdAndUpdate(managerID, { '$push': { "notificationID": notification._id } }).exec((err, manager) => {
+                if (err || manager == null) {
                     next();
-                }else{
-                    tester.updateMany({projectID : {$in: [req.body.projectID] }},{'$push':{ "notificationID": notification._id }}).exec((err,tester)=>{
-                        if(err){
+                } else {
+                    tester.updateMany({ projectID: { $in: [req.body.projectID] } }, { '$push': { "notificationID": notification._id } }).exec((err, tester) => {
+                        if (err) {
                             next();
-                        }else{
-                            res.status(200).send({ message: "Notification Created Successfully"});
+                        } else {
+                            res.status(200).send({ message: "Notification Created Successfully" });
 
                         }
                     })
@@ -230,34 +230,37 @@ router.put('/createNotification', function (req, res, next) {
         }
     })
 });
-router.delete('/deleteProject', function (req, res, next) {
-    project.findByIdAndDelete(req.body.projectID).exec((err, project) => {
+router.put('/blockProject', function (req, res, next) {
+    project.findByIdAndUpdate(req.body.id , {active : false}).exec((err, project) => {
+        if (err) {
+            next(err);
+        } else {
+            res.status(200).send({ message: "Succesfully Blocked"});
+        }
+    });
+});
+router.put('/unblockProject', function (req, res, next) {
+    project.findByIdAndUpdate(req.body.id , {active : true}).exec((err, project) => {
         if (err) {
             next();
         } else {
-            manager.findByIdAndUpdate(req.body.managerID,{'$pull':{ "projectID": req.body.projectID }}).exec((err,manager) =>{
-                if(err){
-                    next(err);
-                }else{
-                    res.status(200).send({ message: "Succesfully Deleted the project"});
-                }
-            })
+            res.status(200).send({ message: "Succesfully unblocked"});
         }
     });
 });
 router.get('/notification/(:id)', function (req, res, next) {
-    manager.findById( req.params.id).populate({path : "notificationID", populate :[{ path : 'managerID', model : 'manager'}, {path : 'projectID', model : 'project'}]}).exec((err, manager) => {
+    manager.findById(req.params.id).populate({ path: "notificationID", populate: [{ path: 'managerID', model: 'manager' }, { path: 'projectID', model: 'project' }] }).exec((err, manager) => {
         if (err) {
             next();
         } else {
-            res.status(200).send({  notifications : manager.notificationID});
+            res.status(200).send({ notifications: manager.notificationID });
         }
     });
 });
 
 router.put('/update', function (req, res, next) {
-    var update = { name: req.body.name, about: req.body.about, email :req.body.email,company : req.body.company  }
-    manager.findByIdAndUpdate(req.body.id , update).exec((err, project) => {
+    var update = { name: req.body.name, about: req.body.about, email: req.body.email, company: req.body.company }
+    manager.findByIdAndUpdate(req.body.id, update).exec((err, project) => {
         if (err) {
             next();
         } else {
@@ -267,17 +270,15 @@ router.put('/update', function (req, res, next) {
 });
 
 router.get('/loadApplications/:id', function (req, res, next) {
-    application.find({'managerID':req.params.id}).populate('testerID').populate('projectID').exec((err, apps) => {
+    application.find({ 'managerID': req.params.id }).populate('testerID').populate('projectID').exec((err, apps) => {
         if (err) {
             next(err);
         } else {
-            console.log('result',apps)
+            console.log('result', apps)
             res.status(200).send({ applications: apps });
         }
     });
 });
-
-
 
 router.get('/loadFiles/:name', function (req, res, next) {
     console.log('in the loadfiles',req.params.name)
@@ -337,6 +338,48 @@ deleteFile = async(req,res,next)=>{
         next(err)
     }
 }
+
+router.put('/removeTesterFromProject', function (req, res, next) {
+    tester.findByIdAndUpdate(req.body.testerID, { '$pull': { "projectID": req.body.projectID } }).exec((err, test) => {
+        if (err) {
+            next();
+        } else {
+            project.findByIdAndUpdate(req.body.projectID, { '$pull': { "testerID": req.body.testerID } }).exec((err, proj) => {
+                const description = "You have been released from the project " + proj.name + " by the Manager";
+                const createdOn = moment.now();
+                const managerID = proj.managerID;
+                const projectID = req.body.projectID;
+                const severity = "1";
+                const newNotification = new notification({
+                    description,
+                    createdOn,
+                    managerID,
+                    projectID,
+                    severity
+                });
+                newNotification.save((err, notif) => {
+                    if (err) {
+                        next();
+                    } else {
+                        manager.findByIdAndUpdate(managerID, { '$push': { "notificationID": notif._id } }).exec((err, manage) => {
+                            if (err) {
+                                next();
+                            } else {
+                                tester.findByIdAndUpdate(req.body.testerID, { '$push': { "notificationID": notif._id } }).exec((err, tester) => {
+                                    if (err) {
+                                        next();
+                                    } else {
+                                        res.status(200).send({ message: "Succesfully Deleted the project" });
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            })
+        }
+    });
+});
 
 router.use((error, req, res, next) => {
     res.writeHead(201, {

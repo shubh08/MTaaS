@@ -3,6 +3,7 @@ var router = express.Router();
 var project = require('../models/project');
 var manager = require('../models/manager');
 var tester = require('../models/tester');
+var admin = require('../models/admin');
 
 
 
@@ -80,7 +81,7 @@ router.get('/projectByProjectID/(:id)', function (req, res, next) {
     });
 });
 router.get('/projectsForManager/(:id)', function (req, res, next) {
-    project.find({managerID : req.params.id }).populate("managerID").exec((err, projects) => {
+    project.find({managerID : req.params.id }).populate("testerID").exec((err, projects) => {
         if (err) {
             next();
         } else {
@@ -115,7 +116,15 @@ router.put('/insertTesterIntoProject', function (req, res, next) {
         }
     });
 });
-
+router.get('/adminByAdminID/(:id)', function (req, res, next) {
+    admin.findById(req.params.id).exec((err, admin) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({admin : admin});
+        }
+    });
+});
 router.use((error, req, res, next) => {
     res.writeHead(201, {
         'Content-Type': 'text/plain'
