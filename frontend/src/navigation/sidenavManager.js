@@ -17,15 +17,27 @@ class SideNavManager extends React.Component {
         </div>
 
         <div className="Button-Padding">
+          <Button className="NavButton" href="/billingManager">Billing</Button>
+        </div>
+
+        <div className="Button-Padding">
           <Button className="NavButton" href="/notificationManager">My Notifications</Button>
         </div>
 
         <div className="Button-Padding">
+          <Button className="NavButton" href="/bugTrackerManager">Bug Tracker</Button>
+        </div>
+
+
+        {/*
+        <div className="Button-Padding">
           <Button className="NavButton" href="/applications"> Applications</Button>
         </div>
+        */}
         <div className="Button-Padding">
           <Button className="NavButton" href="/projectOperation"> Project Operation</Button>
         </div>
+
       </div>
     )}
 

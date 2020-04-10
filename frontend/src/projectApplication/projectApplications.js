@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react';
-import { Jumbotron, Container, Button, Badge} from 'reactstrap';
+import { Container, Button, Badge} from 'reactstrap';
 import './signup.css';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
@@ -22,10 +22,10 @@ const ProjectTabs = (props) => {
     //managerID : el.managerID._id
   let data = {
   projectID: el._id,
-  testerID: '5e8980d69c4f720491978f7b',
+  testerID: '5e8d437fd70e327a6e797d15',
   managerID:el.managerID._id
     }
-    axios.post('http://localhost:8000/tester/applyProject',data)
+    axios.post('http://localhost:3010/tester/applyProject',data)
     .then(response=>{
       console.log(response);
       window.location.reload();
@@ -33,14 +33,14 @@ const ProjectTabs = (props) => {
     }).catch(err=>console.log('Error',err))
   }
 
-  
 
-  
+
+
 
   useEffect(() => {
 
     axios.defaults.withCredentials = false;  //5e8980d69c4f720491978f7b  5e884c3ce7a72f7dac73b426
-    axios.get('http://localhost:8000/tester/loadProjects/5e8980d69c4f720491978f7b')
+    axios.get('http://localhost:3010/tester/loadProjects/5e8d437fd70e327a6e797d15')
       .then((response) => {
         console.log(response);
         let projects = []
@@ -210,14 +210,9 @@ class ProjectApplications extends React.Component {
   render() {
     return (
       <div className="signup">
-        <Jumbotron fluid>
-          <Container fluid>
-            <h1 center className="display-3">Mobile Testing as a Service</h1>
-          </Container>
-          <header className="signup-header">
-            <ProjectTabs />
-          </header>
-        </Jumbotron>
+        <header className="signup-header">
+          <ProjectTabs />
+        </header>
       </div>
     )
   }
