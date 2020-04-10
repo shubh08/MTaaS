@@ -24,7 +24,7 @@ const ProjectTabs = (props) => {
   testerID: el.testerID._id,
   applicationID:el._id
     }
-    axios.post('http://localhost:8000/manager/approve',data)
+    axios.post('http://localhost:3010/manager/approve',data)
     .then(response=>{
       console.log('Application Approved',response);
       window.location.reload();
@@ -37,7 +37,7 @@ const ProjectTabs = (props) => {
   let data = {
     applicationID:el._id
     }
-    axios.post('http://localhost:8000/manager/reject',data)
+    axios.post('http://localhost:3010/manager/reject',data)
     .then(response=>{
     console.log('Application Rejected',response);
       window.location.reload();
@@ -45,12 +45,12 @@ const ProjectTabs = (props) => {
     }).catch(err=>console.log('Error',err))
   }
 
-  
+
 
   useEffect(() => {
 
     axios.defaults.withCredentials = false;  //5e8980d69c4f720491978f7b  5e884c3ce7a72f7dac73b426
-    axios.get('http://localhost:8000/manager/loadApplications/5e8981009c4f720491978f7c')
+    axios.get('http://localhost:3010/manager/loadApplications/5e8981009c4f720491978f7c')
       .then((response) => {
         console.log(response);
         let projects = []
@@ -146,14 +146,9 @@ class LoadApplications extends React.Component {
   render() {
     return (
       <div className="signup">
-        <Jumbotron fluid>
-          <Container fluid>
-            <h1 center className="display-3">Mobile Testing as a Service</h1>
-          </Container>
           <header className="signup-header">
             <ProjectTabs />
           </header>
-        </Jumbotron>
       </div>
     )
   }
