@@ -12,3 +12,37 @@ var fs=require('fs')
 const { promisify } = require('util')
 const unlinkAsync = promisify(fs.unlink)
 var Request = require('request');
+
+const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
+
+var devicefarm = new AWS.DeviceFarm({apiVersion: '2015-06-23',
+                                        accessKeyId:awsConfig.AWS_DEVICE_FARM_KEY,
+                                        secretAccessKey:awsConfig.AWS_DEVICE_FARM_SECRET,
+                                        region:'us-west-2'});
+
+
+
+
+
+
+
+async function getUploadStatus(UPLOAD_ARN){
+    return await devicefarm.getUpload({arn: UPLOAD_ARN}).promise().then(
+        function(data){
+            return data.upload.status;
+        },function(error){
+            console.error("getting upload failed with error: ", error);
+        }
+    );
+}
+
+
+const storage = multer.diskStorage({
+    destination:function(req,file,cb){
+        cb(null,'./uploads/');
+    },
+    filename: function(req,file,cb){
+        cb(null,file.originalname);
+      
+    }
+})
