@@ -250,3 +250,275 @@ createRun = async (req,res)=>{
         }
     );
     console.log("run created successfully with run object: ", schedule_run_result);
+  
+  
+    
+    
+    let arn=schedule_run_result.arn
+    let name=runname
+    let type=schedule_run_result.type
+    let platform=schedule_run_result.platform
+    let status=schedule_run_result.status
+    let result=schedule_run_result.result
+    let counters=schedule_run_result.counters
+    let totalJobs=schedule_run_result.totalJobs
+    let deviceMinutes=schedule_run_result.deviceMinutes
+    const jobs = await getSubSchemas(schedule_run_result.arn)
+    const testerRunObj = new testerRun({userName,projectName,arn,name,type,platform,status,result,counters,totalJobs,deviceMinutes,jobs})
+
+    testerRunObj.save()
+    .then(()=>{
+        console.log("Inside then of testerRun save")
+        res.status(200).send({message:'Inside then of newRun save',awsTestScheduled:testerRunObj});
+    })
+    .catch((err)=>{
+        console.log("Inside catch of testerRun save")
+        res.status(400).json({message:"Error in save of testerRun inside createRun: "+err});
+    })
+}
+
+async function getSubSchemas(runARN)
+{
+    console.log('Inisde getSubSchemas')
+    let job_arr=[]
+    await listJobDevicesWithinARun(runARN,'',job_arr)
+    for(var i=0;i<job_arr.length;i++)
+    {
+        let suite_arr=[]
+        await listSuitesWithinAJob(job_arr[i].arn,'',suite_arr)
+        for(var j=0;j<suite_arr.length;j++)
+        {
+            let test_arr=[]
+            await listTestsWithinASuite(suite_arr[j].arn,'',test_arr)
+            for(var k=0;k<test_arr.length;k++)
+            {
+                let artifact_arr=[]
+                await listTestArtifacts(test_arr[k].arn,'FILE','',artifact_arr)
+                await listTestArtifacts(test_arr[k].arn,'LOG','',artifact_arr)
+                await listTestArtifacts(test_arr[k].arn,'SCREENSHOT','',artifact_arr)
+                test_arr[k].artifacts=artifact_arr
+            }
+            suite_arr[j].tests=test_arr
+        }
+        job_arr[i].deviceName=job_arr[i].device.name
+        job_arr[i].deviceOS=job_arr[i].device.os
+        delete job_arr[i].device
+        job_arr[i].suites=suite_arr
+    }
+    return job_arr
+}
+
+async function listJobDevicesWithinARun(PROJECT_ARN,nextToken,jobsArray)
+{
+    console.log('inside listJobDevicesWithinARun')
+    var params={
+        arn:PROJECT_ARN
+    }
+    if(nextToken!=='')
+    {
+        params.nextToken=nextToken
+    }
+    await devicefarm.listJobs(params).promise().then(
+        async function(data) {
+            console.log(data);           
+            if(data.jobs.length > 0)
+                jobsArray.push(...(data.jobs))
+            if('nextToken' in data)
+                await listJobDevicesWithinARun(PROJECT_ARN,data.nextToken,jobsArray)
+      },function(error){
+          console.log(error,error.stack)
+      });
+}
+
+async function listSuitesWithinAJob(JOB_ARN,nextToken,suitesArray)
+{
+    var params={
+        arn:JOB_ARN
+    }
+    if(nextToken!=='')
+    {
+        params.nextToken=nextToken
+    }
+    await devicefarm.listSuites(params).promise().then(
+        async function(data){
+            console.log(data)
+            if(data.suites.length > 0)
+                suitesArray.push(...(data.suites))
+            if('nextToken' in data)
+                await listSuitesWithinAJob(JOB_ARN,data.nextToken,suitesArray)
+        },
+        function(error)
+        {
+            console.log(error,error.stack)
+        }
+    )
+}
+
+async function listTestsWithinASuite(SUITE_ARN,nextToken,testsArray)
+{
+    var params={
+        arn:SUITE_ARN
+    }
+    if(nextToken!=='')
+    {
+        params.nextToken=nextToken
+    }
+    await devicefarm.listTests(params).promise().then(
+        async function(data){
+            console.log(data)
+            if(data.tests.length > 0)
+                testsArray.push(...(data.tests))
+            if('nextToken' in data)
+            {
+                await listTestsWithinASuite(SUITE_ARN,data.nextToken,testsArray)
+            }
+        },
+        function(error)
+        {
+            console.log(error,error.stack)
+        }
+    )
+}
+
+async function listTestArtifacts(TEST_ARN,type,nextToken,artifactsArray)
+{
+    var params={
+        arn:TEST_ARN,
+        type:type
+    }
+    if(nextToken!=='')
+    {
+        params.nextToken=nextToken
+    }
+    await devicefarm.listArtifacts(params).promise().then(
+        async function(data)
+        {
+            console.log(data)
+            if(data.artifacts.length > 0)
+                artifactsArray.push(...(data.artifacts))
+            if('nextToken' in data)
+            {
+                await listTestArtifacts(TEST_ARN,type,data.nextToken.artifactsArray)
+            }
+        },function(error)
+        {
+            console.log(error,error.stack)
+        }
+    )
+}
+
+router.post('/stopRun', function (req, res, next) {
+    console.log('Inside StopRun')
+    stopRun(req,res)
+});
+
+
+stopRun = (req,res)=>{
+    console.log('Inside stopRun')
+    devicefarm.stopRun({arn:req.body.RUN_ARN},function(err,data){
+        if(err)
+        {
+            console.log(err,err.stack)
+            res.status(400).json('Error in stopping the run with arn: '+req.body.RUN_ARN+' with err: '+err)
+        }
+        else{
+            console.log('Stopping the run with arn: '+req.body.RUN_ARN)
+            res.json(data);
+        }
+    })
+}
+
+router.post('/getRunStatus', function (req, res, next) {
+    console.log('Inside herere')
+   getRunStatus(req,res)
+});
+
+getRunStatus = async (req,res)=>{
+    console.log('Inside getRunStatus')
+    devicefarm.getRun({arn:req.body.RUN_ARN},function(err,data){
+        if(err)
+        {
+            console.log(err,err.stack)
+            res.status(400).json('Error in getRunStatus for run_arn: '+req.body.RUN_ARN+' err: '+err)
+        }
+        else{
+                    triggerJob(req.body.RUN_ARN,data,res)
+
+        }
+    })
+}
+
+
+triggerJob = async(arn,data,res)=>{
+    console.log('Job Triggered!')
+    let jobs = await getSubSchemas(arn)
+    console.log('Job Triggered End!')
+    console.log('Jobs returned',jobs)
+    data.jobs = jobs
+    testerRun.findOneAndUpdate({"arn":arn},{data}, {
+        new: true,
+        upsert: true,
+        rawResult: true 
+      }).exec((err, test) => {
+        if (err) {
+            console.log(err)
+            next();
+        } else {
+            res.status(200).send({result:data})
+        }
+        })
+    
+}
+
+getSingleRun = (req,res)=>{
+    console.log('Inside getSingleRun')
+    Run.findById(req.body.id)
+    .then((run)=>{
+        console.log(run)
+        res.json(run)
+    }).catch((err)=>{
+        res.status(400).json('Error in getSingleBug: '+err);
+    })
+}
+
+getDeviceOfARun=(req,res)=>{
+    console.log('Inside getDeviceOfARun')
+    Run.find({_id:req.body.rid},{jobs:{$elemMatch:{_id:req.body.jid}}})
+    .then((runs)=>{
+        console.log(runs[0])
+        res.json(runs[0])
+    }).catch((err)=>{
+        res.status(400).json('Error in getDeviceOfARun: '+err);
+    })
+}
+
+getTestsOfDeviceOfRun=(req,res)=>{
+    console.log('Inside getTestsOfDeviceOfRun')
+    Run.find({_id:req.body.rid},{jobs:{$elemMatch:{_id:req.body.jid}}})
+    .then((runs)=>{
+        runs[0].jobs[0].suites=runs[0].jobs[0].suites.filter((eachSuite)=>{
+            return eachSuite._id==req.body.sid
+        })
+        res.json(runs[0])
+    }).catch((err)=>{
+        res.status(400).json('Error in getTestsOfDeviceOfRun: '+err);
+    })
+}
+
+getArtifactsOfTestOfSuiteOfDeviceOfRun=(req,res)=>{
+    console.log('Inside getArtifactsOfTestOfSuiteOfDeviceOfRun')
+    Run.find({_id:req.body.rid},{jobs:{$elemMatch:{_id:req.body.jid}}})
+    .then((runs)=>{
+        runs[0].jobs[0].suites=runs[0].jobs[0].suites.filter((eachSuite)=>{
+            return eachSuite._id==req.body.sid
+        })
+        runs[0].jobs[0].suites[0].tests=runs[0].jobs[0].suites[0].tests.filter((eachTest)=>{
+            return eachTest._id==req.body.tid
+        })
+        console.log(runs[0])
+        res.json(runs[0])
+    }).catch((err)=>{
+        res.status(400).json('Error in getArtifactsOfTestOfSuiteOfDeviceOfRun: '+err);
+    })
+}
+module.exports = router;
