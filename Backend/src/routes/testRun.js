@@ -134,3 +134,40 @@ createRun = async (req,res)=>{
             resolve(body);
         });
     });
+  
+      //get the status of the app upload and make sure if finished processing before scheduling
+    let APP_UPLOAD_STATUS = await getUploadStatus(APP_UPLOAD_ARN);
+    console.log("app upload status is: ", APP_UPLOAD_STATUS);
+    while(APP_UPLOAD_STATUS !== "SUCCEEDED"){
+        await sleep(5000);
+        APP_UPLOAD_STATUS = await getUploadStatus(APP_UPLOAD_ARN);
+        console.log("app upload status is: ", APP_UPLOAD_STATUS);
+    }
+
+    //to delete application file stored in ./applicationFile directory
+    await unlinkAsync(req.file.path)
+    
+    // let devicePoolRules=[
+    //     {
+    //         "attribute": "ARN", 
+    //         "operator": "IN",
+    //         "value":devicePoolARNs
+    //     }
+    // ]
+
+    // //create device pool
+    // let device_pool_params = {
+    //     projectArn: PROJECT_ARN,
+    //     name: devicePoolName,
+    //     rules: devicePoolRules
+    // }
+
+    // let DEVICE_POOL_ARN = await devicefarm.createDevicePool(device_pool_params).promise().then(
+    //     function(data){
+    //         return data.devicePool.arn; 
+    //     },function(error){
+    //         console.log("device pool failed to create with error: ",error);
+    //         res.status(400).json("device pool failed to create with error: ",error)
+    //     }
+    // ); 
+    console.log("Device pool created successfully with arn: ", DEVICE_POOL_ARN);
