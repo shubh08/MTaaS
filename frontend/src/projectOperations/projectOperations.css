@@ -1,0 +1,83 @@
+.profile {
+  text-align: center;
+  background-color: #e9ecef;
+  width: 100%;
+  overflow: hidden;
+}
+
+.profile-left {
+  text-align: center;
+  position: fixed;
+  top: 6.9%;
+  left: 0;
+  background-color: #e9ecef;
+  width: 20%;
+  float: left;
+}
+
+.profile-right {
+  text-align: left;
+  top: 20%;
+  right: 0;
+  background-color: white;
+  width: 80%;
+  float: right;
+}
+
+.profile-header {
+  background-color: #282c34;
+  width: auto;
+  float: right;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+.profile-white {
+  background-color:white;
+}
+.updateButton{
+text-align: center;
+width: 100%;
+}
+.userMGMT-margin-increase-top {
+  margin-bottom: 5%;
+}
+.profile-margin-top {
+  margin-top: 5%;
+  
+}
+.div-border {
+  border-style: ridge;
+}
+.text-center {
+  text-align: center;
+}
+.scrollUserMgmt{
+  max-height: 10px;
+overflow: scroll;
+}
+.colorRed{
+  color: red
+}
+.colorBlue{
+  color: blue;
+  font-weight: bolder
+}
+.colorGreen{
+  color: green;
+  font-weight: bolder
+}
+
+.colorRedBold{
+  color: red;
+  font-weight: bolder
+}
+.hyperlink{
+  text-decoration: underline;
+  color: #EE0000 
+}
+.widthIncrease{
+  width: 200%
+}

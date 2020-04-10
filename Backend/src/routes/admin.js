@@ -61,7 +61,7 @@ router.post('/login', function (req, res, next) {
 });
 
 router.put('/update', function (req, res, next) {
-    var update = { name: req.body.name, DOB: req.body.DOB, email: req.body.email }
+    var update = { name: req.body.name, email: req.body.email }
     admin.findByIdAndUpdate(req.body.id , update).exec((err, admin) => {
         if (err) {
             next();

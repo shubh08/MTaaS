@@ -15,6 +15,9 @@ class SideNavAdmin extends React.Component {
         <div className="Button-Padding">
           <Button className="NavButton" href="/billingManager">Billing</Button>
         </div>
+        <div className="Button-Padding">
+          <Button className="NavButton" href="/userManagement">User Management</Button>
+        </div>
       </div>
     )}
 

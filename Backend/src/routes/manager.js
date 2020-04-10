@@ -19,7 +19,8 @@ var application = require('../models/application');
 const s3 = new AWS.S3({
     apiVersion: '2006-03-01',
     accessKeyId: awsConfig.AWS_KEY,
-    secretAccessKey: awsConfig.AWS_SECRET
+    secretAccessKey: awsConfig.AWS_SECRET,
+    region: 'us-east-2'
 });
 
 const commonFilesUploadToS3 = multer({
@@ -27,7 +28,7 @@ const commonFilesUploadToS3 = multer({
         s3: s3,
         bucket: 'mtaasbucket',
         key: function (req, file, cb) {
-            cb(null, req.body.name + '/' + 'Common/' + file.originalname)
+            cb(null, req.body.projectName + '/' + 'Common/' + file.originalname)
         }
     })
 })
@@ -78,7 +79,7 @@ router.post('/login', function (req, res, next) {
         } else {
             bcrypt.compare(req.body.password, manager.password, function (err, result) {
                 if (result) {
-                    res.status(200).send({ message: "Logged In succesfully", id:manager._id, active : manager.active });
+                    res.status(200).send({ message: "Logged In succesfully", id: manager._id, active: manager.active });
                 } else {
                     var error = { message: "Invalid Password" }
                     next(error);
@@ -89,13 +90,13 @@ router.post('/login', function (req, res, next) {
 });
 
 router.post('/upload', commonFilesUploadToS3.single('file'), function (req, res, next) {
-    console.log('File here')
-    let filePath = { filePath: req.body.name + '/' + 'Common/' + req.file.originalname, fileName: req.file.originalname }
+    console.log('File here', req.body)
+    let filePath = { filePath: req.body.projectName + '/' + 'Common/' + req.file.originalname, fileName: req.file.originalname }
     console.log(filePath)
     console.log('id', req.body.id)
-    project.findByIdAndUpdate(new ObjectId(req.body.id), { $push: { filePaths: filePath } }).exec((err, project) => {
+    project.findOneAndUpdate({"name":req.body.projectName}, { $push: { commanfiles: filePath } }).exec((err, project) => {
         if (err) {
-            next();
+            next(err);
         } else {
             console.log('File Uploaded');
             res.status(200).send({ message: "Succesfully Uploaded file to AWS S3" });
@@ -185,8 +186,8 @@ router.post('/createProject', function (req, res, next) {
 
 
 router.put('/updateProject', function (req, res, next) {
-    var update = { name: req.body.name, startDate: req.body.startDate, endDate :req.body.endDate,description : req.body.description, technologies : req.body.technologies, testCriteria : req.body.testCriteria  }
-    project.findByIdAndUpdate(req.body.id , update).exec((err, project) => {
+    var update = { name: req.body.name, startDate: req.body.startDate, endDate: req.body.endDate, description: req.body.description, technologies: req.body.technologies, testCriteria: req.body.testCriteria }
+    project.findByIdAndUpdate(req.body.id, update).exec((err, project) => {
         if (err) {
             next();
         } else {
@@ -195,7 +196,7 @@ router.put('/updateProject', function (req, res, next) {
     });
 });
 
-router.put('/createNotification', function (req, res, next) {
+router.post('/createNotification', function (req, res, next) {
     const description = req.body.description;
     const createdOn = moment.now();
     const managerID = req.body.managerID;
@@ -209,18 +210,18 @@ router.put('/createNotification', function (req, res, next) {
         severity
     });
     newNotification.save((err, notification) => {
-        if (err || notification == null) {  
-           next();
+        if (err || notification == null) {
+            next();
         } else {
-            manager.findByIdAndUpdate(managerID,{'$push':{ "notificationID": notification._id }}).exec((err,manager) =>{
-                if(err || manager == null){
+            manager.findByIdAndUpdate(managerID, { '$push': { "notificationID": notification._id } }).exec((err, manager) => {
+                if (err || manager == null) {
                     next();
-                }else{
-                    tester.updateMany({projectID : {$in: [req.body.projectID] }},{'$push':{ "notificationID": notification._id }}).exec((err,tester)=>{
-                        if(err){
+                } else {
+                    tester.updateMany({ projectID: { $in: [req.body.projectID] } }, { '$push': { "notificationID": notification._id } }).exec((err, tester) => {
+                        if (err) {
                             next();
-                        }else{
-                            res.status(200).send({ message: "Notification Created Successfully"});
+                        } else {
+                            res.status(200).send({ message: "Notification Created Successfully" });
 
                         }
                     })
@@ -229,34 +230,37 @@ router.put('/createNotification', function (req, res, next) {
         }
     })
 });
-router.delete('/deleteProject', function (req, res, next) {
-    project.findByIdAndDelete(req.body.projectID).exec((err, project) => {
+router.put('/blockProject', function (req, res, next) {
+    project.findByIdAndUpdate(req.body.id , {active : false}).exec((err, project) => {
+        if (err) {
+            next(err);
+        } else {
+            res.status(200).send({ message: "Succesfully Blocked"});
+        }
+    });
+});
+router.put('/unblockProject', function (req, res, next) {
+    project.findByIdAndUpdate(req.body.id , {active : true}).exec((err, project) => {
         if (err) {
             next();
         } else {
-            manager.findByIdAndUpdate(req.body.managerID,{'$pull':{ "projectID": req.body.projectID }}).exec((err,manager) =>{
-                if(err){
-                    next(err);
-                }else{
-                    res.status(200).send({ message: "Succesfully Deleted the project"});
-                }
-            })
+            res.status(200).send({ message: "Succesfully unblocked"});
         }
     });
 });
 router.get('/notification/(:id)', function (req, res, next) {
-    manager.findById( req.params.id).populate({path : "notificationID", populate :[{ path : 'managerID', model : 'manager'}, {path : 'projectID', model : 'project'}]}).exec((err, manager) => {
+    manager.findById(req.params.id).populate({ path: "notificationID", populate: [{ path: 'managerID', model: 'manager' }, { path: 'projectID', model: 'project' }] }).exec((err, manager) => {
         if (err) {
             next();
         } else {
-            res.status(200).send({  notifications : manager.notificationID});
+            res.status(200).send({ notifications: manager.notificationID });
         }
     });
 });
 
 router.put('/update', function (req, res, next) {
-    var update = { name: req.body.name, about: req.body.about, email :req.body.email,company : req.body.company  }
-    manager.findByIdAndUpdate(req.body.id , update).exec((err, project) => {
+    var update = { name: req.body.name, about: req.body.about, email: req.body.email, company: req.body.company }
+    manager.findByIdAndUpdate(req.body.id, update).exec((err, project) => {
         if (err) {
             next();
         } else {
@@ -264,6 +268,119 @@ router.put('/update', function (req, res, next) {
         }
     });
 });
+
+router.get('/loadApplications/:id', function (req, res, next) {
+    application.find({ 'managerID': req.params.id }).populate('testerID').populate('projectID').exec((err, apps) => {
+        if (err) {
+            next(err);
+        } else {
+            console.log('result', apps)
+            res.status(200).send({ applications: apps });
+        }
+    });
+});
+
+router.get('/loadFiles/:name', function (req, res, next) {
+    console.log('in the loadfiles',req.params.name)
+      let bucketParams={
+        Bucket:'mtaasbucket',
+        Prefix:req.params.name+'/'
+    }
+    console.log('in the loadfiles2')
+    s3.listObjects(bucketParams, function(err, data) {
+             if (err) {
+                 console.log("Error in fetching contents of Bucket: "+err);
+                 res.status(400).json("Error in fetching contents of Bucket: "+err)
+             } else {
+                 let files=[]
+                 files=data.Contents.map((el)=>{
+                     return {
+                         key:el.Key,
+                         modified:el.LastModified,
+                         size:el.Size,
+
+                     }
+                 })
+                 res.json(files)
+             }
+        });
+
+});
+
+router.post('/deleteFile',function(req,res,next){
+   deleteFile(req,res,next)
+})
+
+
+//Delete File Helper Function
+deleteFile = async(req,res,next)=>{
+    console.log('Inside Delete File',req.body.file_key[0])
+    console.log('Type',typeof req.body.file_key)
+    let str = JSON.stringify(req.body.file_key)
+    console.log('String is ',str)
+    const bucketParams={
+        Bucket:'mtaas',
+        Key:req.body.file_key[0]
+    }
+    try {
+        await s3.headObject(bucketParams).promise()
+        console.log("File Found in S3")
+        try {
+            await s3.deleteObject(bucketParams).promise()
+            console.log("file deleted from s3 Successfully")
+            res.json('File Deleted Successfully')
+        }
+        catch (err) {
+            next(err)
+        }
+    } 
+    catch (err) {
+        next(err)
+    }
+}
+
+router.put('/removeTesterFromProject', function (req, res, next) {
+    tester.findByIdAndUpdate(req.body.testerID, { '$pull': { "projectID": req.body.projectID } }).exec((err, test) => {
+        if (err) {
+            next();
+        } else {
+            project.findByIdAndUpdate(req.body.projectID, { '$pull': { "testerID": req.body.testerID } }).exec((err, proj) => {
+                const description = "You have been released from the project " + proj.name + " by the Manager";
+                const createdOn = moment.now();
+                const managerID = proj.managerID;
+                const projectID = req.body.projectID;
+                const severity = "1";
+                const newNotification = new notification({
+                    description,
+                    createdOn,
+                    managerID,
+                    projectID,
+                    severity
+                });
+                newNotification.save((err, notif) => {
+                    if (err) {
+                        next();
+                    } else {
+                        manager.findByIdAndUpdate(managerID, { '$push': { "notificationID": notif._id } }).exec((err, manage) => {
+                            if (err) {
+                                next();
+                            } else {
+                                tester.findByIdAndUpdate(req.body.testerID, { '$push': { "notificationID": notif._id } }).exec((err, tester) => {
+                                    if (err) {
+                                        next();
+                                    } else {
+                                        res.status(200).send({ message: "Succesfully Deleted the project" });
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            })
+        }
+    });
+});
+
 router.use((error, req, res, next) => {
     res.writeHead(201, {
         'Content-Type': 'text/plain'
