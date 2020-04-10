@@ -13,7 +13,6 @@ const { promisify } = require('util')
 const unlinkAsync = promisify(fs.unlink)
 var Request = require('request');
 
-
 const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 
 var devicefarm = new AWS.DeviceFarm({apiVersion: '2015-06-23',
@@ -77,9 +76,6 @@ createRun = async (req,res)=>{
     const testType=req.body.testType
     const testPackageFileName='zip-with-dependencies.zip'
     const testPackageFileType=req.body.testPackageFileType
-
-    //Amit's array of test file names that need to be zipped
-   // const testFileNames=JSON.parse(req.body.testFileNames)
 
     const testPackageFile='testScriptFolder/zip-with-dependencies.zip'
 
@@ -173,7 +169,6 @@ createRun = async (req,res)=>{
     //     }
     // ); 
     console.log("Device pool created successfully with arn: ", DEVICE_POOL_ARN);
-
     let TEST_PACKAGE_UPLOAD_ARN=''
     if(testType!=='BUILTIN_FUZZ' && testType!=='BUILTIN_EXPLORER')
     {
@@ -252,9 +247,7 @@ createRun = async (req,res)=>{
         }
     );
     console.log("run created successfully with run object: ", schedule_run_result);
-
-    
-    
+  
     let arn=schedule_run_result.arn
     let name=runname
     let type=schedule_run_result.type

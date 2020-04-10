@@ -1,26 +1,22 @@
 import React from 'react';
-import TopNav from '../navigation/topnavManager';
-import SideNav from '../navigation/sidenavManager';
+import TopNavManager from '../navigation/topnavManager';
+import SideNavManager from '../navigation/sidenavManager';
+import LoadApplications from '../applications/loadApplications.js';
 import './homepage.css';
-
 
 class HomepageManager extends React.Component{
   render(){
     return(
       <div className="homepage">
-      <div>
-        <TopNav/>
-      </div>
-      <div className="bugtracker-left">
-      <SideNav/> 
-      </div>
-      <div className="bugtracker-right">
         <div>
-          <div>
-            
-          </div>
+          <TopNavManager/>
         </div>
-      </div>
+        <div className="homepage-left">
+          <SideNavManager/>
+        </div>
+        <div className="homepage-right">
+          <LoadApplications/>
+        </div>
     </div>
     )
   }
