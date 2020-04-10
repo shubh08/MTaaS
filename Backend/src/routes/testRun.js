@@ -79,3 +79,58 @@ createRun = async (req,res)=>{
 
     //Array of test file names that need to be zipped
    // const testFileNames=JSON.parse(req.body.testFileNames)
+    const testPackageFile='testScriptFolder/zip-with-dependencies.zip'
+
+    let project_params={
+        name:userName+'_'+projectName+'_'+runname
+    }
+    let PROJECT_ARN = await devicefarm.createProject(project_params).promise().then(
+        function(data){
+            return data.project.arn;
+        },
+        function (error) {
+            console.log("Error creating project", "Error: ", error);
+            res.status(400).json("Error creating project", "Error: ", error)
+        }
+    );
+    console.log("Project created with name: "+projectName+'_'+runname+ " Project arn: ", PROJECT_ARN);
+
+    // create the upload and upload files to the project
+    let app_upload_params = {
+        name: appFileName,
+        type: appFileType,
+        projectArn: PROJECT_ARN
+    };
+    let APP_UPLOAD = await devicefarm.createUpload(app_upload_params).promise().then(
+        function(data){
+            return data.upload;
+        },
+        function(error){
+            console.log("Creating upload failed with error: ", error);
+            res.status(400).json("Creating upload failed with error: ", error)
+        }
+    );
+
+    let APP_UPLOAD_ARN = APP_UPLOAD.arn;
+    let APP_UPLOAD_URL = APP_UPLOAD.url;
+    console.log("app upload created with arn: ", APP_UPLOAD_ARN);
+    console.log("uploading app file...");
+
+    let options = {
+        method: 'PUT',
+        url: APP_UPLOAD_URL,
+        headers: {},
+        body: fs.readFileSync(req.file.path)
+    };
+
+    // wait for upload to finish
+    await new Promise(function(resolve,reject){
+        Request(options, function (error, response, body) {
+            if (error) {
+                console.log("uploading app file failed with error: ", error);
+                res.status(400).json('uploading app file failed with error: '+error)
+                reject(error);
+            }
+            resolve(body);
+        });
+    });
