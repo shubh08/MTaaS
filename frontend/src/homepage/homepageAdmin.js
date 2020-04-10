@@ -11,10 +11,10 @@ class HomepageAdmin extends React.Component{
       <div>
         <TopNavAdmin/>
       </div>
-      <div className="bugtracker-left">
+      <div className="homepage-left">
         <SideNavAdmin/>
       </div>
-      <div className="bugtracker-right">
+      <div className="homepage-right">
         <div>
           <div>
 
