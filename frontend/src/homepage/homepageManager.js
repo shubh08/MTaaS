@@ -1,6 +1,6 @@
 import React from 'react';
-import TopNav from '../navigation/topnavManager';
-import SideNav from '../navigation/sidenavManager';
+import TopNavManager from '../navigation/topnavManager';
+import SideNavManager from '../navigation/sidenavManager';
 import './homepage.css';
 
 
@@ -9,15 +9,15 @@ class HomepageManager extends React.Component{
     return(
       <div className="homepage">
       <div>
-        <TopNav/>
+        <TopNavManager/>
       </div>
       <div className="bugtracker-left">
-      <SideNav/> 
+        <SideNavManager/>
       </div>
       <div className="bugtracker-right">
         <div>
           <div>
-            
+
           </div>
         </div>
       </div>
