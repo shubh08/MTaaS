@@ -171,3 +171,82 @@ createRun = async (req,res)=>{
     //     }
     // ); 
     console.log("Device pool created successfully with arn: ", DEVICE_POOL_ARN);
+  
+      let TEST_PACKAGE_UPLOAD_ARN=''
+    if(testType!=='BUILTIN_FUZZ' && testType!=='BUILTIN_EXPLORER')
+    {
+            // create the upload and upload files to the project
+        let testPackage_upload_params = {
+            name: testPackageFileName,
+            type: testPackageFileType,
+            projectArn: PROJECT_ARN
+        };
+        let TEST_PACKAGE_UPLOAD = await devicefarm.createUpload(testPackage_upload_params).promise().then(
+            function(data){
+                return data.upload;
+            },
+            function(error){
+                console.error("Creating upload failed with error: ", error);
+                res.status(400).json("Creating upload failed with error: ", error)
+            }
+        );
+
+        TEST_PACKAGE_UPLOAD_ARN = TEST_PACKAGE_UPLOAD.arn;
+        let TEST_PACKAGE_UPLOAD_URL = TEST_PACKAGE_UPLOAD.url;
+        console.log("test package upload created with arn: ", TEST_PACKAGE_UPLOAD_ARN);
+        console.log("uploading test package file...");
+
+        let options = {
+            method: 'PUT',
+            url: TEST_PACKAGE_UPLOAD_URL,
+            headers: {},
+            body: fs.readFileSync(testPackageFile)
+        };
+
+        // wait for upload to finish
+        await new Promise(function(resolve,reject){
+            Request(options, function (error, response, body) {
+                if (error) {
+                    console.error("uploading test package zip failed with error: ", error);
+                    res.status(400).json("uploading test package zip failed with error: ", error)
+                    reject(error);
+                }
+                resolve(body);
+            });
+        });
+
+        //get the status of the app upload and make sure if finished processing before scheduling
+        let TEST_PACKAGE_UPLOAD_STATUS = await getUploadStatus(TEST_PACKAGE_UPLOAD_ARN);
+        console.log("test package upload status is: ", TEST_PACKAGE_UPLOAD_STATUS);
+        while(TEST_PACKAGE_UPLOAD_STATUS !== "SUCCEEDED"){
+            await sleep(5000);
+            TEST_PACKAGE_UPLOAD_STATUS = await getUploadStatus(TEST_PACKAGE_UPLOAD_ARN);
+            console.log("test package upload status is: ", TEST_PACKAGE_UPLOAD_STATUS);
+        }
+    }
+
+    //schedule the run
+    let schedule_run_params = {
+        name: runname, 
+        devicePoolArn: DEVICE_POOL_ARN, // You can get the Amazon Resource Name (ARN) of the device pool by using the list-pools CLI command.
+        projectArn: PROJECT_ARN, // You can get the Amazon Resource Name (ARN) of the project by using the list-projects CLI command.
+        test: {
+         type: testType
+        },
+        appArn: APP_UPLOAD_ARN
+    };
+    
+    if(testType!=='BUILTIN_FUZZ' && testType!=='BUILTIN_EXPLORER')
+    {
+        schedule_run_params.test.testPackageArn=TEST_PACKAGE_UPLOAD_ARN
+    }
+
+    let schedule_run_result = await devicefarm.scheduleRun(schedule_run_params).promise().then(
+        function(data){
+            return data.run;
+        },function(error){
+            console.error("Schedule run command failed with error: ", error);
+            res.status(400).json("Schedule run command failed with error: ", error)
+        }
+    );
+    console.log("run created successfully with run object: ", schedule_run_result);
