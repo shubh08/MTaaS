@@ -34,10 +34,6 @@ import DashboardAdmin from './dashboard/dashboard'
 import ManagerFilesView from './filesUpload/managerUpload';
 import TesterFilesView from './filesUpload/testerUpload';
 
-<<<<<<< HEAD
-=======
-
->>>>>>> d18418be628370fed3b430e6a0f455fbf1148064
 class Routes extends React.Component {
 
   render(){
@@ -69,15 +65,9 @@ class Routes extends React.Component {
           <Route exact path='/userManagement' component={UserManagement}/>
           <Route exact path='/projectOperation' component={ProjectOperations}/>
           <Route exact path='/dashboardAdmin' component={DashboardAdmin}/>
-<<<<<<< HEAD
-
-          <Route exact path='/managerUpload' component={ManagerFilesView}/>
-          <Route exact path='/testerUpload' component={TesterFilesView}/>
-=======
           <Route exact path='/managerUpload' component={ManagerFilesView}/>
           <Route exact path='/testerUpload' component={TesterFilesView}/>
 
->>>>>>> d18418be628370fed3b430e6a0f455fbf1148064
         </Switch>
       </Router>
     )
