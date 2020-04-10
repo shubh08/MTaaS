@@ -14,8 +14,10 @@ import CreateProject from './createProject/createProject';
 import SignUp from './signup/signup.js';
 import Login from './login/login.js';
 import BugTracker from './bugTracker/bugtracker.js';
+import BugTrackerManager from './bugTracker/bugtrackerManager.js';
+import BugTrackerAdmin from './bugTracker/bugtrackerAdmin.js';
 import BillingManager from './billing/billingManager.js';
-//import BillingAdmin from './billing/billingAdmin.js';
+import BillingAdmin from './billing/billingAdmin.js';
 import NewRunTester from './newRun/newRunTester.js';
 
 import { ToastContainer } from 'react-toastify';
@@ -51,10 +53,12 @@ class Routes extends React.Component {
           <Route exact path='/signup' component={SignUp}/>
           <Route exact path='/login' component={Login}/>
           <Route exact path='/bugtracker' component={BugTracker}/>
+          <Route exact path='/bugTrackerManager' component={BugTrackerManager}/>
+          <Route exact path='/bugTrackerAdmin' component={BugTrackerAdmin}/>
           <Route exact path='/billingManager' component={BillingManager}/>
           <Route exact path='/createRunTester' component={NewRunTester}/>
-          {/* <Route exact path='/billingAdmin' component={BillingAdmin}/> */}
-      
+          <Route exact path='/billingAdmin' component={BillingAdmin}/>
+
           <Route exact path='/applications' component={ProjectApplications}/>
           <Route exact path='/loadapplications' component={LoadApplications}/>
           <Route exact path='/userManagement' component={UserManagement}/>

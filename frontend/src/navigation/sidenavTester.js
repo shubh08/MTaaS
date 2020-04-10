@@ -12,15 +12,19 @@ class SideNavTester extends React.Component {
         <div className="Button-Padding">
           <Button className="NavButton" href="/profileTester">My profile</Button>
         </div>
-      
+
         <div className="Button-Padding">
           <Button className="NavButton" href="/createRunTester">Create Run</Button>
         </div>
-      
+
         <div className="Button-Padding">
           <Button className="NavButton" href="/notificationTester">My Notifications</Button>
         </div>
-      
+
+        <div className="Button-Padding">
+          <Button className="NavButton" href="/bugtracker">Bug Tracker</Button>
+        </div>
+
       </div>
     )}
 
