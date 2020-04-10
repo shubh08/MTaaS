@@ -63,6 +63,26 @@ router.post('/signup', function (req, res, next) {
     });
 });
 
+
+const storage = multer.diskStorage({
+    destination:function(req,file,cb){
+        cb(null,'./uploads/');
+    },
+    filename: function(req,file,cb){
+        cb(null,file.originalname);
+      
+    }
+})
+
+const upload = multer({storage:storage})
+
+router.post('/dummyRun',upload.single('file'), function (req, res, next) {
+    console.log('herere')
+    console.log(req.file)
+   // console.log(req.file.path)
+    res.send('fineshed')
+    })
+
 router.post('/login', function (req, res, next) {
     tester.findOne({ email: req.body.email }).exec((err, tester) => {
         if (err) {
