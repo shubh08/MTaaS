@@ -10,6 +10,9 @@ class SideNavManager extends React.Component {
     return (
       <div className="App-header">
         <div className="Button-Padding">
+          <Button className="NavButton" href="/homeManager">My Home</Button>
+        </div>
+        <div className="Button-Padding">
           <Button className="NavButton" href="/createProject">Create Project</Button>
         </div>
         <div className="Button-Padding">

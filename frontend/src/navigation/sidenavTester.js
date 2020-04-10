@@ -10,6 +10,10 @@ class SideNavTester extends React.Component {
     return (
       <div className="App-header">
         <div className="Button-Padding">
+          <Button className="NavButton" href="/homeTester">My Home</Button>
+        </div>
+
+        <div className="Button-Padding">
           <Button className="NavButton" href="/profileTester">My profile</Button>
         </div>
 
