@@ -8,6 +8,27 @@ const saltRounds = 10;
 var moment = require('moment');
 moment().format();
 var application = require('../models/application');
+const multerS3 = require('multer-s3')
+const multer = require('multer')
+const awsConfig = require('../helpers/AWSConfig')
+const AWS = require('aws-sdk');
+
+const s3 = new AWS.S3({
+    apiVersion: '2006-03-01',
+    accessKeyId: awsConfig.AWS_KEY,
+    secretAccessKey: awsConfig.AWS_SECRET,
+    region: 'us-east-2'
+});
+
+const testerFilesUploadToS3 = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: 'mtaasbucket',
+        key: function (req, file, cb) {
+            cb(null, req.body.projectName + '/' + req.body.testerName+'/' + file.originalname)
+        }
+    })
+})
 
 router.post('/signup', function (req, res, next) {
     bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
@@ -79,7 +100,7 @@ router.put('/update', function (req, res, next) {
 router.get('/loadProjects/:id', function (req, res, next) {
     project.find({ 'endDate': { $gt: moment() } }).populate("managerID").exec((err, project) => {
         if (err) {
-            console.log("err")
+            console.log(err)
             next();
         } else {
             tester.findOne({ '_id': req.params.id }).exec((err, tester) => {
@@ -91,8 +112,15 @@ router.get('/loadProjects/:id', function (req, res, next) {
                     if (!tester.appliedTo.includes(el._id))
                         results.push(el)
                 })
-                console.log("project")
-                res.status(200).send(results);
+                console.log("project",results)
+                application.find({'testerID':req.params.id}).populate('projectID').exec((err,app)=>{
+                    if(err)
+                    next(err)
+                    let finalResult = {'activeprojects':results,"applications":app}
+                    res.status(200).send(finalResult);
+
+                })
+                
             })
 
         }
@@ -145,6 +173,46 @@ router.get('/notification/(:id)', function (req, res, next) {
         }
     });
 });
+
+router.post('/upload', testerFilesUploadToS3.single('file'), function (req, res, next) {
+    console.log('File here')
+    let filePath = { filePath: req.body.projectName + '/' +req.body.testerName+'/' + req.file.originalname, fileName: req.file.originalname }
+    console.log(filePath)
+    tester.findOneAndUpdate({"_id":req.body.testerID}, { $push: { s3files:filePath } }).exec((err, project) => {
+        if (err) {
+            next(err);
+        } else {
+            console.log('File Uploaded');
+            res.status(200).send({ message: "Succesfully Uploaded file to AWS S3" });
+        }
+    });
+});
+router.post('/loadFiles', function (req, res, next) {
+    console.log('in the loadfiles',req.body)
+      let bucketParams={
+        Bucket:'mtaasbucket',
+        Prefix:req.body.projectName+'/'+req.body.testerName+'/'
+    }
+    s3.listObjects(bucketParams, function(err, data) {
+             if (err) {
+                 console.log("Error in fetching contents of Bucket: "+err);
+                 res.status(400).json("Error in fetching contents of Bucket: "+err)
+             } else {
+                 let files=[]
+                 files=data.Contents.map((el)=>{
+                     return {
+                         key:el.Key,
+                         modified:el.LastModified,
+                         size:el.Size,
+
+                     }
+                 })
+                 res.json(files)
+             }
+        });
+
+});
+
 router.use((error, req, res, next) => {
     res.writeHead(201, {
         'Content-Type': 'text/plain'
