@@ -1,0 +1,55 @@
+
+.border {
+    border-style: solid;
+    border-width: 0.5px;
+    border-color: #d0d4d6;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 10%;
+  }
+.fontChanges{
+    margin-top: 10%;
+    margin-bottom: 5%;
+    font-weight: 800;
+    font-size: 19px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu,
+      'Helvetica Neue', sans-serif;
+} 
+.homepage {
+  text-align: center;
+}
+
+.homepage-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .homepage-logo {
+    animation: homepage-logo-spin infinite 20s linear;
+  }
+}
+
+.homepage-header {
+  background-color: #e9ecef;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.homepage-link {
+  color: #61dafb;
+}
+
+@keyframes homepage-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

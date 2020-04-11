@@ -10,6 +10,9 @@ class SideNavAdmin extends React.Component {
     return (
       <div className="App-header">
         <div className="Button-Padding">
+          <Button className="NavButton" href="/homeAdmin">My Home</Button>
+        </div>
+        <div className="Button-Padding">
           <Button className="NavButton" href="/profileAdmin">My profile</Button>
         </div>
         <div className="Button-Padding">
@@ -20,8 +23,12 @@ class SideNavAdmin extends React.Component {
         </div>
 
         <div className="Button-Padding">
+          <Button className="NavButton" href="/dashboardAdmin">Admin Dashboard</Button>
+        </div>
+        <div className="Button-Padding">
           <Button className="NavButton" href="/bugTrackerAdmin">Bug Tracker</Button>
         </div>
+
 
       </div>
     )}

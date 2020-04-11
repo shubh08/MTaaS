@@ -30,9 +30,10 @@ import ProjectApplications from './projectApplication/projectApplications';
 import LoadApplications from './applications/loadApplications';
 import UserManagement from './userManagement/userManagement';
 import ProjectOperations from './projectOperations/projectOperations';
+import DashboardAdmin from './dashboard/dashboard'
 import ManagerFilesView from './filesUpload/managerUpload';
 import TesterFilesView from './filesUpload/testerUpload';
-
+ 
 class Routes extends React.Component {
 
   render(){
@@ -63,8 +64,10 @@ class Routes extends React.Component {
           <Route exact path='/loadapplications' component={LoadApplications}/>
           <Route exact path='/userManagement' component={UserManagement}/>
           <Route exact path='/projectOperation' component={ProjectOperations}/>
+          <Route exact path='/dashboardAdmin' component={DashboardAdmin}/>
           <Route exact path='/managerUpload' component={ManagerFilesView}/>
           <Route exact path='/testerUpload' component={TesterFilesView}/>
+
         </Switch>
       </Router>
     )

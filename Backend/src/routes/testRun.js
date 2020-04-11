@@ -77,8 +77,6 @@ createRun = async (req,res)=>{
     const testPackageFileName='zip-with-dependencies.zip'
     const testPackageFileType=req.body.testPackageFileType
 
-    //Array of test file names that need to be zipped
-   // const testFileNames=JSON.parse(req.body.testFileNames)
     const testPackageFile='testScriptFolder/zip-with-dependencies.zip'
 
     let project_params={
@@ -134,8 +132,8 @@ createRun = async (req,res)=>{
             resolve(body);
         });
     });
-  
-      //get the status of the app upload and make sure if finished processing before scheduling
+
+    //get the status of the app upload and make sure if finished processing before scheduling
     let APP_UPLOAD_STATUS = await getUploadStatus(APP_UPLOAD_ARN);
     console.log("app upload status is: ", APP_UPLOAD_STATUS);
     while(APP_UPLOAD_STATUS !== "SUCCEEDED"){
@@ -171,8 +169,7 @@ createRun = async (req,res)=>{
     //     }
     // ); 
     console.log("Device pool created successfully with arn: ", DEVICE_POOL_ARN);
-  
-      let TEST_PACKAGE_UPLOAD_ARN=''
+    let TEST_PACKAGE_UPLOAD_ARN=''
     if(testType!=='BUILTIN_FUZZ' && testType!=='BUILTIN_EXPLORER')
     {
             // create the upload and upload files to the project
@@ -251,9 +248,6 @@ createRun = async (req,res)=>{
     );
     console.log("run created successfully with run object: ", schedule_run_result);
   
-  
-    
-    
     let arn=schedule_run_result.arn
     let name=runname
     let type=schedule_run_result.type
@@ -522,3 +516,4 @@ getArtifactsOfTestOfSuiteOfDeviceOfRun=(req,res)=>{
     })
 }
 module.exports = router;
+
