@@ -36,7 +36,7 @@ var testRunSchema=new Schema({
 });
 
 testRunSchema.plugin(uniqueValidator);
-const testerRun = mongoose.model('testRunSchema', testRunSchema);
+const testerRun = mongoose.model('testRun', testRunSchema);
 
 module.exports = testerRun;
 

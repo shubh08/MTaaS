@@ -80,7 +80,7 @@ class ManagerFilesView extends React.Component {
             projectName: this.state.projectName
         }
 
-        axios.get(ROOT_URL+'/projectsForManager/5e8981009c4f720491978f7c').then(res=>{
+        axios.get(ROOT_URL+'/projectsForManager/'+localStorage.getItem('ManagerID')).then(res=>{
             console.log('result from the load projects',res)
             let projectsOpts = res.data.projects.map(el =>{
             return (<option key={el.name} value={el.name}>{el.name}</option>)

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var testerRun = require('../models/TestRun');
+var billing = require('../models/billing');
 var moment = require('moment');
 moment().format();
 const multer = require('multer')
@@ -416,10 +417,10 @@ stopRun = (req,res)=>{
 
 router.post('/getRunStatus', function (req, res, next) {
     console.log('Inside herere')
-   getRunStatus(req,res)
+   getRunStatus(req,res,next)
 });
 
-getRunStatus = async (req,res)=>{
+getRunStatus = async (req,res,next)=>{
     console.log('Inside getRunStatus')
     devicefarm.getRun({arn:req.body.RUN_ARN},function(err,data){
         if(err)
@@ -428,29 +429,40 @@ getRunStatus = async (req,res)=>{
             res.status(400).json('Error in getRunStatus for run_arn: '+req.body.RUN_ARN+' err: '+err)
         }
         else{
-                    triggerJob(req.body.RUN_ARN,data,res)
+                    triggerJob(req.body.RUN_ARN,data,res,req.body.projectID,next)
 
         }
     })
 }
 
 
-triggerJob = async(arn,data,res)=>{
+triggerJob = async(arn,data,res,projectID,next)=>{
     console.log('Job Triggered!')
     let jobs = await getSubSchemas(arn)
     console.log('Job Triggered End!')
-    console.log('Jobs returned',jobs)
+    //console.log('Jobs returned',jobs[0])
     data.jobs = jobs
-    testerRun.findOneAndUpdate({"arn":arn},{data}, {
-        new: true,
-        upsert: true,
-        rawResult: true 
-      }).exec((err, test) => {
+   // console.log('deviceeeeeeeeeeeeeeeeeeeeeeee minssssssssssss',data.run)
+    let deviceMinutes = data.run.deviceMinutes.total
+    console.log('Run device minutesssssssss are hereeeeeeeeeeeeeeeee',deviceMinutes)
+    let runParentObj = data.run 
+    console.log('Run Parent obj',runParentObj)
+    testerRun.findOneAndUpdate({"arn":arn},{runParentObj},{upsert:true}).exec((err, test) => {
         if (err) {
             console.log(err)
             next();
         } else {
-            res.status(200).send({result:data})
+            console.log('Data here isssssssssssssssssssssssssss',data)
+            let cost = (0.01*deviceMinutes)
+            let totalMinutes = deviceMinutes
+            const billingObj = new billing({projectID,totalMinutes,cost})
+            billingObj.save((err, billing) => {
+                if (err) {
+                    next(err);
+                } else {
+                    res.status(200).send({message:'Billing Success!',billingObj});
+                }
+            })  
         }
         })
     
