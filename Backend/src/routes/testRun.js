@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var testerRun = require('../models/TestRun');
-var notification = require('../models/notification');
-var project = require('../models/project');
 var moment = require('moment');
 moment().format();
 const multer = require('multer')
@@ -19,12 +17,6 @@ var devicefarm = new AWS.DeviceFarm({apiVersion: '2015-06-23',
                                         accessKeyId:awsConfig.AWS_DEVICE_FARM_KEY,
                                         secretAccessKey:awsConfig.AWS_DEVICE_FARM_SECRET,
                                         region:'us-west-2'});
-
-
-
-
-
-
 
 async function getUploadStatus(UPLOAD_ARN){
     return await devicefarm.getUpload({arn: UPLOAD_ARN}).promise().then(
@@ -67,8 +59,8 @@ createRun = async (req,res)=>{
     
     const userName=req.body.userName
     const projectName=req.body.projectName
-    const runname=req.body.runname
-    const appFileName=req.body.appFileName
+    const runname=req.body.runName
+    const appFileName=req.body.appFileNampine
     const appFileType=req.body.appFileType
     const devicePoolName=req.body.devicePoolName
     const devicePoolARNs=req.body.devicePoolARNs

@@ -13,6 +13,8 @@ import Moment from 'moment'
 
 import './signup.css';
 import { ROOT_URL } from '../config/config.js'
+import SideNavManager from '../navigation/sidenavManager';
+import TopNavManager from '../navigation/topnavManager';
 
 
 class TesterFilesView extends React.Component {
@@ -115,14 +117,21 @@ class TesterFilesView extends React.Component {
 
     render() {
         return (
-
+            <div className="homepage">
             <div>
-                <div className="signup">
+              <TopNavManager/>
+            </div>
+            <div className="homepage-left">
+              <SideNavManager/>
+            </div>
+            
+            <div className="homepage-right">
+                <div className="">
                     <Jumbotron fluid>
                         <Container fluid>
                             <h1 center className="display-3">Mobile Testing as a Service</h1>
                         </Container>
-                        <header className="signup-header">
+                        <header className="">
                             <Form onSubmit={this.uploadFile}>
                                 <FormGroup>
                                     <FormGroup>
@@ -133,7 +142,7 @@ class TesterFilesView extends React.Component {
                                     </FormGroup>
                                 </FormGroup>
                                 <FormGroup>
-                                    <h5 >Upload your files</h5>
+                                <Label for="exampleSelect">Upload you files!</Label>
                                     <Input type="file" name="file" id="file" placeholder="Select file to upload"
                                         onChange={this.fileChangeHandle}
                                         required
@@ -146,9 +155,8 @@ class TesterFilesView extends React.Component {
                                 </Row>
                             </Form>
                         </header>
-                    </Jumbotron>
-                </div>
-                <br />
+                        <br />
+                        <h4 style={{align:'center'}}>Your Files</h4>
                 <div className="fileBrowserDiv">
                     <FileBrowser
                         files={this.state.filesfromS3}
@@ -176,7 +184,13 @@ class TesterFilesView extends React.Component {
                     />
                     
                 </div>
+                    </Jumbotron>
+                    
+                </div>
+     
             </div>
+            </div>
+
         )
     }
 }
