@@ -4,6 +4,7 @@ var testerRun = require('../models/TestRun');
 var notification = require('../models/notification');
 var devicePool = require('../models/devicePool');
 var project = require('../models/project');
+var billing = require('../models/billing');
 var moment = require('moment');
 moment().format();
 const multer = require('multer')
@@ -20,12 +21,6 @@ var devicefarm = new AWS.DeviceFarm({apiVersion: '2015-06-23',
                                         accessKeyId:awsConfig.AWS_DEVICE_FARM_KEY,
                                         secretAccessKey:awsConfig.AWS_DEVICE_FARM_SECRET,
                                         region:'us-west-2'});
-
-
-
-
-
-
 
 async function getUploadStatus(UPLOAD_ARN){
     return await devicefarm.getUpload({arn: UPLOAD_ARN}).promise().then(
@@ -68,8 +63,8 @@ createRun = async (req,res)=>{
     
     const userName=req.body.userName
     const projectName=req.body.projectName
-    const runname=req.body.runname
-    const appFileName=req.body.appFileName
+    const runname=req.body.runName
+    const appFileName=req.body.appFileNampine
     const appFileType=req.body.appFileType
     const devicePoolName=req.body.devicePoolName
     const devicePoolARNs=req.body.devicePoolARNs
@@ -425,10 +420,10 @@ stopRun = (req,res)=>{
 
 router.post('/getRunStatus', function (req, res, next) {
     console.log('Inside herere')
-   getRunStatus(req,res)
+   getRunStatus(req,res,next)
 });
 
-getRunStatus = async (req,res)=>{
+getRunStatus = async (req,res,next)=>{
     console.log('Inside getRunStatus')
     devicefarm.getRun({arn:req.body.RUN_ARN},function(err,data){
         if(err)
@@ -437,29 +432,40 @@ getRunStatus = async (req,res)=>{
             res.status(400).json('Error in getRunStatus for run_arn: '+req.body.RUN_ARN+' err: '+err)
         }
         else{
-                    triggerJob(req.body.RUN_ARN,data,res)
+                    triggerJob(req.body.RUN_ARN,data,res,req.body.projectID,next)
 
         }
     })
 }
 
 
-triggerJob = async(arn,data,res)=>{
+triggerJob = async(arn,data,res,projectID,next)=>{
     console.log('Job Triggered!')
     let jobs = await getSubSchemas(arn)
     console.log('Job Triggered End!')
-    console.log('Jobs returned',jobs)
+    //console.log('Jobs returned',jobs[0])
     data.jobs = jobs
-    testerRun.findOneAndUpdate({"arn":arn},{data}, {
-        new: true,
-        upsert: true,
-        rawResult: true 
-      }).exec((err, test) => {
+   // console.log('deviceeeeeeeeeeeeeeeeeeeeeeee minssssssssssss',data.run)
+    let deviceMinutes = data.run.deviceMinutes.total
+    console.log('Run device minutesssssssss are hereeeeeeeeeeeeeeeee',deviceMinutes)
+    let runParentObj = data.run 
+    console.log('Run Parent obj',runParentObj)
+    testerRun.findOneAndUpdate({"arn":arn},{runParentObj},{upsert:true}).exec((err, test) => {
         if (err) {
             console.log(err)
             next();
         } else {
-            res.status(200).send({result:data})
+            console.log('Data here isssssssssssssssssssssssssss',data)
+            let cost = (0.01*deviceMinutes)
+            let totalMinutes = deviceMinutes
+            const billingObj = new billing({projectID,totalMinutes,cost})
+            billingObj.save((err, billing) => {
+                if (err) {
+                    next(err);
+                } else {
+                    res.status(200).send({message:'Billing Success!',billingObj});
+                }
+            })  
         }
         })
     

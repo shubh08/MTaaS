@@ -6,6 +6,7 @@ import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import classnames from 'classnames';
 import Card from 'react-bootstrap/Card'
 import axios from 'axios'
+import { ROOT_URL } from '../config/config';
 
 
 const ProjectTabs = (props) => {
@@ -22,10 +23,10 @@ const ProjectTabs = (props) => {
     //managerID : el.managerID._id
   let data = {
   projectID: el._id,
-  testerID: '5e8d437fd70e327a6e797d15',
+  testerID: localStorage.getItem('TesterID'),
   managerID:el.managerID._id
     }
-    axios.post('http://localhost:3010/tester/applyProject',data)
+    axios.post(ROOT_URL+'/tester/applyProject',data)
     .then(response=>{
       console.log(response);
       window.location.reload();
@@ -40,7 +41,7 @@ const ProjectTabs = (props) => {
   useEffect(() => {
 
     axios.defaults.withCredentials = false;  //5e8980d69c4f720491978f7b  5e884c3ce7a72f7dac73b426
-    axios.get('http://localhost:3010/tester/loadProjects/5e8d437fd70e327a6e797d15')
+    axios.get(ROOT_URL+'/tester/loadProjects/'+localStorage.getItem('TesterID'))
       .then((response) => {
         console.log(response);
         let projects = []

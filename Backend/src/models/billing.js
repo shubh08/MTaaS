@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+var moment = require('moment');
 const { Schema } = mongoose;
 
 const billingSchema = new Schema(
@@ -8,18 +8,17 @@ const billingSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'project',
     },
-    startTime: {
-      type: Date,
-      required: [true, 'Start Date is mandatory'],
-    },
-    endTime: {
-      type: Date,
-      required: [true, 'End Date is mandatory'],
-    },
+   totalMinutes:{
+    type: Number
+   },
     cost: {
       type: Number,
       required: [true, 'Cost is mandatory'],
     },
+    date:{
+      type:Date,
+      default:moment()
+    }
   }
 );
 

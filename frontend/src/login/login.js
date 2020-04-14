@@ -54,6 +54,7 @@ const LoginTabs = (props) => {
     axios.post(ROOT_URL + '/tester/login', testerDetails).then((response) => {
       if (response.status == 200 && response.data.active) {
         localStorage.setItem('TesterID',response.data.id);
+        localStorage.setItem('name',response.data.name);
         window.location = "/homeTester"
         setTimeout(() => {
           toast.success(response.data.message, {
@@ -84,6 +85,7 @@ const LoginTabs = (props) => {
     axios.post(ROOT_URL + '/manager/login', managerDetails).then((response) => {
       if (response.status == 200 && response.data.active) {
         localStorage.setItem('ManagerID',response.data.id);
+        localStorage.setItem('name',response.data.name);
         window.location = "/homeManager"
         setTimeout(() => {
           toast.success(response.data.message, {

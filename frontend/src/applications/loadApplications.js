@@ -6,6 +6,7 @@ import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import classnames from 'classnames';
 import Card from 'react-bootstrap/Card'
 import axios from 'axios'
+import { ROOT_URL } from '../config/config';
 
 
 const ProjectTabs = (props) => {
@@ -24,7 +25,7 @@ const ProjectTabs = (props) => {
   testerID: el.testerID._id,
   applicationID:el._id
     }
-    axios.post('http://localhost:3010/manager/approve',data)
+    axios.post(ROOT_URL+'/manager/approve',data)
     .then(response=>{
       console.log('Application Approved',response);
       window.location.reload();
@@ -37,7 +38,7 @@ const ProjectTabs = (props) => {
   let data = {
     applicationID:el._id
     }
-    axios.post('http://localhost:3010/manager/reject',data)
+    axios.post(ROOT_URL+'/manager/reject',data)
     .then(response=>{
     console.log('Application Rejected',response);
       window.location.reload();
@@ -50,7 +51,7 @@ const ProjectTabs = (props) => {
   useEffect(() => {
 
     axios.defaults.withCredentials = false;  //5e8980d69c4f720491978f7b  5e884c3ce7a72f7dac73b426
-    axios.get('http://localhost:3010/manager/loadApplications/5e8981009c4f720491978f7c')
+    axios.get(ROOT_URL+'/manager/loadApplications/'+localStorage.getItem('ManagerID'))
       .then((response) => {
         console.log(response);
         let projects = []
@@ -97,8 +98,6 @@ const ProjectTabs = (props) => {
 
          }
         })
-        //setProjectList(projects)
-        // this.setState({ projects: projectList })
         setProjectList(projects)
         setpastApplications(pastApplications)
       }, (error) => {
