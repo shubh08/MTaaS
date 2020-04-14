@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var testerRun = require('../models/TestRun');
+var notification = require('../models/notification');
+var devicePool = require('../models/devicePool');
+var project = require('../models/project');
 var billing = require('../models/billing');
 var moment = require('moment');
 moment().format();
@@ -519,5 +522,78 @@ getArtifactsOfTestOfSuiteOfDeviceOfRun=(req,res)=>{
         res.status(400).json('Error in getArtifactsOfTestOfSuiteOfDeviceOfRun: '+err);
     })
 }
+
+router.post('/allocateDevice', function (req, res, next) {
+    let devicePoolRules=[
+         {
+             "attribute": "ARN", 
+             "operator": "IN",
+             "value": JSON.stringify(req.body.poolList)
+         }
+     ]
+     let device_pool_params = {
+         projectArn: "arn:aws:devicefarm:us-west-2:767528473708:project:fbe9a5ad-f451-4ae9-99a4-bc938a15d88a",
+         name: req.body.devicePoolName,
+         rules: devicePoolRules
+     }
+
+    devicefarm.createDevicePool(device_pool_params).promise().then(
+        function(data){
+            const devicePoolName = req.body.devicePoolName;
+            const devicePoolARN = data.devicePool.arn;
+            const projectID = req.body.projectID;
+            const newPool = new devicePool({
+                devicePoolName,
+                devicePoolARN,
+                projectID
+            });
+            newPool.save((err, pool) => {
+                if (err) {
+                    res.status(400).send({message:"Device Allocation Unsuccessful"}) ; 
+                } else {
+                    res.status(200).send({message:"Device Successfully Allocated"}) ; 
+             }
+            })
+            
+         },function(error){
+            console.log(error)
+            res.status(400).json({ message: error })
+         }
+    ); 
+});
+
+router.get('/getDevicePool', function (req, res, next) {
+    let poolName = {"arn": req.query.id}
+    devicefarm.getDevicePool(poolName).promise().then(
+        function(data){
+            res.status(200).send({arn : data}) ; 
+         },function(error){
+            res.status(400).json({ message: error })
+         }
+     ); 
+})
+router.post('/deleteDevicePool', function (req, res, next) {
+    let poolName = {"arn": req.body.poolID}
+    devicefarm.deleteDevicePool(poolName).promise().then(
+        function(data){
+            devicePool.findOneAndDelete({devicePoolARN :req.body.poolID}).exec((err,device)=>{
+                res.status(200).send("removed") ; 
+            })
+            
+         },function(error){
+            res.status(400).json({ message: error })
+         }
+     ); 
+})
+router.get('/getDevicePoolByProject', function (req, res, next) {
+    let poolName = {"arn": req.query.id}
+    devicefarm.getDevicePool(poolName).promise().then(
+        function(data){
+            res.status(200).send({arn : data}) ; 
+         },function(error){
+             res.status(400).json({ message: error })
+         }
+     ); 
+})
 module.exports = router;
 

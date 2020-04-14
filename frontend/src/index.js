@@ -33,6 +33,8 @@ import ProjectOperations from './projectOperations/projectOperations';
 import DashboardAdmin from './dashboard/dashboard'
 import ManagerFilesView from './filesUpload/managerUpload';
 import TesterFilesView from './filesUpload/testerUpload';
+import AllocateDeviceTester from './allocateDevice/allocateDeviceTester'
+import AllocateDeviceManager from './allocateDevice/allocateDeviceManager'
  
 class Routes extends React.Component {
 
@@ -67,7 +69,8 @@ class Routes extends React.Component {
           <Route exact path='/dashboardAdmin' component={DashboardAdmin}/>
           <Route exact path='/managerUpload' component={ManagerFilesView}/>
           <Route exact path='/testerUpload' component={TesterFilesView}/>
-
+          <Route exact path='/allocateDeviceTester' component={AllocateDeviceTester}/>
+          <Route exact path='/allocateDeviceManager' component={AllocateDeviceManager}/>
         </Switch>
       </Router>
     )
