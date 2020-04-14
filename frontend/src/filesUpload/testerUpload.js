@@ -47,7 +47,7 @@ class TesterFilesView extends React.Component {
 
     loadProjects = () => {
         console.log('Project Name',this.state.projectName)
-        let data = { projectName: this.state.projectName, testerName: 'Pranav' }
+        let data = { projectName: this.state.projectName, testerName: localStorage.getItem('name') }
         axios.post(ROOT_URL + '/tester/loadFiles/', data).then(res => {
             console.log(res.data)
             this.setState({
@@ -68,8 +68,8 @@ class TesterFilesView extends React.Component {
 
         e.preventDefault()
         let fd = new FormData()
-        fd.append('testerName', 'Pranav');
-        fd.append('testerID', '5e8d437fd70e327a6e797d15');
+        fd.append('testerName', localStorage.getItem('name'));
+        fd.append('testerID', localStorage.getItem('TesterID'));
         fd.append('projectName', this.state.projectName);
         fd.append('file', this.state.fileSelected);
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
@@ -91,7 +91,7 @@ class TesterFilesView extends React.Component {
     componentDidMount() {
 
 
-        axios.get(ROOT_URL + '/projectsForTester/5e8d437fd70e327a6e797d15').then(res => {
+        axios.get(ROOT_URL + '/projectsForTester/'+localStorage.getItem('TesterID')).then(res => {
             console.log('result from the load projects', res)
             let projectsOpts = []
             projectsOpts = res.data.projects.map(el => {
