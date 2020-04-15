@@ -26,10 +26,6 @@ class SideNav extends React.Component {
         </div>
 
         <div className="Button-Padding">
-          <Button className="NavButton" href="/runtracker">Run Tracker</Button>
-        </div>
-
-        <div className="Button-Padding">
           <Button className="NavButton" href="/admin">Admin</Button>
         </div>
       </div>
