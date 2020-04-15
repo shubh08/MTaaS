@@ -149,7 +149,7 @@ const ProjectTabs = (props) => {
   return (
     <div>
       <Nav tabs>
-        <NavItem style={{marginTop:'5%'}}>
+        <NavItem style={{marginTop:'5%',fontWeight:'bolder'}}>
           <NavLink 
             className={classnames({ active: activeTab === '1' })}
             onClick={() => { toggle('1'); }}
@@ -158,7 +158,7 @@ const ProjectTabs = (props) => {
 
           </NavLink>
         </NavItem>
-        <NavItem style={{marginTop:'5%'}}>
+        <NavItem style={{marginTop:'5%',fontWeight:'bolder'}}>
           <NavLink 
             className={classnames({ active: activeTab === '2' })}
             onClick={() => { toggle('2'); }}
@@ -166,7 +166,7 @@ const ProjectTabs = (props) => {
             My Pending Applications
           </NavLink>
         </NavItem>
-        <NavItem style={{marginTop:'5%'}}>
+        <NavItem style={{marginTop:'5%',fontWeight:'bolder'}}>
           <NavLink 
             className={classnames({ active: activeTab === '3' })}
             onClick={() => { toggle('3'); }}

@@ -71,7 +71,7 @@ const ProjectTabs = (props) => {
               projects.push(
                
                 <Row >
-                <Card style={{ width:"100%", marginTop: '2%',marginLeft:'3%',marginRight:'3%', color: 'black', fontSize: '15px' }}>
+                <Card style={{ width:"100%", marginTop: '2%',marginLeft:'10%',marginRight:'13%', color: 'black', fontSize: '15px' }}>
                 <Card.Img variant="top" />
                 <Card.Body>
                   <Card.Title>{el.testerID.name}</Card.Title>
@@ -79,16 +79,16 @@ const ProjectTabs = (props) => {
                  <Col md ={1}></Col>
                     <Col>
                     <Row style={{marginLeft:"10px"}} ><Label style={{fontWeight:'bolder',color:'Blue'}}>Project Details</Label></Row>
-                    <Row style={{marginLeft:"10px"}}><Label>Project Name : </Label>{el.projectID.name}</Row>
-                    <Row style={{marginLeft:"10px"}}><Label>Description : </Label>{el.projectID.description}</Row>
-                    <Row style={{marginLeft:"10px"}}><Label>Start Date : </Label> {el.projectID.startDate.split("T")[0]}</Row>
-                    <Row style={{marginLeft:"10px"}}><Label>End Date : </Label>{el.projectID.endDate.split("T")[0]}</Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Project Name : </Label>{el.projectID.name}</Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Description : </Label>{el.projectID.description}</Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Start Date : </Label> {el.projectID.startDate.split("T")[0]}</Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>End Date : </Label>{el.projectID.endDate.split("T")[0]}</Row>
                     </Col>
 
                     <Col>
                     <Row style={{marginLeft:"10px"}} ><Label style={{fontWeight:'bolder',color:'Blue'}}>Applicant Details</Label></Row>
-                    <Row style={{marginLeft:"10px"}}><Label>About : </Label>{el.testerID.about}</Row>
-                    <Row style={{marginLeft:"10px"}}><Label>Technologies : </Label>{el.testerID.technologies}</Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>About : </Label>{el.testerID.about}</Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}> Technologies : </Label>{el.testerID.technologies}</Row>
                     </Col>
 
                     <Col  md ={2}>
@@ -103,7 +103,7 @@ const ProjectTabs = (props) => {
             else
               pastApplications.push(
               <Row>
-                <Card style={{ width:"70%", marginTop: '2%',marginLeft:'3%',marginRight:'13%', color: 'black', fontSize: '15px' }}>
+                <Card style={{ width:"70%", marginTop: '2%',marginLeft:'13%',marginRight:'13%', color: 'black', fontSize: '15px' }}>
                 <Card.Img variant="top" />
                 <Card.Body>
                   <Card.Title>{el.testerID.name}<br></br> </Card.Title>
@@ -141,17 +141,17 @@ const ProjectTabs = (props) => {
     <div>
    
           <Nav tabs>
-            <NavItem>
-              <NavLink style={{marginTop:'5%'}}
+            <NavItem style={{marginTop:'5%',fontWeight:'bolder'}}>
+              <NavLink 
                 className={classnames({ active: activeTab === '1' })}
                 onClick={() => { toggle('1'); }}
               >
                 Active Applications
     
           </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink style={{marginTop:'5%'}}
+            </NavItem >
+            <NavItem style={{marginTop:'5%',fontWeight:'bolder'}}>
+              <NavLink 
                 className={classnames({ active: activeTab === '2' })}
                 onClick={() => { toggle('2'); }}
               >
