@@ -40,7 +40,9 @@ class SideNavTester extends React.Component {
         <div className="Button-Padding">
           <Button className="NavButton" href="/bugtracker">Bug Tracker</Button>
         </div>
-
+        <div className="Button-Padding">
+          <Button className="NavButton" href="/allocateDeviceTester">Allocate Device</Button>
+        </div>
       </div>
     )}
 

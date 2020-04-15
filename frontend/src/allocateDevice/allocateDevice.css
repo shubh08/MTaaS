@@ -1,0 +1,51 @@
+.allocateDevice {
+  text-align: center;
+  background-color: #e9ecef;
+  width: 100%;
+  overflow: hidden;
+}
+
+.allocateDevice-left {
+  text-align: center;
+  position: fixed;
+  top: 6.9%;
+  left: 0;
+  background-color: #e9ecef;
+  width: 20%;
+  float: left;
+}
+
+.allocateDevice-right {
+  text-align: center;
+  position: fixed;
+  top: 6.9%;
+  right: 0;
+  background-color: #e9ecef;
+  width: 80%;
+  float: right;
+  padding-left: 25%;
+  padding-right: 25%;
+  padding-top: 1%;
+  height: 100%;
+  
+}
+
+.allocateDevice-box {
+  background-color: #c7c8c9;
+  color: #000000;
+  padding-left: 25%;
+  padding-right: 25%;
+  padding-top: 1%;
+}
+
+.allocateDevice-header {
+  background-color: #282c34;
+  //min-height: 80vh;
+  width: auto;
+  float: right;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
