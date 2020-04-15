@@ -1,29 +1,11 @@
-.billingManager {
+.allocateDevice {
   text-align: center;
   background-color: #e9ecef;
   width: 100%;
   overflow: hidden;
 }
 
-.billingManager-dropdown{
-  padding-top: 6.9%;
-  padding-bottom: 2.9%;
-}
-
-.billingManager-box{
-  background-color: #c7c8c9;
-  color: #000000;
-  margin: 4%;
-}
-
-.billingManager-box-item{
-  padding-left: 5%;
-  padding-top: 1%;
-  padding-bottom: 1%;
-  color: #000000;
-}
-
-.billingManager-left {
+.allocateDevice-left {
   text-align: center;
   position: fixed;
   top: 6.9%;
@@ -33,7 +15,7 @@
   float: left;
 }
 
-.billingManager-right {
+.allocateDevice-right {
   text-align: center;
   position: fixed;
   top: 6.9%;
@@ -41,9 +23,22 @@
   background-color: #e9ecef;
   width: 80%;
   float: right;
+  padding-left: 25%;
+  padding-right: 25%;
+  padding-top: 1%;
+  height: 100%;
+  
 }
 
-.billingManager-header {
+.allocateDevice-box {
+  background-color: #c7c8c9;
+  color: #000000;
+  padding-left: 25%;
+  padding-right: 25%;
+  padding-top: 1%;
+}
+
+.allocateDevice-header {
   background-color: #282c34;
   //min-height: 80vh;
   width: auto;
@@ -53,15 +48,4 @@
   align-items: center;
   justify-content: center;
   color: white;
-}
-.billingManager-select{
-  margin-top: 4%;
-  margin-bottom: 4%;
-}
-.billingManager-marginBottom{
-  margin-bottom: 3%;
-}
-
-.billingManager-marginTop{
-  margin-top: 2%;
 }

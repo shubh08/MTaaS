@@ -1,4 +1,4 @@
-const port = process.env.PORT || 3010;
+const port = 3010;
 const rooturl = "http://localhost:3000";
 //const rooturl = "";
 const path = require('path');

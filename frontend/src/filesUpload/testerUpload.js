@@ -13,6 +13,8 @@ import Moment from 'moment'
 
 import './signup.css';
 import { ROOT_URL } from '../config/config.js'
+import SideNavManager from '../navigation/sidenavManager';
+import TopNavManager from '../navigation/topnavManager';
 
 
 class TesterFilesView extends React.Component {
@@ -45,7 +47,7 @@ class TesterFilesView extends React.Component {
 
     loadProjects = () => {
         console.log('Project Name',this.state.projectName)
-        let data = { projectName: this.state.projectName, testerName: 'Pranav' }
+        let data = { projectName: this.state.projectName, testerName: localStorage.getItem('name') }
         axios.post(ROOT_URL + '/tester/loadFiles/', data).then(res => {
             console.log(res.data)
             this.setState({
@@ -66,8 +68,8 @@ class TesterFilesView extends React.Component {
 
         e.preventDefault()
         let fd = new FormData()
-        fd.append('testerName', 'Pranav');
-        fd.append('testerID', '5e8d437fd70e327a6e797d15');
+        fd.append('testerName', localStorage.getItem('name'));
+        fd.append('testerID', localStorage.getItem('TesterID'));
         fd.append('projectName', this.state.projectName);
         fd.append('file', this.state.fileSelected);
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
@@ -89,7 +91,7 @@ class TesterFilesView extends React.Component {
     componentDidMount() {
 
 
-        axios.get(ROOT_URL + '/projectsForTester/5e8d437fd70e327a6e797d15').then(res => {
+        axios.get(ROOT_URL + '/projectsForTester/'+localStorage.getItem('TesterID')).then(res => {
             console.log('result from the load projects', res)
             let projectsOpts = []
             projectsOpts = res.data.projects.map(el => {
@@ -115,14 +117,21 @@ class TesterFilesView extends React.Component {
 
     render() {
         return (
-
+            <div className="homepage">
             <div>
-                <div className="signup">
+              <TopNavManager/>
+            </div>
+            <div className="homepage-left">
+              <SideNavManager/>
+            </div>
+            
+            <div className="homepage-right">
+                <div className="">
                     <Jumbotron fluid>
                         <Container fluid>
                             <h1 center className="display-3">Mobile Testing as a Service</h1>
                         </Container>
-                        <header className="signup-header">
+                        <header className="">
                             <Form onSubmit={this.uploadFile}>
                                 <FormGroup>
                                     <FormGroup>
@@ -133,7 +142,7 @@ class TesterFilesView extends React.Component {
                                     </FormGroup>
                                 </FormGroup>
                                 <FormGroup>
-                                    <h5 >Upload your files</h5>
+                                <Label for="exampleSelect">Upload you files!</Label>
                                     <Input type="file" name="file" id="file" placeholder="Select file to upload"
                                         onChange={this.fileChangeHandle}
                                         required
@@ -146,9 +155,8 @@ class TesterFilesView extends React.Component {
                                 </Row>
                             </Form>
                         </header>
-                    </Jumbotron>
-                </div>
-                <br />
+                        <br />
+                        <h4 style={{align:'center'}}>Your Files</h4>
                 <div className="fileBrowserDiv">
                     <FileBrowser
                         files={this.state.filesfromS3}
@@ -176,7 +184,13 @@ class TesterFilesView extends React.Component {
                     />
                     
                 </div>
+                    </Jumbotron>
+                    
+                </div>
+     
             </div>
+            </div>
+
         )
     }
 }
