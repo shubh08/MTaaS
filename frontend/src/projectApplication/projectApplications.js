@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import { Container, Button, Badge} from 'reactstrap';
-import './signup.css';
+import './projectApplication.css';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import classnames from 'classnames';
@@ -20,7 +20,6 @@ const ProjectTabs = (props) => {
   }
 
   const applyProject = (el)=>{
-    //managerID : el.managerID._id
   let data = {
   projectID: el._id,
   testerID: localStorage.getItem('TesterID'),
@@ -40,55 +39,104 @@ const ProjectTabs = (props) => {
 
   useEffect(() => {
 
-    axios.defaults.withCredentials = false;  //5e8980d69c4f720491978f7b  5e884c3ce7a72f7dac73b426
+    axios.defaults.withCredentials = false; 
     axios.get(ROOT_URL+'/tester/loadProjects/'+localStorage.getItem('TesterID'))
       .then((response) => {
-        console.log(response);
         let projects = []
         projects = response.data.activeprojects.map((el, i) => {
-          return (<Card style={{ width: '18rem', margin: '3rem', color:'black', display: 'flex', flexWrap: 'wrap'}}>
-            <Card.Img variant="top" />
-            <Card.Body>
-              <Card.Title>{el.name}</Card.Title>
-              <Card.Text color='blue'>
-                {el.description}<br />
-                <b>{el.technologies}</b><br />
-                <i>{el.testCriteria}</i>
-              </Card.Text>
-              <Button variant="primary" onClick={()=>applyProject(el)}>Apply</Button>
-            </Card.Body>
-          </Card>)
+          return (
+
+            <Row >
+                <Card style={{ width:"70%", marginTop: '2%',marginLeft:'12%',marginRight:'3%', color: 'black', fontSize: '15px' }}>
+                <Card.Img variant="top" />
+                <Card.Body>
+                  <Card.Title style={{marginBottom:'3%'}}>{el.name}</Card.Title>
+               <Row>
+                 <Col md ={1}></Col>
+                    <Col>
+                    <Row style={{marginLeft:"10px"}} ><Label style={{fontWeight:'bolder',color:'Blue'}}>Project Details</Label></Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Description : </Label>{el.description}</Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Start Date : </Label> {el.startDate.split("T")[0]}</Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>End Date : </Label>{el.endDate.split("T")[0]}</Row>
+                    </Col>
+
+                    <Col >
+                    <Row style={{marginLeft:"10px"}} ><Label style={{fontWeight:'bolder',color:'Blue'}}>Project Requirement</Label></Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Technologies Needed: </Label> {el.technologies}</Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Test Criteria : </Label>{el.testCriteria}</Row>
+                    </Col>
+
+                    <Col md={2}></Col>
+                    </Row>
+                    <Row>
+                      <Col><Button style={{width:'50%',marginTop:'5%'}} color="success" onClick={()=>applyProject(el)}>Apply</Button></Col>
+                    </Row>
+       </Card.Body>
+              </Card></Row>
+          )
         })
-        //setProjectList(projects)
-        // this.setState({ projects: projectList })
+        
         let applicationsPending = []
         let applicationsDecisionMade = []
+        
         response.data.applications.forEach((el, i) => {
           if(el.projectID!=null)
           if(el.status=='Pending')
-          applicationsPending.push(<Card style={{ width: '18rem', margin: '3rem', color:'black', display: 'flex', flexWrap: 'wrap'}}>
+          applicationsPending.push(
+          
+            <Row >
+            <Card style={{ width:"70%", marginTop: '2%',marginLeft:'12%',marginRight:'3%', color: 'black', fontSize: '15px' }}>
             <Card.Img variant="top" />
             <Card.Body>
-              <Card.Title><Badge color="secondary">Applied</Badge><br/>{el.projectID.name} </Card.Title>
-              <Card.Text color='blue'>
-                {el.projectID.description}<br />
-                <b>{el.projectID.technologies}</b><br />
-                <i>{el.projectID.testCriteria}</i>
-              </Card.Text>
-            </Card.Body>
-          </Card>)
+              <Card.Title style={{marginBottom:'3%'}}>{el.projectID.name}</Card.Title>
+          
+           <Row>
+             <Col md ={1}></Col>
+                <Col>
+                <Row style={{marginLeft:"10px"}} ><Label style={{fontWeight:'bolder',color:'Blue'}}>Project Details</Label></Row>
+                <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Description : </Label>{el.projectID.description}</Row>
+                <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Start Date : </Label> {el.projectID.startDate.split("T")[0]}</Row>
+                <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>End Date : </Label>{el.projectID.endDate.split("T")[0]}</Row>
+                </Col>
+
+                <Col >
+                <Row style={{marginLeft:"10px"}} ><Label style={{fontWeight:'bolder',color:'Blue'}}>Project Requirement</Label></Row>
+                <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Technologies Needed: </Label> {el.projectID.technologies}</Row>
+                <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Test Criteria : </Label>{el.projectID.testCriteria}</Row>
+                <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Status : </Label><Badge style={{height:'150%',fontSize:'100%',marginLeft:'1%'}} color="warning">Applied</Badge> </Row>
+                </Col>
+                <Col md={2}></Col>
+                </Row>
+                
+   </Card.Body>
+          </Card></Row>)
           else
-          applicationsDecisionMade.push(<Card style={{ width: '18rem', margin: '3rem', color:'black', display: 'flex', flexWrap: 'wrap'}}>
-          <Card.Img variant="top" />
-          <Card.Body>
-        <Card.Title>{el.status=='Approved'?<Badge color="success">Approved</Badge>:<Badge color="danger">'Rejected'</Badge>}<br/>{el.projectID.name} </Card.Title>
-            <Card.Text color='blue'>
-              {el.projectID.description}<br />
-              <b>{el.projectID.technologies}</b><br />
-              <i>{el.projectID.testCriteria}</i>
-            </Card.Text>
-          </Card.Body>
-        </Card>)
+          applicationsDecisionMade.push(
+            <Row>
+                <Card style={{ width:"70%", marginTop: '2%',marginLeft:'13%',marginRight:'13%', color: 'black', fontSize: '15px' }}>
+                <Card.Img variant="top" />
+                <Card.Body>
+                  <Card.Title style={{marginBottom:'3%'}}>{el.projectID.name}<br></br> </Card.Title>
+                  <Row>
+                 <Col md ={1}></Col>
+                    <Col>
+                    <Row style={{marginLeft:"10px"}} ><Label style={{fontWeight:'bolder',color:'Blue'}}>Project Details</Label></Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Description : </Label>{el.projectID.description}</Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Start Date : </Label> {el.projectID.startDate.split("T")[0]}</Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>End Date : </Label>{el.projectID.endDate.split("T")[0]}</Row>
+                    </Col>
+
+                    <Col>
+                    <Row style={{marginLeft:"10px"}} ><Label style={{fontWeight:'bolder',color:'Blue'}}>Project Requirement</Label></Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Technologies Needed: </Label> {el.projectID.technologies}</Row>
+                     <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Test Criteria : </Label>{el.projectID.testCriteria}</Row>
+                    <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Status : </Label> {el.status == 'Approved' ? <Badge color="success" style={{height:'150%',fontSize:'100%',marginLeft:'1%'}}>Approved</Badge> : <Badge color="danger" style={{height:'150%',fontSize:'100%',marginLeft:'1%'}}>Rejected</Badge>} </Row>
+                    </Col>
+                    </Row>
+                </Card.Body>
+              </Card></Row>
+            
+            )
         })
         setProjectList(projects)
         setApplicationsPending(applicationsPending)
@@ -101,106 +149,50 @@ const ProjectTabs = (props) => {
   return (
     <div>
       <Nav tabs>
-        <NavItem>
-          <NavLink
+        <NavItem style={{marginTop:'5%'}}>
+          <NavLink 
             className={classnames({ active: activeTab === '1' })}
             onClick={() => { toggle('1'); }}
           >
-            Active Projects
+           Available Projects
 
           </NavLink>
         </NavItem>
-        <NavItem>
-          <NavLink
+        <NavItem style={{marginTop:'5%'}}>
+          <NavLink 
             className={classnames({ active: activeTab === '2' })}
             onClick={() => { toggle('2'); }}
           >
-            Pending Applications
+            My Pending Applications
           </NavLink>
         </NavItem>
-        <NavItem>
-          <NavLink
+        <NavItem style={{marginTop:'5%'}}>
+          <NavLink 
             className={classnames({ active: activeTab === '3' })}
             onClick={() => { toggle('3'); }}
           >
-            Approved/Rjected Applications
+            My Approved/Rejected Applications
           </NavLink>
         </NavItem>
       </Nav>
       <TabContent activeTab={activeTab}>
+        
         <TabPane tabId="1">
-          <br />
+        <Container className="scroll-projectApplication">
+      
         {projectList}
+        </Container>
         </TabPane>
+        
         <TabPane tabId="2">
-          <br/>
+        <Container className="scroll-projectApplication">
           {applicationsPending}
-          {/* <br />
-          <Form>
-            <FormGroup>
-              <h5 >Name</h5>
-              <Input placeholder="Enter full name" />
-            </FormGroup>
-            <FormGroup>
-              <h5 >Email</h5>
-              <Input type="email" name="email" id="exampleEmail" placeholder="Account email will be used for login" />
-            </FormGroup>
-            <FormGroup>
-              <h5 >Password</h5>
-              <Input type="password" name="password" id="examplePassword" placeholder="Account password" />
-            </FormGroup>
-            <FormGroup>
-              <h5 >Date</h5>
-              <Input
-                type="date"
-                name="date"
-                id="exampleDate"
-                placeholder="Birth date"
-              />
-            </FormGroup>
-            <FormGroup>
-              <h5 >About you</h5>
-              <Input type="textarea" name="text" />
-            </FormGroup>
-            <FormGroup>
-              <h5 >Your company name</h5>
-              <Input placeholder="Company name" />
-            </FormGroup>
-            <Button type="submit">Submit</Button>
-          </Form> */}
+          </Container>
         </TabPane>
         <TabPane tabId="3">
-          <br/>
+        <Container className="scroll-projectApplication">
           {applicationsDecisionMade}
-          {/* <br />
-          <Form>
-            <FormGroup>
-              <h5 >Name</h5>
-              <Input placeholder="Enter full name" />
-            </FormGroup>
-            <FormGroup>
-              <h5 >Email</h5>
-              <Input type="email" name="email" id="exampleEmail" placeholder="Account email will be used for login" />
-            </FormGroup>
-            <FormGroup>
-              <h5 >Password</h5>
-              <Input type="password" name="password" id="examplePassword" placeholder="Account password" />
-            </FormGroup>
-            <FormGroup>
-              <h5 >Date</h5>
-              <Input
-                type="date"
-                name="date"
-                id="exampleDate"
-                placeholder="Birth date"
-              />
-            </FormGroup>
-            <FormGroup>
-              <h5 >Your company name</h5>
-              <Input placeholder="Company name" />
-            </FormGroup>
-            <Button type="submit">Submit</Button>
-          </Form> */}
+          </Container>
         </TabPane>
       </TabContent>
     </div>
@@ -210,9 +202,11 @@ const ProjectTabs = (props) => {
 class ProjectApplications extends React.Component {
   render() {
     return (
-      <div className="signup">
-        <header className="signup-header">
+      <div className="">
+        <header className="">
+        <Container>
           <ProjectTabs />
+          </Container>
         </header>
       </div>
     )
