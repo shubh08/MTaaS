@@ -24,6 +24,10 @@ class SideNavManager extends React.Component {
         </div>
 
         <div className="Button-Padding">
+          <Button className="NavButton" href="/managerUpload">Upload Files</Button>
+        </div>
+
+        <div className="Button-Padding">
           <Button className="NavButton" href="/notificationManager">My Notifications</Button>
         </div>
 

@@ -33,7 +33,7 @@ import ProjectOperations from './projectOperations/projectOperations';
 import DashboardAdmin from './dashboard/dashboard'
 import ManagerFilesView from './filesUpload/managerUpload';
 import TesterFilesView from './filesUpload/testerUpload';
-import TestRunStatus from './testRunStatus/newRunTester';
+import TestRunStatus from './testRunStatus/testRunStatus';
  
 class Routes extends React.Component {
 

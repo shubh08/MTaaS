@@ -71,7 +71,7 @@ projectChangeHandler = e => {
       <td>{el.type}</td>
       <td>{el.platform}</td>
       <td><Badge color="info">{el.status}</Badge></td>
-     <td>{el.result=='PENDING'?<Badge color="warning">Pending</Badge>:<Badge color="info">{el.result}</Badge>}</td>
+     <td>{el.result=='PENDING'?<Badge color="warning">Pending</Badge>:(el.result=='PASSED'?<Badge color="success">{el.result}</Badge>:<Badge color="info">{el.result}</Badge>)}</td>
       <td>{el.totalJobs}</td>
       <td>{el.counters.passed}</td>
       <td>{el.counters.failed}</td>
