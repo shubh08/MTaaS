@@ -35,6 +35,7 @@ import ManagerFilesView from './filesUpload/managerUpload';
 import TesterFilesView from './filesUpload/testerUpload';
 import AllocateDeviceTester from './allocateDevice/allocateDeviceTester'
 import AllocateDeviceManager from './allocateDevice/allocateDeviceManager'
+import TestRunStatus from './testRunStatus/testRunStatus';
  
 class Routes extends React.Component {
 
@@ -71,6 +72,7 @@ class Routes extends React.Component {
           <Route exact path='/testerUpload' component={TesterFilesView}/>
           <Route exact path='/allocateDeviceTester' component={AllocateDeviceTester}/>
           <Route exact path='/allocateDeviceManager' component={AllocateDeviceManager}/>
+          <Route exact path='/getRunStatus' component={TestRunStatus}/>
         </Switch>
       </Router>
     )
