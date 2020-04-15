@@ -74,11 +74,12 @@ const ProjectTabs = (props) => {
                 <Card style={{ width:"100%", marginTop: '2%',marginLeft:'3%',marginRight:'3%', color: 'black', fontSize: '15px' }}>
                 <Card.Img variant="top" />
                 <Card.Body>
-                  <Card.Title>{el.projectID.name}</Card.Title>
+                  <Card.Title>{el.testerID.name}</Card.Title>
                <Row>
                  <Col md ={1}></Col>
                     <Col>
                     <Row style={{marginLeft:"10px"}} ><Label style={{fontWeight:'bolder',color:'Blue'}}>Project Details</Label></Row>
+                    <Row style={{marginLeft:"10px"}}><Label>Project Name : </Label>{el.projectID.name}</Row>
                     <Row style={{marginLeft:"10px"}}><Label>Description : </Label>{el.projectID.description}</Row>
                     <Row style={{marginLeft:"10px"}}><Label>Start Date : </Label> {el.projectID.startDate.split("T")[0]}</Row>
                     <Row style={{marginLeft:"10px"}}><Label>End Date : </Label>{el.projectID.endDate.split("T")[0]}</Row>
@@ -86,7 +87,6 @@ const ProjectTabs = (props) => {
 
                     <Col>
                     <Row style={{marginLeft:"10px"}} ><Label style={{fontWeight:'bolder',color:'Blue'}}>Applicant Details</Label></Row>
-                    <Row style={{marginLeft:"10px"}}><Label>Name : </Label>{el.testerID.name}</Row>
                     <Row style={{marginLeft:"10px"}}><Label>About : </Label>{el.testerID.about}</Row>
                     <Row style={{marginLeft:"10px"}}><Label>Technologies : </Label>{el.testerID.technologies}</Row>
                     </Col>
@@ -102,15 +102,16 @@ const ProjectTabs = (props) => {
               </Card></Row>)
             else
               pastApplications.push(
-              
+              <Row>
                 <Card style={{ width:"70%", marginTop: '2%',marginLeft:'3%',marginRight:'13%', color: 'black', fontSize: '15px' }}>
                 <Card.Img variant="top" />
                 <Card.Body>
-                  <Card.Title>{el.status == 'Approved' ? <Badge color="success">Approved</Badge> : <Badge color="danger">Rejected</Badge>}<br />{el.projectID.name} </Card.Title>
+                  <Card.Title>{el.testerID.name}<br></br> </Card.Title>
                   <Row>
                  <Col md ={1}></Col>
                     <Col>
                     <Row style={{marginLeft:"10px"}} ><Label style={{fontWeight:'bolder',color:'Blue'}}>Project Details</Label></Row>
+                    <Row style={{marginLeft:"10px"}}><Label>Project Name : </Label>{el.projectID.name}</Row>
                     <Row style={{marginLeft:"10px"}}><Label>Description : </Label>{el.projectID.description}</Row>
                     <Row style={{marginLeft:"10px"}}><Label>Start Date : </Label> {el.projectID.startDate.split("T")[0]}</Row>
                     <Row style={{marginLeft:"10px"}}><Label>End Date : </Label>{el.projectID.endDate.split("T")[0]}</Row>
@@ -121,10 +122,11 @@ const ProjectTabs = (props) => {
                     <Row style={{marginLeft:"10px"}}><Label>Name : </Label>{el.testerID.name}</Row>
                     <Row style={{marginLeft:"10px"}}><Label>About : </Label>{el.testerID.about}</Row>
                     <Row style={{marginLeft:"10px"}}><Label>Technologies : </Label>{el.testerID.technologies}</Row>
+                    <Row style={{marginLeft:"10px"}}><Label>Status : </Label> {el.status == 'Approved' ? <Badge color="success" style={{height:'150%',fontSize:'100%',marginLeft:'1%'}}>Approved</Badge> : <Badge color="danger" style={{height:'150%',fontSize:'100%',marginLeft:'1%'}}>Rejected</Badge>} </Row>
                     </Col>
                     </Row>
                 </Card.Body>
-              </Card>)
+              </Card></Row>)
 
           }
         })
@@ -140,7 +142,7 @@ const ProjectTabs = (props) => {
    
           <Nav tabs>
             <NavItem>
-              <NavLink
+              <NavLink style={{marginTop:'5%'}}
                 className={classnames({ active: activeTab === '1' })}
                 onClick={() => { toggle('1'); }}
               >
@@ -149,7 +151,7 @@ const ProjectTabs = (props) => {
           </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink
+              <NavLink style={{marginTop:'5%'}}
                 className={classnames({ active: activeTab === '2' })}
                 onClick={() => { toggle('2'); }}
               >

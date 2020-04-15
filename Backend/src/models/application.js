@@ -20,6 +20,10 @@ const applicationSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'tester',
     },
+    appliedOn: {
+      type: Date,
+      default:Date.now(),
+    },
   }
 );
 
