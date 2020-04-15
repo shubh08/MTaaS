@@ -48,6 +48,9 @@ class SideNavManager extends React.Component {
           <Button className="NavButton" href="/allocateDeviceManager">Allocate Device</Button>
         </div>
         <div className="Button-Padding">
+          <Button className="NavButton" href="/deallocateDeviceManager">Deallocate Device</Button>
+        </div>
+        <div className="Button-Padding">
           <Button className="NavButton" href="/">Log Out</Button>
         </div>
       </div>
