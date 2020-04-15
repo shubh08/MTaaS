@@ -22,6 +22,8 @@ class NewRunTester extends React.Component {
       runName: '',
       deviceOS: '',
       loading: false,
+      projectArns: [],
+      devicePoolArn:'',
       selectedDevices: [],
       fileSelected: null,
       selectedTestType: 'BUILTIN_FUZZ',
@@ -73,7 +75,7 @@ class NewRunTester extends React.Component {
     fd.append('appFileName', this.state.appFileName)
     fd.append('appFileType', this.state.deviceOS == '1' ? 'IOS_APP' : 'ANDROID_APP')
     fd.append('devicePoolName', this.state.devicePoolName)
-    fd.append('devicePoolARNs', this.state.selectedDevices)
+    fd.append('devicePoolARNs', this.state.devicePoolArn)
     fd.append('testType', this.state.selectedTestType)
     fd.append('testPackageFileType', this.state.testPackageFileTypes[this.state.testTypes.indexOf(this.state.selectedTestType)])
     fd.append('file', this.state.fileSelected);
@@ -125,13 +127,37 @@ class NewRunTester extends React.Component {
   result = (params) => {
     console.log('djashdjashjdkshd', params);
   }
-  projectChangeHandler = e => {
+  projectChangeHandler = (e) => {
+    console.log('jhererereererjdhfdshfjkhdsjkhfkjhdjfh')
     let projectName = ''
+    let projectID = e.target.value
     this.state.projects.forEach((el) => {
       if (el._id == e.target.value)
         projectName = el.name
     })
-    this.setState({ projectID: e.target.value, projectName: projectName });
+    axios.get(ROOT_URL + '/testRun/getDevicePoolByProject/' + projectID).then((response) => {
+      if (response.status == 200) {
+        console.log(response.data.devicePools)
+
+        let projectArn = []
+        projectArn = response.data.devicePools.map(el => {
+          return (<option key={el.devicePoolName} value={el.devicePoolARN}>{el.devicePoolName}</option>)
+        })
+        projectArn.unshift(<option key='dummy' value='dummy'>Select Project</option>)
+        this.setState({ projectID: projectID, projectName: projectName, projectArns: projectArn });
+
+      } else {
+        toast.error(response.data.message, {
+          position: toast.POSITION.TOP_CENTER
+        });
+      }
+    }).catch(error => {
+      console.log(error)
+      toast.error('Something went wrong!', {
+        position: toast.POSITION.TOP_CENTER
+      });
+    })
+
   };
 
   onSelect = (params) => {
@@ -212,32 +238,19 @@ class NewRunTester extends React.Component {
               <Input placeholder="Enter the name of the test run" onChange={this.onChangeHandler} name='runName' />
             </FormGroup>
             <FormGroup>
-              <Label>Enter device pool name</Label>
-              <Input placeholder="Enter the name of the device pool" onChange={this.onChangeHandler} name='devicePoolName' />
+              <Label for="exampleSelect">Select Device Pool</Label>
+              <Input type="select" name="devicePoolArn" id="select" onChange={this.onChangeHandler}>>
+                {this.state.projectArns}
+              </Input>
             </FormGroup>
-            <FormGroup>
+            {/* <FormGroup>
               <Label>Device OS</Label>
               <Input type="select" name='deviceOS' onChange={this.onChangeHandler}>
                 <option value="1">iOS</option>
                 <option value="2">Android</option>
               </Input>
-            </FormGroup>
-            <FormGroup>
-              <Label >Select Mobile Devices</Label>
-              {/* <Input type="select" multiple style={{ height: '100%' }} onChange={this.onChangeMultiSelect} >
-                {deviceDropDown}
-              </Input> */}
-              {/* <Multiselect options={this.state.options} onSelectOptions={this.result} /> */}
-              <Multiselect
-                options={deviceDropDown} // Options to display in the dropdown
-                selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
-                onSelect={this.onSelect} // Function will trigger on select event
-                onRemove={this.onRemove} // Function will trigger on remove event
-                showCheckbox={true}
-                closeOnSelect={false}
-                displayValue="name" // Property name to display in the dropdown options
-              />
-            </FormGroup>
+            </FormGroup> */}
+         
             <FormGroup>
               <Label>Select a type of test</Label>
               <Input type="select" name='selectedTestType' onChange={this.onChangeHandler}>
