@@ -39,7 +39,9 @@ import DeallocateDeviceManager from './allocateDevice/deallocateManager'
 import DeallocateDeviceTester from './allocateDevice/deallocateTester'
 import TestRunStatus from './testRunStatus/testRunStatus';
 import NewEmulatorRunTester from './newRun/newEmulatorTestRunner';
- 
+import ViewProjectManager from './project/viewProjectsManager';
+import ViewProjectTester from './project/viewProjectsTester';
+
 class Routes extends React.Component {
 
   render(){
@@ -79,6 +81,9 @@ class Routes extends React.Component {
           <Route exact path='/deallocateDeviceTester' component={DeallocateDeviceTester}/>
           <Route exact path='/getRunStatus' component={TestRunStatus}/>
           <Route exact path='/newEmulatorRun' component={NewEmulatorRunTester}/>
+          <Route exact path='/viewProjectManager' component={ViewProjectManager}/>
+          <Route exact path='/viewProjectTester' component={ViewProjectTester}/>
+
         </Switch>
       </Router>
     )
