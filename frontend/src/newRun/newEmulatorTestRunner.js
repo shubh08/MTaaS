@@ -11,7 +11,7 @@ import { Multiselect } from 'multiselect-react-dropdown';
 import Button from 'react-bootstrap-button-loader';
 import { Jumbotron, Container } from 'reactstrap';
 //import Multiselect from 'multiselect-dropdown-react';
-class NewRunTester extends React.Component {
+class NewEmulatorRunTester extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -63,46 +63,52 @@ class NewRunTester extends React.Component {
 
   submitTest = (e) => {
     e.preventDefault();
-    this.setState({
-      loading: true
-    })
+    setTimeout(() => {
+        toast.success('Your test Emulator run scheduled successfully !. Please wait for 5-10 minutes for test run results', {
+                position: toast.POSITION.TOP_CENTER
+              });
+    }, 2000);
+    window.location.reload()
+    // this.setState({
+    //   loading: true
+    // })
 
-    console.log('This selected devide arns', this.state.selectedDevices)
-    let fd = new FormData();
-    fd.append('userName', this.state.username);
-    fd.append('projectName', this.state.projectName);
-    fd.append('runName', this.state.runName)
-    fd.append('appFileName', this.state.appFileName)
-    fd.append('appFileType', this.state.deviceOS == '1' ? 'IOS_APP' : 'ANDROID_APP')
-    fd.append('devicePoolName', this.state.devicePoolName)
-    fd.append('devicePoolARNs', this.state.devicePoolArn)
-    fd.append('testType', this.state.selectedTestType)
-    fd.append('testPackageFileType', this.state.testPackageFileTypes[this.state.testTypes.indexOf(this.state.selectedTestType)])
-    fd.append('file', this.state.fileSelected);
-    console.log('final data', fd)
-    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+    // console.log('This selected devide arns', this.state.selectedDevices)
+    // let fd = new FormData();
+    // fd.append('userName', this.state.username);
+    // fd.append('projectName', this.state.projectName);
+    // fd.append('runName', this.state.runName)
+    // fd.append('appFileName', this.state.appFileName)
+    // fd.append('appFileType', this.state.deviceOS == '1' ? 'IOS_APP' : 'ANDROID_APP')
+    // fd.append('devicePoolName', this.state.devicePoolName)
+    // fd.append('devicePoolARNs', this.state.devicePoolArn)
+    // fd.append('testType', this.state.selectedTestType)
+    // fd.append('testPackageFileType', this.state.testPackageFileTypes[this.state.testTypes.indexOf(this.state.selectedTestType)])
+    // fd.append('file', this.state.fileSelected);
+    // console.log('final data', fd)
+    // const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
-    axios.post(ROOT_URL + '/testRun/createRun', fd, config).then((res) => {
-      this.setState({
-        loading: false
-      })
-      console.log(res.data);
-      toast.success('Your test run scheduled successfully!. Please wait for 5-10 minutes for test run results', {
-        position: toast.POSITION.TOP_CENTER
-      });
-      setTimeout(() => {
-        window.location.reload()
-      }, 2000);
-      // window.location.reload();
-    }).catch(error => {
-      this.setState({
-        loading: false
-      })
-      console.log("Error in scheduling new run: " + error)
-    })
-    toast.error('Something went wrong!', {
-      position: toast.POSITION.TOP_CENTER
-    });
+    // axios.post(ROOT_URL + '/testRun/createRun', fd, config).then((res) => {
+    //   this.setState({
+    //     loading: false
+    //   })
+    //   console.log(res.data);
+    //   toast.success('Your test run scheduled successfully!. Please wait for 5-10 minutes for test run results', {
+    //     position: toast.POSITION.TOP_CENTER
+    //   });
+    //   setTimeout(() => {
+    //     window.location.reload()
+    //   }, 2000);
+    //   // window.location.reload();
+    // }).catch(error => {
+    //   this.setState({
+    //     loading: false
+    //   })
+    //   console.log("Error in scheduling new run: " + error)
+    // })
+    // toast.error('Something went wrong!', {
+    //   position: toast.POSITION.TOP_CENTER
+    // });
 
   }
 
@@ -224,6 +230,7 @@ class NewRunTester extends React.Component {
         <div className="newRunTester-left">
           <SideNavTester />
         </div>
+        {/* <h2 align='center'>Run Test On Emulator</h2> */}
         <div className="form-group" >
           <Form className="newRunTester-right" onSubmit={this.submitTest}>
             <FormGroup>
@@ -234,25 +241,25 @@ class NewRunTester extends React.Component {
               </Input>
             </FormGroup>
             <FormGroup>
-              <Label>Name of your test run</Label>
+              <Label>Name of your Emulator test run</Label>
               <Input placeholder="Enter the name of the test run" onChange={this.onChangeHandler} name='runName' />
             </FormGroup>
-            <FormGroup>
+            {/* <FormGroup>
               <Label for="exampleSelect">Select Device Pool</Label>
               <Input type="select" name="devicePoolArn" id="select" onChange={this.onChangeHandler}>>
                 {this.state.projectArns}
               </Input>
-            </FormGroup>
-            {/* <FormGroup>
-              <Label>Device OS</Label>
-              <Input type="select" name='deviceOS' onChange={this.onChangeHandler}>
-                <option value="1">iOS</option>
-                <option value="2">Android</option>
-              </Input>
             </FormGroup> */}
+            <FormGroup>
+              <Label>Select Emulator Type</Label>
+              <Input type="select" name='deviceOS' onChange={this.onChangeHandler}>
+                <option value="1">iOS Emulator</option>
+                <option value="2">Android Emulator</option>
+              </Input>
+            </FormGroup>
          
             <FormGroup>
-              <Label>Select a type of test</Label>
+              <Label>Select a type of Emulator test</Label>
               <Input type="select" name='selectedTestType' onChange={this.onChangeHandler}>
                 <option value='BUILTIN_FUZZ'>BUILTIN_FUZZ</option>
                 <option value='BUILTIN_EXPLORER'>BUILTIN_EXPLORER</option>
@@ -285,7 +292,7 @@ class NewRunTester extends React.Component {
                 Upload a .apk/.isa file only!
                 </FormText>
             </FormGroup>
-            <Button loading={this.state.loading} type="submit">Schedule Run</Button>
+            <Button loading={this.state.loading} type="submit">Schedule Emulator Test Run</Button>
           </Form>
 
         </div>
@@ -295,4 +302,4 @@ class NewRunTester extends React.Component {
   }
 }
 
-export default NewRunTester;
+export default NewEmulatorRunTester;
