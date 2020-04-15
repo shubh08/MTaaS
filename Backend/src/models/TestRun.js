@@ -4,8 +4,7 @@ const { Schema } = mongoose;
 
 var testRunSchema=new Schema({
     userName: {
-        type: String,
-        required: [true, 'Test Runner Name is mandatory'],
+        type: String
       },
       projectName:{
         type: String
