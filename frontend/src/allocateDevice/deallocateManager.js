@@ -106,10 +106,11 @@ class DeallocateManager extends React.Component {
             });
         })
     }
-    toggle = () => {
-        var toolT = this.state.tooltipOpen;
-        this.setState({ tooltipOpen: !toolT })
-    }
+    toggle = (target) => {
+        this.setState({
+          [target]: !this.state[target]
+        });
+      };
     render() {
 
         var arrayProject = [<option value={0} >Select</option>];
@@ -152,23 +153,36 @@ class DeallocateManager extends React.Component {
                     displayarray.push("Samsung Galaxy S9+ (Unlocked) - OS 8, ")
                 } else if (val[i] == "arn:aws:devicefarm:us-west-2::device:F27533F73A894EBDACC0E1B694288B77") {
                     displayarray.push("Samsung Galaxy S9 (Unlocked) - OS 8, ")
+                }else if (val[i] == "arn:aws:devicefarm:us-west-2::device:334A79FA3096423885B15609A1A50E79") {
+                    displayarray.push("Apple iPhone 7 - OS 12, ")
+                }
+                else if (val[i] == "arn:aws:devicefarm:us-west-2::device:51ED4AB875C543AC97E6F65F7473E7B8") {
+                    displayarray.push("Apple iPhone 7 Plus - OS 12, ")
+                }
+                else if (val[i] == "arn:aws:devicefarm:us-west-2::device:AF74786682D3407D89BD16557FEE97A9") {
+                    displayarray.push("Apple iPhone 8 - OS 12, ")
+                }
+                else if (val[i] == "arn:aws:devicefarm:us-west-2::device:D125AEEE8614463BAE106865CAF4470E") {
+                    displayarray.push("Apple iPhone X - OS 12, ")
+                }
+                else if (val[i] == "arn:aws:devicefarm:us-west-2::device:7FCC95F6737A434B9896FF77DA9E2DB6") {
+                    displayarray.push("Apple iPhone XR - OS 12, ")
+                } else if (val[i] == "arn:aws:devicefarm:us-west-2::device:A490B12A656C49678A80B5B0F7D33FA1") {
+                    displayarray.push("Apple iPhone XS - OS 12, ")
+                } else if (val[i] == "arn:aws:devicefarm:us-west-2::device:D89BB79517414C5E89ED1A98FEFC9D7A") {
+                    displayarray.push("Apple iPhone 8 Plus - OS 12.1, ")
+                } else if (val[i] == "arn:aws:devicefarm:us-west-2::device:F4A92C7101524540AB9E17F2857551D4") {
+                    displayarray.push("Apple iPhone XS Max - OS 12.1, ")
+                } else if (val[i] == "arn:aws:devicefarm:us-west-2::device:B5D4C9845DEA4EEB994FB44F572E0B5C") {
+                    displayarray.push("Apple iPhone XR - OS 12.4.1, ")
+                } else if (val[i] == "arn:aws:devicefarm:us-west-2::device:FB7DB406870A445A90958D233DF789BC") {
+                    displayarray.push("Apple iPhone 11 Pro - OS 13.1.3, ")
+                } else if (val[i] == "arn:aws:devicefarm:us-west-2::device:8DCCC145A8A54191B61C6EF67F27F507") {
+                    displayarray.push("Apple iPhone 11 Pro Max - OS 13.1.3, ")
+                }else if (val[i] == "arn:aws:devicefarm:us-west-2::device:8EFC9DF49F09451E831E93DA281DAF9F") {
+                    displayarray.push("Apple iPhone 11 - OS 13.1.3, ")
                 }
 
-                //   } else {
-                //     deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:334A79FA3096423885B15609A1A50E79">Apple iPhone 7 - OS 12</option>)
-                //     deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:51ED4AB875C543AC97E6F65F7473E7B8">Apple iPhone 7 Plus - OS 12</option>)
-                //     deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:AF74786682D3407D89BD16557FEE97A9">Apple iPhone 8 - OS 12</option>)
-                //     deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:D125AEEE8614463BAE106865CAF4470E">Apple iPhone X - OS 12</option>)
-                //     deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:7FCC95F6737A434B9896FF77DA9E2DB6">Apple iPhone XR - OS 12</option>)
-                //     deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:A490B12A656C49678A80B5B0F7D33FA1">Apple iPhone XS - OS 12</option>)
-                //     deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:D89BB79517414C5E89ED1A98FEFC9D7A">Apple iPhone 8 Plus - OS 12.1</option>)
-                //     deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:F4A92C7101524540AB9E17F2857551D4">Apple iPhone XS Max - OS 12.1</option>)
-                //     deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:B5D4C9845DEA4EEB994FB44F572E0B5C">Apple iPhone XR - OS 12.4.1</option>)
-                //     deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:FB7DB406870A445A90958D233DF789BC">Apple iPhone 11 Pro - OS 13.1.3</option>)
-                //     deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:8DCCC145A8A54191B61C6EF67F27F507">Apple iPhone 11 Pro Max - OS 13.1.3</option>)
-                //     deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:8EFC9DF49F09451E831E93DA281DAF9F">Apple iPhone 11 - OS 13.1.3</option>)
-                //   }
-                //Do something
             }
         }
         arrayManagerHead.push(<thead>
@@ -193,7 +207,7 @@ class DeallocateManager extends React.Component {
                 <td>{pool.devicePoolName}</td>
                 <td>{pool.projectID.name}</td>
                 <th><h4><FaMobileAlt id={pop_id} onClick={() => { this.viewAllocation(pool.devicePoolARN) }}></FaMobileAlt></h4></th>
-                <Popover placement="bottom" isOpen={this.state.tooltipOpen} target={pop_id} toggle={this.toggle}>
+                <Popover placement="bottom" isOpen={this.state[pop_id]} target={pop_id} toggle={() => this.toggle(pop_id)}>
                     <PopoverHeader>Devices</PopoverHeader>
                     <PopoverBody>{displayarray}</PopoverBody>
                 </Popover>
