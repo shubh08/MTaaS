@@ -18,6 +18,9 @@ const billingSchema = new Schema(
     date:{
       type:Date,
       default:moment()
+    },
+    type:{
+      type:String
     }
   }
 );

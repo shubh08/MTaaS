@@ -44,6 +44,7 @@ const ProjectTabs = (props) => {
       .then((response) => {
         let projects = []
         projects = response.data.activeprojects.map((el, i) => {
+          if(el.active)
           return (
 
             <Row >
@@ -78,10 +79,10 @@ const ProjectTabs = (props) => {
         
         let applicationsPending = []
         let applicationsDecisionMade = []
-        
+        console.log(response.data.applications)
         response.data.applications.forEach((el, i) => {
           if(el.projectID!=null)
-          if(el.status=='Pending')
+          if(el.status=='Pending' && el.projectID.active)
           applicationsPending.push(
           
             <Row >
@@ -103,7 +104,7 @@ const ProjectTabs = (props) => {
                 <Row style={{marginLeft:"10px"}} ><Label style={{fontWeight:'bolder',color:'Blue'}}>Project Requirement</Label></Row>
                 <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Technologies Needed: </Label> {el.projectID.technologies}</Row>
                 <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Test Criteria : </Label>{el.projectID.testCriteria}</Row>
-                <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Status : </Label><Badge style={{height:'150%',fontSize:'100%',marginLeft:'1%'}} color="warning">Applied</Badge> </Row>
+                <Row style={{marginLeft:"10px"}}><Label style={{fontWeight:'bold'}}>Status : </Label><Badge style={{height:'150%',fontSize:'100%',marginLeft:'1%',marginRight:'1%'}} color="warning">Applied </Badge> on {el.appliedOn.split("T")[0]} </Row>
                 </Col>
                 <Col md={2}></Col>
                 </Row>
@@ -111,6 +112,7 @@ const ProjectTabs = (props) => {
    </Card.Body>
           </Card></Row>)
           else
+          if(el.projectID.active)
           applicationsDecisionMade.push(
             <Row>
                 <Card style={{ width:"70%", marginTop: '2%',marginLeft:'13%',marginRight:'13%', color: 'black', fontSize: '15px' }}>
@@ -149,7 +151,7 @@ const ProjectTabs = (props) => {
   return (
     <div>
       <Nav tabs>
-        <NavItem style={{marginTop:'5%'}}>
+        <NavItem style={{marginTop:'5%',fontWeight:'bolder'}}>
           <NavLink 
             className={classnames({ active: activeTab === '1' })}
             onClick={() => { toggle('1'); }}
@@ -158,7 +160,7 @@ const ProjectTabs = (props) => {
 
           </NavLink>
         </NavItem>
-        <NavItem style={{marginTop:'5%'}}>
+        <NavItem style={{marginTop:'5%',fontWeight:'bolder'}}>
           <NavLink 
             className={classnames({ active: activeTab === '2' })}
             onClick={() => { toggle('2'); }}
@@ -166,7 +168,7 @@ const ProjectTabs = (props) => {
             My Pending Applications
           </NavLink>
         </NavItem>
-        <NavItem style={{marginTop:'5%'}}>
+        <NavItem style={{marginTop:'5%',fontWeight:'bolder'}}>
           <NavLink 
             className={classnames({ active: activeTab === '3' })}
             onClick={() => { toggle('3'); }}

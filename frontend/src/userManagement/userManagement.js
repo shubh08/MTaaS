@@ -272,7 +272,16 @@ class UserManagement extends React.Component {
         var arrayTester = [];
         var arrayProject = [];
         var count = 0;
-
+        var arrayManagerHead =[]
+        arrayManagerHead.push(<thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Role</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>)
         this.state.managers.map((manager) => {
             count = count + 1;
             if (manager.active) {
@@ -387,6 +396,7 @@ class UserManagement extends React.Component {
                                     <Col md={2}></Col>
                                     <Col>
                                         <Table striped className="profile-margin-top scrollUserMgmt">
+                                        {arrayManagerHead}
                                             <tbody>
                                                 {arrayManager}
                                                 {arrayTester}

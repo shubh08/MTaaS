@@ -28,7 +28,9 @@ class SideNavAdmin extends React.Component {
         <div className="Button-Padding">
           <Button className="NavButton" href="/bugTrackerAdmin">Bug Tracker</Button>
         </div>
-
+        <div className="Button-Padding">
+          <Button className="NavButton" href="/">Log Out</Button>
+        </div>
 
       </div>
     )}

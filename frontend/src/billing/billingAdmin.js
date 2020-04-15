@@ -21,8 +21,11 @@ class BillingAdmin extends React.Component {
       },
       projects: [],
       optionSelected: '',
-      yAxis: [],
-      all_days: []
+      cost: [],
+      all_days: [],
+      timeDeviceFarm:0,
+      timeEmulator:0,
+      totalCost:0
     };
   }
   componentWillMount() {
@@ -42,7 +45,7 @@ class BillingAdmin extends React.Component {
     while (date.getMonth() == month) {
       var d = date.getFullYear() + '-' + date.getMonth().toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0');
       this.state.all_days.push(d);
-      this.state.yAxis.push(Math.floor(Math.random() * (25 - 10 + 1)) + 10)
+      this.state.cost.push(0)
       date.setDate(date.getDate() + 1);
 
     }
@@ -69,7 +72,7 @@ class BillingAdmin extends React.Component {
             pointHoverBorderWidth: 2,
             pointRadius: 1,
             pointHitRadius: 10,
-            data: this.state.yAxis,
+            data: this.state.cost,
           },
         ],
       },
@@ -111,82 +114,161 @@ class BillingAdmin extends React.Component {
   }
   listChangeHandler = (e) => {
     this.setState({ optionSelected: e.target.value });
-    var date = new Date();
-    var month = date.getMonth();
-    date.setDate(1);
-    this.setState({ yAxis: [] })
-    while (date.getMonth() == month) {
-      this.state.yAxis.push(Math.floor(Math.random() * (25 - 10 + 1)) + 10)
-      date.setDate(date.getDate() + 1);
-      this.setState({
-        dataLine: {
-          labels: this.state.all_days,
-          datasets: [
-            {
-              label: '$',
-              fill: true,
-              lineTension: 0.3,
-              backgroundColor: 'rgba(225, 204,230, .3)',
-              borderColor: '#00acee',
-              borderCapStyle: 'butt',
-              borderDash: [],
-              borderDashOffset: 0.0,
-              borderJoinStyle: 'miter',
-              pointBorderColor: 'rgb(0,0,0)',
-              pointBackgroundColor: 'rgb(0, 0, 0)',
-              pointBorderWidth: 4,
-              pointHoverRadius: 1,
-              pointHoverBackgroundColor: 'rgb(0, 0, 0)',
-              pointHoverBorderColor: 'rgba(220, 220, 220,1)',
-              pointHoverBorderWidth: 2,
-              pointRadius: 1,
-              pointHitRadius: 10,
-              data: this.state.yAxis,
+    this.setState({yAxis:[]})
+    axios.get(ROOT_URL + "/billing/" + e.target.value).then(response => {
+      console.log(response.data)
+      if (response.status == 200) {
+        this.setState({totalCost:response.data.totalCost,timeDeviceFarm:response.data.time/60,timeEmulator:0})
+        this.setState({
+          dataLine: {
+            labels: response.data.days,
+            datasets: [
+              {
+                label: '$',
+                fill: true,
+                lineTension: 0.3,
+                backgroundColor: 'rgba(225, 204,230, .3)',
+                borderColor: '#00acee',
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: 'rgb(0,0,0)',
+                pointBackgroundColor: 'rgb(0, 0, 0)',
+                pointBorderWidth: 4,
+                pointHoverRadius: 1,
+                pointHoverBackgroundColor: 'rgb(0, 0, 0)',
+                pointHoverBorderColor: 'rgba(220, 220, 220,1)',
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: response.data.costs,
+              },
+            ],
+          },
+          lineChartOptions: {
+            responsive: true,
+            scales: {
+              xAxes: [
+                {
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Date',
+                    fontSize: 20,
+                  },
+                  gridLines: {
+                    display: false,
+                    color: 'rgba(0, 0, 0, 0.1)',
+                  },
+                },
+              ],
+              yAxes: [
+                {
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Cost per day',
+                    fontSize: 20,
+                  },
+                  gridLines: {
+                    display: false,
+                    color: 'rgba(0, 0, 0, 0.1)',
+                  },
+                },
+              ],
             },
-          ],
-        },
-        lineChartOptions: {
-          responsive: true,
-          scales: {
-            xAxes: [
-              {
-                scaleLabel: {
-                  display: true,
-                  labelString: 'Date',
-                  fontSize: 20,
-                },
-                gridLines: {
-                  display: false,
-                  color: 'rgba(0, 0, 0, 0.1)',
-                },
-              },
-            ],
-            yAxes: [
-              {
-                scaleLabel: {
-                  display: true,
-                  labelString: 'Cost per day',
-                  fontSize: 20,
-                },
-                gridLines: {
-                  display: false,
-                  color: 'rgba(0, 0, 0, 0.1)',
-                },
-              },
-            ],
+            legend: {
+              display: false,
+            },
           },
-          legend: {
-            display: false,
-          },
-        },
-      });
-      console.log(this.state.yAxis)
-    }
-    //getbilling details
+        });
+      } else {
+        toast.error(response.data.message, {
+          position: toast.POSITION.TOP_CENTER
+        });
+      }
+    })
+      
+    
   }
+  // listChangeHandler = (e) => {
+  //   this.setState({ optionSelected: e.target.value });
+  //   var date = new Date();
+  //   var month = date.getMonth();
+  //   date.setDate(1);
+  //   this.setState({ yAxis: [] })
+  //   while (date.getMonth() == month) {
+  //     this.state.yAxis.push(Math.floor(Math.random() * (25 - 10 + 1)) + 10)
+  //     date.setDate(date.getDate() + 1);
+  //     this.setState({
+  //       dataLine: {
+  //         labels: this.state.all_days,
+  //         datasets: [
+  //           {
+  //             label: '$',
+  //             fill: true,
+  //             lineTension: 0.3,
+  //             backgroundColor: 'rgba(225, 204,230, .3)',
+  //             borderColor: '#00acee',
+  //             borderCapStyle: 'butt',
+  //             borderDash: [],
+  //             borderDashOffset: 0.0,
+  //             borderJoinStyle: 'miter',
+  //             pointBorderColor: 'rgb(0,0,0)',
+  //             pointBackgroundColor: 'rgb(0, 0, 0)',
+  //             pointBorderWidth: 4,
+  //             pointHoverRadius: 1,
+  //             pointHoverBackgroundColor: 'rgb(0, 0, 0)',
+  //             pointHoverBorderColor: 'rgba(220, 220, 220,1)',
+  //             pointHoverBorderWidth: 2,
+  //             pointRadius: 1,
+  //             pointHitRadius: 10,
+  //             data: this.state.yAxis,
+  //           },
+  //         ],
+  //       },
+  //       lineChartOptions: {
+  //         responsive: true,
+  //         scales: {
+  //           xAxes: [
+  //             {
+  //               scaleLabel: {
+  //                 display: true,
+  //                 labelString: 'Date',
+  //                 fontSize: 20,
+  //               },
+  //               gridLines: {
+  //                 display: false,
+  //                 color: 'rgba(0, 0, 0, 0.1)',
+  //               },
+  //             },
+  //           ],
+  //           yAxes: [
+  //             {
+  //               scaleLabel: {
+  //                 display: true,
+  //                 labelString: 'Cost per day',
+  //                 fontSize: 20,
+  //               },
+  //               gridLines: {
+  //                 display: false,
+  //                 color: 'rgba(0, 0, 0, 0.1)',
+  //               },
+  //             },
+  //           ],
+  //         },
+  //         legend: {
+  //           display: false,
+  //         },
+  //       },
+  //     });
+  //     console.log(this.state.yAxis)
+  //   }
+  //   //getbilling details
+  // }
   render() {
-    let optionsList = []
+    let optionsList = [<option value={0} >Select</option>]
     this.state.projects && this.state.projects.map((project) => {
+      if(project.active)
       optionsList.push(<option value={project._id} >{project.name}</option>)
     })
     return (
@@ -230,21 +312,21 @@ class BillingAdmin extends React.Component {
               <FormGroup className="billingAdmin-box-item" row>
                 <Label sm={5}> Total Device Farm Hours </Label>
                 <Col sm={3}>
-                  <Input placeholder=" Select project " />
+                {this.state.timeDeviceFarm} Hours
                 </Col>
               </FormGroup>
 
               <FormGroup className="billingAdmin-box-item" row>
                 <Label sm={5}> Total Emulator Instance Hours </Label>
                 <Col sm={3}>
-                  <Input placeholder=" Select project " />
+                {this.state.timeEmulator} Hours
                 </Col>
               </FormGroup>
 
               <FormGroup className="billingAdmin-box-item" row>
                 <Label sm={5}> Total Project Cost </Label>
                 <Col sm={3}>
-                  <Input placeholder=" Select project " />
+                $ {this.state.totalCost} 
                 </Col>
               </FormGroup>
             </Form>

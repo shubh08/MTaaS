@@ -15,6 +15,8 @@ import './signup.css';
 import { ROOT_URL } from '../config/config.js'
 import SideNavManager from '../navigation/sidenavManager';
 import TopNavManager from '../navigation/topnavManager';
+import { toast } from 'react-toastify';
+import SideNavTester from '../navigation/sidenavTester';
 
 
 class TesterFilesView extends React.Component {
@@ -25,7 +27,8 @@ class TesterFilesView extends React.Component {
             filesfromS3: [],
             options: [],
             projectName: null,
-            projectsOptions:[]
+            projectsOptions:[],
+            name:''
             
 
         }
@@ -47,7 +50,7 @@ class TesterFilesView extends React.Component {
 
     loadProjects = () => {
         console.log('Project Name',this.state.projectName)
-        let data = { projectName: this.state.projectName, testerName: localStorage.getItem('name') }
+        let data = { projectName: this.state.projectName, testerName: this.state.name }
         axios.post(ROOT_URL + '/tester/loadFiles/', data).then(res => {
             console.log(res.data)
             this.setState({
@@ -68,7 +71,7 @@ class TesterFilesView extends React.Component {
 
         e.preventDefault()
         let fd = new FormData()
-        fd.append('testerName', localStorage.getItem('name'));
+        fd.append('testerName', this.state.name);
         fd.append('testerID', localStorage.getItem('TesterID'));
         fd.append('projectName', this.state.projectName);
         fd.append('file', this.state.fileSelected);
@@ -91,16 +94,31 @@ class TesterFilesView extends React.Component {
     componentDidMount() {
 
 
-        axios.get(ROOT_URL + '/projectsForTester/'+localStorage.getItem('TesterID')).then(res => {
-            console.log('result from the load projects', res)
-            let projectsOpts = []
-            projectsOpts = res.data.projects.map(el => {
-                return (<option key={el.name} value={el.name}>{el.name}</option>)
-            })
-            projectsOpts.unshift(<option key='dummy' value='dummy'>Select Project</option>)
-            this.setState({ projectsOptions: projectsOpts })
+        axios.get(ROOT_URL + '/testerByTesterID/' + localStorage.getItem('TesterID')).then((response) => {
+            if (response.status == 200) {
+              let tester = response.data.testers;
+              axios.get(ROOT_URL + '/projectsForTester/'+localStorage.getItem('TesterID')).then(res => {
+                console.log('result from the load projects', res)
+                let projectsOpts = []
+                projectsOpts = res.data.projects.map(el => {
+                    return (<option key={el.name} value={el.name}>{el.name}</option>)
+                })
+                projectsOpts.unshift(<option key='dummy' value='dummy'>Select Project</option>)
+                this.setState({ name: tester.name, email: tester.email, projectsOptions: projectsOpts});
+    
+            }).catch(err => console.log(err))
+            } else {
+              toast.error(response.data.message, {
+                position: toast.POSITION.TOP_CENTER
+              });
+            }
+          }).catch(error => {
+            toast.error('Something went wrong!', {
+              position: toast.POSITION.TOP_CENTER
+            });
+          })
 
-        }).catch(err => console.log(err))
+        
        
 
        
@@ -122,7 +140,7 @@ class TesterFilesView extends React.Component {
               <TopNavManager/>
             </div>
             <div className="homepage-left">
-              <SideNavManager/>
+              <SideNavTester/>
             </div>
             
             <div className="homepage-right">
