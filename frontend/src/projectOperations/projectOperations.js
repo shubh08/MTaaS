@@ -141,7 +141,7 @@ class ProjectOperations extends React.Component {
         var count = 0;
         arrayProjectHeader.push(<thead>
             <tr>
-                <th>#</th>
+               
                 <th>Project Name</th>
                 <th>Description</th>
                 <th>Technologies</th>
@@ -156,7 +156,7 @@ class ProjectOperations extends React.Component {
             var enddate = project.endDate.split("T")[0];
             if(project.active){
                 arrayProject.push(<tr>
-                    <th scope="row">{count}</th>
+                    
                     <td>{project.name}</td>
                     <td>{project.description}</td>
                     <td>{project.technologies}</td>
@@ -167,7 +167,7 @@ class ProjectOperations extends React.Component {
                 </tr>)
             }else{
                 arrayProject.push(<tr>
-                    <th scope="row">{count}</th>
+                    
                     <td>{project.name}</td>
                     <td>{project.description}</td>
                     <td>{project.technologies}</td>
@@ -183,7 +183,7 @@ class ProjectOperations extends React.Component {
         this.state.testers.map((tester) => {
             count = count + 1;
             arrayTester.push(<tr>
-                <th scope="row">{count}</th>
+                
                 <td>{tester.name}</td>
                 <td>{tester.email}</td>
                 <td>{tester.technologies}</td>

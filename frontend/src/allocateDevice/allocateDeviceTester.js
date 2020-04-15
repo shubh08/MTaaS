@@ -85,6 +85,7 @@ class AllocateDeviceTester extends React.Component {
   }
   render() {
     var addDropDown = this.state.projects.map((project) => {
+      if(project.active)
       return (<option value={project._id}>{project.name}</option>)
     })
     var deviceDropDown = [];
