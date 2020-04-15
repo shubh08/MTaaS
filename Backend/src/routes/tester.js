@@ -3,6 +3,7 @@ var router = express.Router();
 var tester = require('../models/tester');
 var notification = require('../models/notification');
 var project = require('../models/project');
+var bugreport = require('../models/bugReport');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 var moment = require('moment');
@@ -70,7 +71,7 @@ const storage = multer.diskStorage({
     },
     filename: function(req,file,cb){
         cb(null,file.originalname);
-      
+
     }
 })
 
@@ -140,7 +141,7 @@ router.get('/loadProjects/:id', function (req, res, next) {
                     res.status(200).send(finalResult);
 
                 })
-                
+
             })
 
         }
@@ -232,6 +233,45 @@ router.post('/loadFiles', function (req, res, next) {
         });
 
 });
+
+router.post('/createBug', function (req, res, next) {
+    console.log(req.body);
+    const severity = req.body.severity;
+    const bugDescription = req.body.bugDescription;
+    const projectID = req.body.projectID;
+    const testID = req.body.testID;
+    const path = req.body.path;
+    const newBug = new bugreport({
+        severity,
+        bugDescription,
+        projectID,
+        testID,
+        path
+    });
+
+    newBug.save((err, bugreport) => {
+        //console.log(bugreport);
+        if (err) {
+          //console.log('here 1st');
+          var error = { message: "Bug is already created" }
+          next(error);
+        }
+        else if (bugreport == null) {
+            next();
+        } else {
+            //console.log('here 2nd')
+            //res.status(200).send({ message: "Successful", id: bugreport._id });
+            tester.findByIdAndUpdate(testID, { '$push': { "bugID": bugreport._id } }).exec((err, tester) => {
+                if (err || tester == null) {
+                    next();
+                } else {
+                    res.status(200).send({ message: "Bug Created Successfully" });
+                }
+            })
+        }
+    })
+});
+
 
 router.use((error, req, res, next) => {
     res.writeHead(201, {
