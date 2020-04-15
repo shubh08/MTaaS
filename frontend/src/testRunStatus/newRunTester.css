@@ -14,7 +14,14 @@
   width: 20%;
   float: left;
 }
-
+.OHAEI {
+  margin-left: 700px !important;
+  padding-top: 30px !important;
+  padding: 20px;
+  font-size: 150%;
+  font-style: italic;
+  line-height: 1.5;
+}
 .newRunTester-right {
   text-align: center;
   top: 6.9%;
