@@ -585,15 +585,15 @@ router.post('/deleteDevicePool', function (req, res, next) {
          }
      ); 
 })
-router.get('/getDevicePoolByProject', function (req, res, next) {
-    let poolName = {"arn": req.query.id}
-    devicefarm.getDevicePool(poolName).promise().then(
-        function(data){
-            res.status(200).send({arn : data}) ; 
-         },function(error){
-             res.status(400).json({ message: error })
-         }
-     ); 
-})
+router.get('/getDevicePoolByProject/(:id)', function (req, res, next) {
+    let project = {"projectID": req.params.id}
+    devicePool.find(project).populate("projectID").exec((err, devicePools) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({devicePools : devicePools});
+        }
+    });
+});
 module.exports = router;
 
