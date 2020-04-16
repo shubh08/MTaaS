@@ -16,6 +16,9 @@ class SideNavManager extends React.Component {
           <Button className="NavButton" href="/createProject">Create Project</Button>
         </div>
         <div className="Button-Padding">
+          <Button className="NavButton" href="/viewProjectManager">My Projects</Button>
+        </div>
+        <div className="Button-Padding">
           <Button className="NavButton" href="/profileManager">My profile</Button>
         </div>
 
@@ -46,6 +49,9 @@ class SideNavManager extends React.Component {
         </div>
         <div className="Button-Padding">
           <Button className="NavButton" href="/allocateDeviceManager">Allocate Device</Button>
+        </div>
+        <div className="Button-Padding">
+          <Button className="NavButton" href="/deallocateDeviceManager">Deallocate Device</Button>
         </div>
         <div className="Button-Padding">
           <Button className="NavButton" href="/">Log Out</Button>

@@ -16,7 +16,9 @@ class SideNavTester extends React.Component {
         <div className="Button-Padding">
           <Button className="NavButton" href="/profileTester">My profile</Button>
         </div>
-
+        <div className="Button-Padding">
+          <Button className="NavButton" href="/viewProjectTester">My Projects</Button>
+        </div>
         <div className="Button-Padding">
           <Button className="NavButton" href="/createRunTester">Create Run</Button>
         </div>
@@ -46,6 +48,9 @@ class SideNavTester extends React.Component {
         </div>
         <div className="Button-Padding">
           <Button className="NavButton" href="/allocateDeviceTester">Allocate Device</Button>
+        </div>
+        <div className="Button-Padding">
+          <Button className="NavButton" href="/deallocateDeviceTester">Deallocate Device</Button>
         </div>
         <div className="Button-Padding">
           <Button className="NavButton" href="/">Log Out</Button>
