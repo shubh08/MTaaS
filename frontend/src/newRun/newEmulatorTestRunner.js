@@ -68,7 +68,7 @@ class NewEmulatorRunTester extends React.Component {
                 position: toast.POSITION.TOP_CENTER
               });
     }, 2000);
-    window.location.reload()
+    //window.location.reload()
     // this.setState({
     //   loading: true
     // })

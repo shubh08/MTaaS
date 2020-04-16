@@ -100,9 +100,6 @@ class NewRunTester extends React.Component {
       })
       console.log("Error in scheduling new run: " + error)
     })
-    toast.error('Something went wrong!', {
-      position: toast.POSITION.TOP_CENTER
-    });
 
   }
 
@@ -143,7 +140,7 @@ class NewRunTester extends React.Component {
         projectArn = response.data.devicePools.map(el => {
           return (<option key={el.devicePoolName} value={el.devicePoolARN}>{el.devicePoolName}</option>)
         })
-        projectArn.unshift(<option key='dummy' value='dummy'>Select Project</option>)
+        projectArn.unshift(<option key='dummy' value='dummy'>Select Device Pool Arn</option>)
         this.setState({ projectID: projectID, projectName: projectName, projectArns: projectArn });
 
       } else {
