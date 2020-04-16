@@ -3,6 +3,7 @@ var moment = require('moment');
 var router = express.Router();
 var manager = require('../models/manager');
 var project = require('../models/project');
+var bugreports = require('../models/bugReport');
 const AWS = require('aws-sdk');
 var tester = require('../models/tester');
 const multerS3 = require('multer-s3')
@@ -248,6 +249,7 @@ router.put('/unblockProject', function (req, res, next) {
         }
     });
 });
+
 router.get('/notification/(:id)', function (req, res, next) {
     manager.findById(req.params.id).populate({ path: "notificationID", populate: [{ path: 'managerID', model: 'manager' }, { path: 'projectID', model: 'project' }] }).exec((err, manager) => {
         if (err) {
@@ -257,6 +259,21 @@ router.get('/notification/(:id)', function (req, res, next) {
         }
     });
 });
+
+// router.get('/bugs/:id', function (req, res, next) {
+//     console.log(req.body);
+//     console.log("Inside Bugs");
+//     bugreports.findById(req.params.id).exec((err, project) => {
+//     //bugreports.find({ 'projectID': req.params.id }).exec((err, bug) => {
+//       if (err) {
+//           next(err);
+//       } else {
+//           console.log('Got all the bugs on the project', bug)
+//           res.status(200).send({ bugs: bug });
+//           console.log(res.body);
+//       }
+//   });
+// });
 
 router.put('/update', function (req, res, next) {
     var update = { name: req.body.name, about: req.body.about, email: req.body.email, company: req.body.company }
@@ -333,7 +350,7 @@ deleteFile = async(req,res,next)=>{
         catch (err) {
             next(err)
         }
-    } 
+    }
     catch (err) {
         next(err)
     }

@@ -115,7 +115,7 @@ class ManagerProfile extends React.Component{
                           id="email"
                           required readOnly />
                       </FormGroup>
-      
+
                       <FormGroup>
                         <h5 >About you</h5>
                         <Input type="textarea" name="text"

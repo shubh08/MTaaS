@@ -3,6 +3,7 @@ var router = express.Router();
 var project = require('../models/project');
 var manager = require('../models/manager');
 var tester = require('../models/tester');
+var bugreports = require('../models/bugReport');
 var admin = require('../models/admin');
 var billing = require('../models/billing');
 var moment = require("moment")
@@ -17,6 +18,7 @@ router.get('/allManagers', function (req, res, next) {
         }
     });
 });
+
 router.get('/managerByManagerID/(:id)', function (req, res, next) {
     manager.findById(req.params.id).populate("projectID").exec((err, manager) => {
         if (err) {
@@ -26,6 +28,23 @@ router.get('/managerByManagerID/(:id)', function (req, res, next) {
         }
     });
 });
+
+router.get('/bugs/:id', function (req, res, next) {
+    console.log("Inside Bugs");
+    console.log(req.params.id);
+    bugreports.findById(req.params.id).exec((err, bugreport) => {
+        if (err) {
+            console.log(err);
+            next();
+        } else {
+            console.log("bug reports")
+            res.status(200).send({ bugreport: bugreport });
+            console.log(res.body);
+
+        }
+    });
+});
+
 router.get('/managerByProjectID/(:id)', function (req, res, next) {
     manager.find({ projectID: { $in: [req.params.id] } }).populate("projectID").exec((err, manager) => {
         if (err) {
@@ -168,7 +187,7 @@ router.use((error, req, res, next) => {
 
 router.use((req, res, next) => {
     var message = [];
-    var errors = "Something went wrong!";
+    var errors = "Something went wrong s!";
     message.push(errors);
     res.writeHead(201, {
         'Content-Type': 'text/plain'

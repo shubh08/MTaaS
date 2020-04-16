@@ -250,9 +250,9 @@ router.post('/createBug', function (req, res, next) {
     });
 
     newBug.save((err, bugreport) => {
-        //console.log(bugreport);
+        console.log(bugreport);
         if (err) {
-          //console.log('here 1st');
+          console.log('here 1st');
           var error = { message: "Bug is already created" }
           next(error);
         }
@@ -260,14 +260,14 @@ router.post('/createBug', function (req, res, next) {
             next();
         } else {
             //console.log('here 2nd')
-            //res.status(200).send({ message: "Successful", id: bugreport._id });
-            tester.findByIdAndUpdate(testID, { '$push': { "bugID": bugreport._id } }).exec((err, tester) => {
-                if (err || tester == null) {
-                    next();
-                } else {
-                    res.status(200).send({ message: "Bug Created Successfully" });
-                }
-            })
+            res.status(200).send({ message: "Successful", id: bugreport._id });
+            // tester.findByIdAndUpdate(testID, { '$push': { "bugID": bugreport._id } }).exec((err, tester) => {
+            //     if (err || tester == null) {
+            //         next();
+            //     } else {
+            //         res.status(200).send({ message: "Bug Created Successfully" });
+            //     }
+            // })
         }
     })
 });

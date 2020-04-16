@@ -24,6 +24,13 @@
   width: 80%;
   float: right;
 }
+.bug-padding{
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 2%;
+  overflow-y: auto;
+}
+
 
 .bugtracker-header {
   background-color: #282c34;
