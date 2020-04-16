@@ -72,14 +72,16 @@ createRun = async (req, res) => {
     const devicePoolName = req.body.devicePoolName
     const devicePoolARNs = req.body.devicePoolARNs
     let DEVICE_POOL_ARN = 'arn:aws:devicefarm:us-west-2::devicepool:082d10e5-d7d7-48a5-ba5c-b33d66efa1f5'
+    // 'arn:aws:devicefarm:us-west-2::devicepool:082d10e5-d7d7-48a5-ba5c-b33d66efa1f5'
     const testType = req.body.testType
     const testPackageFileName = 'zip-with-dependencies.zip'
     const testPackageFileType = req.body.testPackageFileType
 
     const testPackageFile = 'testScriptFolder/zip-with-dependencies.zip'
     console.log('Request body is', req.body)
-    //res.status(200).send({message:'ok'})
+    res.status(200).send({message:'ok'})
 
+    
     let project_params = {
         name: userName + '_' + projectName + '_' + runname
     }
@@ -260,13 +262,13 @@ createRun = async (req, res) => {
     const testerRunObj = new testerRun({ userName, projectName, arn, name, type, platform, status, result, counters, totalJobs, deviceMinutes, jobs })
 
     testerRunObj.save()
-        .then(() => {
+        .then((data) => {
             console.log("Inside then of testerRun save")
             res.status(200).send({ message: 'Inside then of newRun save', awsTestScheduled: testerRunObj });
         })
         .catch((err) => {
             console.log("Inside catch of testerRun save")
-            res.status(400).json({ message: "Error in save of testerRun inside createRun: " + err });
+            //res.status(400).json({ message: "Error in save of testerRun inside createRun: " + err });
         })
 
 
@@ -474,7 +476,8 @@ triggerJob = async (arn, data, res, projectID, next) => {
                 console.log("Inside then of testerRun save")
                 let cost = (0.01 * deviceMinutes1)
                 let totalMinutes = deviceMinutes1
-                const billingObj = new billing({ projectID, totalMinutes, cost })
+                let type='AWS_DEVICE_FARM'
+                const billingObj = new billing({ projectID, totalMinutes, cost,type })
                 billingObj.save((err, billing) => {
                     console.log('Inside Billing!')
                     if (err) {
