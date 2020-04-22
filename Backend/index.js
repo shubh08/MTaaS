@@ -1,4 +1,4 @@
-const port = process.env.PORT || 3010;
+const port = 3010;
 const rooturl = "http://localhost:3000";
 //const rooturl = "";
 const path = require('path');
@@ -47,6 +47,7 @@ var adminRoute = require('./src/routes/admin.js');
 var managerRoute = require('./src/routes/manager.js');
 var testerRoute = require('./src/routes/tester.js');
 var commonRoute = require('./src/routes/common.js');
+var testRunRoute = require('./src/routes/testRun.js');
 
 app.use(express.static('./uploads'));
 app.use(cors({ origin: rooturl, credentials: true }));
@@ -57,6 +58,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use("/admin", adminRoute);
 app.use("/manager", managerRoute);
 app.use("/tester", testerRoute);
+app.use("/testRun", testRunRoute);
 app.use("/", commonRoute);
 
 app.use('/uploads', express.static(path.join(__dirname, '/uploads/'))); 

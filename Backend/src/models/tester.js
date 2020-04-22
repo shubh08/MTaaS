@@ -47,7 +47,8 @@ const testerSchema = new Schema(
     appliedTo: [{
       type: Schema.Types.ObjectId,
       ref: 'project',
-    }]
+    }],
+    s3files: []
   }
 );
 testerSchema.plugin(uniqueValidator);

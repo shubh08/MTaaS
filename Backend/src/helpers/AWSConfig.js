@@ -1,5 +1,7 @@
 'use strict';
 module.exports = {
-    AWS_KEY : '',
-    AWS_SECRET : ''
+    AWS_KEY : 'AKIAI7PQLZR3IOA74W2Q',
+    AWS_SECRET : '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',
+    AWS_DEVICE_FARM_KEY:'AKIAJMB44ZMP7PGLDFQA',
+    AWS_DEVICE_FARM_SECRET:'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'
 };

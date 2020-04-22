@@ -1,0 +1,45 @@
+.bugtracker {
+  text-align: center;
+  background-color: #e9ecef;
+  width: 100%;
+  overflow: hidden;
+}
+
+.bugtracker-left {
+  text-align: center;
+  position: fixed;
+  top: 6.9%;
+  left: 0;
+  background-color: #e9ecef;
+  width: 20%;
+  float: left;
+}
+
+.bugtracker-right {
+  text-align: center;
+  position: fixed;
+  top: 6.9%;
+  right: 0;
+  background-color: #e9ecef;
+  width: 80%;
+  float: right;
+}
+.bug-padding{
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 2%;
+  overflow-y: auto;
+}
+
+
+.bugtracker-header {
+  background-color: #282c34;
+  //min-height: 80vh;
+  width: auto;
+  float: right;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}

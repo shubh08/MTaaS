@@ -3,11 +3,33 @@ var router = express.Router();
 var tester = require('../models/tester');
 var notification = require('../models/notification');
 var project = require('../models/project');
+var bugreport = require('../models/bugReport');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 var moment = require('moment');
 moment().format();
 var application = require('../models/application');
+const multerS3 = require('multer-s3')
+const multer = require('multer')
+const awsConfig = require('../helpers/AWSConfig')
+const AWS = require('aws-sdk');
+
+const s3 = new AWS.S3({
+    apiVersion: '2006-03-01',
+    accessKeyId: awsConfig.AWS_KEY,
+    secretAccessKey: awsConfig.AWS_SECRET,
+    region: 'us-east-2'
+});
+
+const testerFilesUploadToS3 = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: 'mtaasbucket',
+        key: function (req, file, cb) {
+            cb(null, req.body.projectName + '/' + req.body.testerName+'/' + file.originalname)
+        }
+    })
+})
 
 router.post('/signup', function (req, res, next) {
     bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
@@ -41,6 +63,26 @@ router.post('/signup', function (req, res, next) {
         }
     });
 });
+
+
+const storage = multer.diskStorage({
+    destination:function(req,file,cb){
+        cb(null,'./uploads/');
+    },
+    filename: function(req,file,cb){
+        cb(null,file.originalname);
+
+    }
+})
+
+const upload = multer({storage:storage})
+
+router.post('/dummyRun',upload.single('file'), function (req, res, next) {
+    console.log('herere')
+    console.log(req.file)
+   // console.log(req.file.path)
+    res.send('fineshed')
+    })
 
 router.post('/login', function (req, res, next) {
     tester.findOne({ email: req.body.email }).exec((err, tester) => {
@@ -99,7 +141,7 @@ router.get('/loadProjects/:id', function (req, res, next) {
                     res.status(200).send(finalResult);
 
                 })
-                
+
             })
 
         }
@@ -153,6 +195,82 @@ router.get('/notification/(:id)', function (req, res, next) {
     });
 });
 
+router.post('/upload', testerFilesUploadToS3.single('file'), function (req, res, next) {
+    console.log('File here')
+    let filePath = { filePath: req.body.projectName + '/' +req.body.testerName+'/' + req.file.originalname, fileName: req.file.originalname }
+    console.log(filePath)
+    tester.findOneAndUpdate({"_id":req.body.testerID}, { $push: { s3files:filePath } }).exec((err, project) => {
+        if (err) {
+            next(err);
+        } else {
+            console.log('File Uploaded');
+            res.status(200).send({ message: "Succesfully Uploaded file to AWS S3" });
+        }
+    });
+});
+router.post('/loadFiles', function (req, res, next) {
+    console.log('in the loadfiles',req.body)
+      let bucketParams={
+        Bucket:'mtaasbucket',
+        Prefix:req.body.projectName+'/'+req.body.testerName+'/'
+    }
+    s3.listObjects(bucketParams, function(err, data) {
+             if (err) {
+                 console.log("Error in fetching contents of Bucket: "+err);
+                 res.status(400).json("Error in fetching contents of Bucket: "+err)
+             } else {
+                 let files=[]
+                 files=data.Contents.map((el)=>{
+                     return {
+                         key:el.Key,
+                         modified:el.LastModified,
+                         size:el.Size,
+
+                     }
+                 })
+                 res.json(files)
+             }
+        });
+
+});
+
+router.post('/createBug', function (req, res, next) {
+    console.log(req.body);
+    const severity = req.body.severity;
+    const bugDescription = req.body.bugDescription;
+    const projectID = req.body.projectID;
+    const testID = req.body.testID;
+    const path = req.body.path;
+    const newBug = new bugreport({
+        severity,
+        bugDescription,
+        projectID,
+        testID,
+        path
+    });
+
+    newBug.save((err, bugreport) => {
+        console.log(bugreport);
+        if (err) {
+          console.log('here 1st');
+          var error = { message: "Bug is already created" }
+          next(error);
+        }
+        else if (bugreport == null) {
+            next();
+        } else {
+            //console.log('here 2nd')
+            res.status(200).send({ message: "Successful", id: bugreport._id });
+            // tester.findByIdAndUpdate(testID, { '$push': { "bugID": bugreport._id } }).exec((err, tester) => {
+            //     if (err || tester == null) {
+            //         next();
+            //     } else {
+            //         res.status(200).send({ message: "Bug Created Successfully" });
+            //     }
+            // })
+        }
+    })
+});
 
 
 router.use((error, req, res, next) => {

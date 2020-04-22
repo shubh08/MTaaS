@@ -14,6 +14,12 @@ import CreateProject from './createProject/createProject';
 import SignUp from './signup/signup.js';
 import Login from './login/login.js';
 import BugTracker from './bugTracker/bugtracker.js';
+import BugTrackerManager from './bugTracker/bugtrackerManager.js';
+import BugTrackerAdmin from './bugTracker/bugtrackerAdmin.js';
+import BillingManager from './billing/billingManager.js';
+import BillingAdmin from './billing/billingAdmin.js';
+import NewRunTester from './newRun/newRunTester.js';
+
 import { ToastContainer } from 'react-toastify';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -22,6 +28,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ProjectApplications from './projectApplication/projectApplications';
 import LoadApplications from './applications/loadApplications';
+import UserManagement from './userManagement/userManagement';
+import ProjectOperations from './projectOperations/projectOperations';
+import DashboardAdmin from './dashboard/dashboard'
+import ManagerFilesView from './filesUpload/managerUpload';
+import TesterFilesView from './filesUpload/testerUpload';
+import AllocateDeviceTester from './allocateDevice/allocateDeviceTester'
+import AllocateDeviceManager from './allocateDevice/allocateDeviceManager'
+import DeallocateDeviceManager from './allocateDevice/deallocateManager'
+import DeallocateDeviceTester from './allocateDevice/deallocateTester'
+import TestRunStatus from './testRunStatus/testRunStatus';
+import NewEmulatorRunTester from './newRun/newEmulatorTestRunner';
+import ViewProjectManager from './project/viewProjectsManager';
+import ViewProjectTester from './project/viewProjectsTester';
 
 class Routes extends React.Component {
 
@@ -42,9 +61,29 @@ class Routes extends React.Component {
           <Route exact path='/createProject' component={CreateProject}/>
           <Route exact path='/signup' component={SignUp}/>
           <Route exact path='/login' component={Login}/>
-          <Route exact path='/bugtracker' component={BugTracker}/>  //ProjectApplications
+          <Route exact path='/bugtracker' component={BugTracker}/>
+          <Route exact path='/bugTrackerManager' component={BugTrackerManager}/>
+          <Route exact path='/bugTrackerAdmin' component={BugTrackerAdmin}/>
+          <Route exact path='/billingManager' component={BillingManager}/>
+          <Route exact path='/createRunTester' component={NewRunTester}/>
+          <Route exact path='/billingAdmin' component={BillingAdmin}/>
+
           <Route exact path='/applications' component={ProjectApplications}/>
           <Route exact path='/loadapplications' component={LoadApplications}/>
+          <Route exact path='/userManagement' component={UserManagement}/>
+          <Route exact path='/projectOperation' component={ProjectOperations}/>
+          <Route exact path='/dashboardAdmin' component={DashboardAdmin}/>
+          <Route exact path='/managerUpload' component={ManagerFilesView}/>
+          <Route exact path='/testerUpload' component={TesterFilesView}/>
+          <Route exact path='/allocateDeviceTester' component={AllocateDeviceTester}/>
+          <Route exact path='/allocateDeviceManager' component={AllocateDeviceManager}/>
+          <Route exact path='/deallocateDeviceManager' component={DeallocateDeviceManager}/>
+          <Route exact path='/deallocateDeviceTester' component={DeallocateDeviceTester}/>
+          <Route exact path='/getRunStatus' component={TestRunStatus}/>
+          <Route exact path='/newEmulatorRun' component={NewEmulatorRunTester}/>
+          <Route exact path='/viewProjectManager' component={ViewProjectManager}/>
+          <Route exact path='/viewProjectTester' component={ViewProjectTester}/>
+
         </Switch>
       </Router>
     )
