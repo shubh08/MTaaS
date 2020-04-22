@@ -62,17 +62,6 @@ class BugTracker extends React.Component{
             </div>
 
             <div className="bugtracker-right">
-              {/*
-              <div>
-                <div>
-                  <Breadcrumb>
-                    <BreadcrumbItem><a href="/projects">Test Project #1</a></BreadcrumbItem>
-                    <BreadcrumbItem><a href="/runs">Test Run #1</a></BreadcrumbItem>
-                    <BreadcrumbItem active>Bug Report</BreadcrumbItem>
-                  </Breadcrumb>
-                </div>
-              </div>
-              */}
                <div>
                 <Form className = "bug-padding">
                   <FormGroup >
