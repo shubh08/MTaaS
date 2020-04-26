@@ -53,3 +53,7 @@
     transform: rotate(360deg);
   }
 }
+.scroll-dashboard{
+  max-height: 100vh;
+overflow: scroll;
+}

@@ -13,10 +13,10 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      xAxisTester: ["Proj1", "Proj2", "Proj3", "Proj4", "Proj5", "Proj6", "Proj7", "Proj8", "Proj9", "Proj10"],
-      yAxisTester: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
-      xAxisManager: ["Rita", "Rayan", "Ram", "Laxman", "Sita","Rajan","Srijan","Ani","Dhyan","Som"],
-      yAxisManager: [10,9,8,7,6,5,4,3,2,1],
+      xAxisTester: [],
+      yAxisTester: [],
+      xAxisManager: [],
+      yAxisManager: [],
       xAxisTester1: ["Proj1", "Proj2", "Proj3", "Proj4", "Proj5", "Proj6", "Proj7", "Proj8", "Proj9", "Proj10"],
       yAxisTester1: [100,90,80,70,60,50,40,30,20,10],
       xAxisManager1: ["Rita", "Rayan", "Ram", "Laxman", "Sita","Rajan","Srijan","Ani","Dhyan","Som"],
@@ -46,23 +46,60 @@ class Dashboard extends React.Component {
 
   componentDidMount() {
     //Working Code for testers per project
-    /*axios.get(ROOT_URL + "/allProjects").then(response => {
+    axios.get(ROOT_URL + "/allProjects").then(response => {
       if (response.status == 200) {
         response.data.projects.map((project) => {
-          this.state.xAxis.push(project.name)
+          this.state.xAxisTester.push(project.name)
         });
         response.data.projects.map((project) => {
-          this.state.yAxis.push(project.testerID.length);
+          this.state.yAxisTester.push(project.testerID.length);
         });
-        
+        this.setState({
+          dataDoughnut: {
+            labels: this.state.xAxisTester,
+            datasets: [
+              {
+                data: this.state.yAxisTester,
+                backgroundColor: [
+                  "#46A2FF",
+                  "#58ACFF",
+                  "#6BB5FF",
+                  "#7DBEFF",
+                  "#90C7FF",
+                  "#A2D1FF",
+                  "#B5DAFF",
+                  "#C7E3FF",
+                  "#DAECFF",
+                  "#ECF6FF"
+                ]
+              }
+            ]
+          },
+          donutOptions: {
+            tooltips: {
+              callbacks: {
+                label(tooltipItems, data) {
+                  return `${data.labels[tooltipItems.index]} : ${
+                    data.datasets[0].data[tooltipItems.index]
+                    } testers`;
+                }
+              }
+            },
+            responsive: true,
+            maintainAspectRatio: true,
+            legend: {
+              display: false
+            }
+          },
+        });
       } else {
         toast.error(response.data.message, {
           position: toast.POSITION.TOP_CENTER
         });
       }
-    })*/
+    })
     //working projects per manager
-    /*axios.get(ROOT_URL + "/allManagers").then(response => {
+    axios.get(ROOT_URL + "/allManagers").then(response => {
       if (response.status == 200) {
         response.data.managers.map((manager) => {
           this.state.xAxisManager.push(manager.name)
@@ -70,88 +107,51 @@ class Dashboard extends React.Component {
         response.data.managers.map((manager) => {
           this.state.yAxisManager.push(manager.projectID.length);
         });
-        
+        this.setState({
+          dataPie: {
+            labels: this.state.xAxisManager,
+            datasets: [
+              {
+                data: this.state.yAxisManager,
+                backgroundColor: [
+                "#46A2FF",
+                "#58ACFF",
+                "#6BB5FF",
+                "#7DBEFF",
+                "#90C7FF",
+                "#A2D1FF",
+                "#B5DAFF",
+                "#C7E3FF",
+                "#DAECFF",
+                "#ECF6FF"],
+              },
+            ],
+          },
+          pieOptions: {
+            tooltips: {
+              callbacks: {
+                label(tooltipItems, data) {
+                  return `${data.labels[tooltipItems.index]} : ${
+                    data.datasets[0].data[tooltipItems.index]
+                    } Projects`;
+                },
+              },
+            },
+            responsive: true,
+            maintainAspectRatio: true,
+            legend: {
+              display: false,
+            },
+          },
+        });
       } else {
         toast.error(response.data.message, {
           position: toast.POSITION.TOP_CENTER
         });
       }
-    });*/
-    this.setState({
-      dataDoughnut: {
-        labels: this.state.xAxisTester,
-        datasets: [
-          {
-            data: this.state.yAxisTester,
-            backgroundColor: [
-              "#46A2FF",
-              "#58ACFF",
-              "#6BB5FF",
-              "#7DBEFF",
-              "#90C7FF",
-              "#A2D1FF",
-              "#B5DAFF",
-              "#C7E3FF",
-              "#DAECFF",
-              "#ECF6FF"
-            ]
-          }
-        ]
-      },
-      donutOptions: {
-        tooltips: {
-          callbacks: {
-            label(tooltipItems, data) {
-              return `${data.labels[tooltipItems.index]} : ${
-                data.datasets[0].data[tooltipItems.index]
-                } testers`;
-            }
-          }
-        },
-        responsive: true,
-        maintainAspectRatio: true,
-        legend: {
-          display: false
-        }
-      },
     });
-    this.setState({
-      dataPie: {
-        labels: this.state.xAxisManager,
-        datasets: [
-          {
-            data: this.state.yAxisManager,
-            backgroundColor: [
-            "#46A2FF",
-            "#58ACFF",
-            "#6BB5FF",
-            "#7DBEFF",
-            "#90C7FF",
-            "#A2D1FF",
-            "#B5DAFF",
-            "#C7E3FF",
-            "#DAECFF",
-            "#ECF6FF"],
-          },
-        ],
-      },
-      pieOptions: {
-        tooltips: {
-          callbacks: {
-            label(tooltipItems, data) {
-              return `${data.labels[tooltipItems.index]} : ${
-                data.datasets[0].data[tooltipItems.index]
-                } Projects`;
-            },
-          },
-        },
-        responsive: true,
-        maintainAspectRatio: true,
-        legend: {
-          display: false,
-        },
-      },
-    });
+    
+    
     this.setState({
       dataDoughnut2: {
         labels: this.state.xAxisManager1,
@@ -239,7 +239,7 @@ class Dashboard extends React.Component {
           <SideNav />
         </div>
         <div className="bugtracker-right">
-          <div>
+          <div className="scroll-dashboard">
             <div>
               <Row>
                 <Col>
