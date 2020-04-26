@@ -3,8 +3,8 @@ import './allocateDevice.css';
 import { Button } from 'reactstrap';
 import { Popover, PopoverHeader, PopoverBody} from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormText, Row, Col, Container, Table } from 'reactstrap';
-import TopNav from '../navigation/topnavManager';
-import SideNav from '../navigation/sidenavManager';
+import TopNav from '../navigation/topnavTester';
+import SideNav from '../navigation/sidenavTester';
 import axios from 'axios';
 import { ROOT_URL } from '../config/config.js'
 import { toast } from 'react-toastify';
