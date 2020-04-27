@@ -20,8 +20,6 @@
 
 .billingManager-box-item{
   padding-left: 5%;
-  padding-top: 1%;
-  padding-bottom: 1%;
   color: #000000;
 }
 
@@ -33,6 +31,7 @@
   background-color: #e9ecef;
   width: 20%;
   float: left;
+  min-height: 100%;
 }
 
 .billingManager-right {
@@ -43,8 +42,8 @@
   background-color: #e9ecef;
   width: 80%;
   float: right;
-  max-height: 95vh;
   overflow: scroll;
+  min-height: 100%;
 }
 
 .billingManager-header {

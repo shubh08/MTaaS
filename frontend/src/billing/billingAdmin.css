@@ -13,13 +13,14 @@
 .billingAdmin-box{
   background-color: #c7c8c9;
   color: #000000;
-  margin: 4%;
+  margin-left: 16%;
+  margin-right: 10%;
+  margin-top: 1%
 }
 
 .billingAdmin-box-item{
   padding-left: 25%;
-  padding-top: 1%;
-  padding-bottom: 1%;
+
   color: #000000;
 }
 
@@ -41,6 +42,7 @@
   background-color: #e9ecef;
   width: 80%;
   float: right;
+  min-height: 100%;
 }
 
 .billingAdmin-header {
@@ -53,4 +55,19 @@
   align-items: center;
   justify-content: center;
   color: white;
+}
+.billingAdmin-select{
+  margin-top: 4%;
+  margin-bottom: 4%;
+}
+.billingAdmin-marginBottom{
+  margin-bottom: 1%;
+}
+
+.billingAdmin-marginTop{
+  margin-top: 0.5%;
+}
+.scroll-billingAdmin{
+  max-height: 80vh;
+overflow: scroll;
 }

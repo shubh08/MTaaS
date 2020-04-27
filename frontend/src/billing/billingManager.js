@@ -262,9 +262,9 @@ class BillingManager extends React.Component {
                 </FormGroup>
 
                 <FormGroup className="billingManager-box-item" row>
-                  <Label md={6}> Total Project Cost </Label>
+                <Label md={6}> <strong>Total Project Cost</strong> </Label>
                   <Col md={6}>
-                    $ {this.state.totalCost}
+                   <strong> $ {this.state.totalCost}</strong>
                   </Col>
                 </FormGroup>
               </Form>
