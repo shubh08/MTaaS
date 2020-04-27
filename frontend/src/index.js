@@ -41,6 +41,7 @@ import TestRunStatus from './testRunStatus/testRunStatus';
 import NewEmulatorRunTester from './newRun/newEmulatorTestRunner';
 import ViewProjectManager from './project/viewProjectsManager';
 import ViewProjectTester from './project/viewProjectsTester';
+import DashboardManager from './dashboard/dashboardManager';
 import EmulatorTestRunStatus from './testRunStatus/emulatorRunStatus';
 
 class Routes extends React.Component {
@@ -84,6 +85,7 @@ class Routes extends React.Component {
           <Route exact path='/newEmulatorRun' component={NewEmulatorRunTester}/>
           <Route exact path='/viewProjectManager' component={ViewProjectManager}/>
           <Route exact path='/viewProjectTester' component={ViewProjectTester}/>
+          <Route exact path='/dashboardManager' component={DashboardManager}/>
           <Route exact path='/loadEmulatorTestStatus' component={EmulatorTestRunStatus}/>
 
 

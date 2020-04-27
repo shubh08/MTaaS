@@ -6,6 +6,7 @@ var tester = require('../models/tester');
 var bugreports = require('../models/bugReport');
 var admin = require('../models/admin');
 var billing = require('../models/billing');
+var testruns = require('../models/TestRun');
 var moment = require("moment")
 
 
@@ -155,17 +156,33 @@ router.get('/billing/(:id)', function (req, res, next) {
             var date = startOfMonth;
             var time = 0;
             var totalCost = 0;
-            while(date>= startOfMonth && date<=endOfMonth){
+            var totalTimeAWS = 0;
+            var totalTimeEmulator = 0;
+            var totalCostAWS = 0;
+            var totalCostEmulator = 0;
+            while (date >= startOfMonth && date <= endOfMonth) {
                 array[date] = 0;
-                date = moment(date).add(1,'days').format("YYYY-MM-DD");
+                date = moment(date).add(1, 'days').format("YYYY-MM-DD");
             }
             bills.forEach(bill => {
                 var dateDay = moment(bill.date).format('YYYY-MM-DD');
-                if(dateDay>= startOfMonth && dateDay<=endOfMonth){
+                if (dateDay >= startOfMonth && dateDay <= endOfMonth) {
                     var val = array[dateDay]
                     time = time + bill.totalMinutes;
                     totalCost = totalCost + bill.cost;
                     totalCost = Math.round(totalCost * 100) / 100
+                    if (bill.type == "Emulator") {
+                        totalTimeEmulator = totalTimeEmulator + bill.totalMinutes;
+                        totalTimeEmulator = Math.round(totalTimeEmulator * 100) / 100;
+                        totalCostEmulator = totalCostEmulator + bill.cost;
+                        totalCostEmulator = Math.round(totalCostEmulator * 100) / 100;
+                    } else {
+                        totalTimeAWS = totalTimeAWS + bill.totalMinutes;
+                        totalTimeAWS = Math.round(totalTimeAWS * 100) / 100;
+                        totalCostAWS = totalCostAWS + bill.cost;
+                        totalCostAWS = Math.round(totalCostAWS * 100) / 100;
+                    }
+
                     if (val == undefined) {
                         array[dateDay] = bill.cost;
                     } else {
@@ -174,7 +191,7 @@ router.get('/billing/(:id)', function (req, res, next) {
                     }
                 }
             });
-             res.status(200).send({ days:Object.keys(array) ,costs:Object.values(array),time:time, totalCost:totalCost });
+            res.status(200).send({ days: Object.keys(array), costs: Object.values(array), totalTimeEmulator: totalTimeEmulator, totalCostEmulator: totalCostEmulator, totalTimeAWS: totalTimeAWS, totalCostAWS: totalCostAWS });
         }
     });
 });
@@ -184,11 +201,18 @@ router.get('/scriptsPerTester', function (req, res, next) {
             next();
         } else {
             var array = {}
-            testers.forEach((tester)=>{
+            testers.forEach((tester) => {
                 array[tester.name] = tester.s3files.length;
 
             })
-            res.status(200).send({ testerName: Object.keys(array), testerScriptLength:Object.values(array) });
+            var tupleArray = [];
+            for (var key in array) {
+                tupleArray.push({ key: key, val: array[key] });
+            }
+            tupleArray.sort(function (a, b) { return b.val - a.val });
+            let resultKey = tupleArray.map(a => a.key);
+            let resultValue = tupleArray.map(a => a.val);
+            res.status(200).send({ testerName: resultKey, testerScriptLength: resultValue });
         }
     });
 });
@@ -198,11 +222,157 @@ router.get('/scriptsPerProject', function (req, res, next) {
             next();
         } else {
             var array = {}
-            projects.forEach((project)=>{
+            projects.forEach((project) => {
                 array[project.name] = project.commanfiles.length;
 
             })
-            res.status(200).send({ projectName: Object.keys(array), projectScriptLength:Object.values(array) });
+            var tupleArray = [];
+            for (var key in array) {
+                tupleArray.push({ key: key, val: array[key] });
+            }
+            tupleArray.sort(function (a, b) { return b.val - a.val });
+            let resultKey = tupleArray.map(a => a.key);
+            let resultValue = tupleArray.map(a => a.val);
+            res.status(200).send({ projectName: resultKey, projectScriptLength: resultValue });
+        }
+    });
+});
+router.get('/testerPerProject/(:id)', function (req, res, next) {
+    project.find({ managerID: req.params.id }).exec((err, projects) => {
+        if (err) {
+            next();
+        } else {
+            var array = {}
+            projects.forEach((project) => {
+                array[project.name] = project.testerID.length;
+
+            })
+            var tupleArray = [];
+            for (var key in array) {
+                tupleArray.push({ key: key, val: array[key] });
+            }
+            tupleArray.sort(function (a, b) { return b.val - a.val });
+            let resultKey = tupleArray.map(a => a.key);
+            let resultValue = tupleArray.map(a => a.val);
+            res.status(200).send({ projectName: resultKey, projectTesterLength: resultValue });
+        }
+    });
+});
+router.get('/bugsPerProject/(:id)', function (req, res, next) {
+    bugreports.find().populate('projectID').exec((err, bugreport) => {
+        if (err) {
+            next();
+        } else {
+            var array = {}
+            project.find({ managerID: req.params.id }).populate("testerID").exec((err, project1) => {
+                project1.forEach((proj) => {
+                    array[proj.name] = 0;
+                })
+                bugreport.forEach((bug) => {
+                    if (bug.projectID.managerID == req.params.id) {
+                        array[bug.projectID.name] = array[bug.projectID.name] + 1;
+                    }
+                })
+                var tupleArray = [];
+                for (var key in array) {
+                    tupleArray.push({ key: key, val: array[key] });
+                }
+                tupleArray.sort(function (a, b) { return b.val - a.val });
+                let resultKey = tupleArray.map(a => a.key);
+                let resultValue = tupleArray.map(a => a.val);
+                res.status(200).send({ projectName: resultKey, projectBugLength: resultValue });
+            });
+        }
+    });
+});
+router.get('/scriptsPerProject/(:id)', function (req, res, next) {
+    project.find({ managerID: req.params.id }).exec((err, projects) => {
+        if (err) {
+            next();
+        } else {
+            var array = {}
+            projects.forEach((project) => {
+                array[project.name] = project.commanfiles.length;
+
+            })
+            var tupleArray = [];
+            for (var key in array) {
+                tupleArray.push({ key: key, val: array[key] });
+            }
+            tupleArray.sort(function (a, b) { return b.val - a.val });
+            let resultKey = tupleArray.map(a => a.key);
+            let resultValue = tupleArray.map(a => a.val);
+            res.status(200).send({ projectName: resultKey, projectScriptLength: resultValue });
+        }
+    });
+});
+router.get('/testrunPerProject/(:id)', function (req, res, next) {
+    testruns.find().exec((err, testRun) => {
+        if (err) {
+            next();
+        } else {
+            var bigArray = [];
+            var array = {}
+            project.find({ managerID: req.params.id }).populate("testerID").exec((err, project1) => {
+                project1.forEach((proj) => {
+                    array[proj.name] = 0;
+                })
+                testRun.forEach((test) => {
+                    if (array[test.projectName] >= 0) {
+                        array[test.projectName] = array[test.projectName] + 1;
+                    }
+                })
+                var tupleArray = [];
+                for (var key in array) {
+                    tupleArray.push({ key: key, val: array[key] });
+                }
+                tupleArray.sort(function (a, b) { return b.val - a.val });
+                let resultKey = tupleArray.map(a => a.key);
+                let resultValue = tupleArray.map(a => a.val);
+                res.status(200).send({ projectName: resultKey, testRunLength: resultValue });
+            });
+        }
+    });
+});
+router.get('/testerPerProject', function (req, res, next) {
+    project.find().exec((err, projects) => {
+        if (err) {
+            next();
+        } else {
+            var array = {}
+            projects.forEach((project) => {
+                array[project.name] = project.testerID.length;
+
+            })
+            var tupleArray = [];
+            for (var key in array) {
+                tupleArray.push({ key: key, val: array[key] });
+            }
+            tupleArray.sort(function (a, b) { return b.val - a.val });
+            let resultKey = tupleArray.map(a => a.key);
+            let resultValue = tupleArray.map(a => a.val);
+            res.status(200).send({ projectName: resultKey, projectTesterLength: resultValue });
+        }
+    });
+});
+router.get('/projectPerManager', function (req, res, next) {
+    manager.find().exec((err, manager1) => {
+        if (err) {
+            next();
+        } else {
+            var array = {}
+            manager1.forEach((manage) => {
+                array[manage.name] = manage.projectID.length;
+
+            })
+            var tupleArray = [];
+            for (var key in array) {
+                tupleArray.push({ key: key, val: array[key] });
+            }
+            tupleArray.sort(function (a, b) { return b.val - a.val });
+            let resultKey = tupleArray.map(a => a.key);
+            let resultValue = tupleArray.map(a => a.val);
+            res.status(200).send({ projectName: resultKey, projectLength: resultValue });
         }
     });
 });

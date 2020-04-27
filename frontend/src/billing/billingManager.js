@@ -21,11 +21,13 @@ class BillingManager extends React.Component {
       },
       projects: [],
       optionSelected: '',
-      cost:[],
-      all_days:[],
-      timeDeviceFarm:0,
-      timeEmulator:0,
-      totalCost:0
+      cost: [],
+      all_days: [],
+      timeDeviceFarm: 0,
+      timeEmulator: 0,
+      costDeviceFarm: 0,
+      costEmulator: 0,
+      totalCost: 0
     };
   }
   componentWillMount() {
@@ -113,11 +115,11 @@ class BillingManager extends React.Component {
   }
   listChangeHandler = (e) => {
     this.setState({ optionSelected: e.target.value });
-    this.setState({yAxis:[]})
+    this.setState({ yAxis: [] })
     axios.get(ROOT_URL + "/billing/" + e.target.value).then(response => {
       console.log(response.data)
       if (response.status == 200) {
-        this.setState({totalCost:response.data.totalCost,timeDeviceFarm:response.data.time/60,timeEmulator:0})
+        this.setState({ timeEmulator: response.data.totalTimeEmulator, costEmulator: response.data.totalCostEmulator, timeDeviceFarm: response.data.totalTimeAWS, costDeviceFarm: response.data.totalCostAWS, totalCost: response.data.totalCostAWS+response.data.totalCostEmulator })
         this.setState({
           dataLine: {
             labels: response.data.days,
@@ -186,14 +188,14 @@ class BillingManager extends React.Component {
         });
       }
     })
-      
-    
+
+
   }
   render() {
     let optionsList = [<option value={0} >Select</option>]
     this.state.projects && this.state.projects.map((project) => {
-      if(project.active)
-      optionsList.push(<option value={project._id} >{project.name}</option>)
+      if (project.active)
+        optionsList.push(<option value={project._id} >{project.name}</option>)
     })
     return (
       <div className="billingManager">
@@ -212,7 +214,7 @@ class BillingManager extends React.Component {
               </Col>
               <Col></Col>
             </Row>
-           
+
 
           </div>
           <Row className="billingManager-marginBottom">
@@ -233,23 +235,36 @@ class BillingManager extends React.Component {
             <Col><div className="billingManager-box">
               <Form>
                 <FormGroup className="billingManager-box-item" row>
-                  <Label sm={5}> Total Device Farm Hours </Label>
-                  <Col sm={3}>
+                  <Label md={6}> Total Device Farm Minutes </Label>
+                  <Col md={6}>
                     {this.state.timeDeviceFarm} Hours
                   </Col>
                 </FormGroup>
 
                 <FormGroup className="billingManager-box-item" row>
-                  <Label sm={5}> Total Emulator Instance Hours </Label>
-                  <Col sm={3}>
-                  {this.state.timeEmulator} Hours
+                  <Label md={6}> Total Emulator Instance Minutes </Label>
+                  <Col md={6}>
+                    {this.state.timeEmulator} Minutes
+                  </Col>
+                </FormGroup>
+                <FormGroup className="billingManager-box-item" row>
+                  <Label md={6}>Device Farm Cost </Label>
+                  <Col md={6}>
+                    $ {this.state.costDeviceFarm} 
                   </Col>
                 </FormGroup>
 
                 <FormGroup className="billingManager-box-item" row>
-                  <Label sm={5}> Total Project Cost </Label>
-                  <Col sm={3}>
-                 $ {this.state.totalCost} 
+                  <Label md={6}>Emulator Cost </Label>
+                  <Col md={6}>
+                    $ {this.state.costEmulator} 
+                  </Col>
+                </FormGroup>
+
+                <FormGroup className="billingManager-box-item" row>
+                  <Label md={6}> Total Project Cost </Label>
+                  <Col md={6}>
+                    $ {this.state.totalCost}
                   </Col>
                 </FormGroup>
               </Form>
