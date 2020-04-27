@@ -17,10 +17,6 @@ class Dashboard extends React.Component {
       yAxisTester: [],
       xAxisManager: [],
       yAxisManager: [],
-      xAxisTester1: ["Proj1", "Proj2", "Proj3", "Proj4", "Proj5", "Proj6", "Proj7", "Proj8", "Proj9", "Proj10"],
-      yAxisTester1: [100,90,80,70,60,50,40,30,20,10],
-      xAxisManager1: ["Rita", "Rayan", "Ram", "Laxman", "Sita","Rajan","Srijan","Ani","Dhyan","Som"],
-      yAxisManager1: [10,9,8,7,6,5,4,3,2,1],
       donutOptions: {},
       dataDoughnut: {
         labels: [],
@@ -45,7 +41,6 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    //Working Code for testers per project
     axios.get(ROOT_URL + "/allProjects").then(response => {
       if (response.status == 200) {
         response.data.projects.map((project) => {
@@ -60,12 +55,25 @@ class Dashboard extends React.Component {
             datasets: [
               {
                 data: this.state.yAxisTester,
+                //hoverBackgroundColor:['#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7'],
                 backgroundColor: [
                   "#46A2FF",
-                  "#58ACFF",
+                  // "#58ACFF",
                   "#6BB5FF",
-                  "#7DBEFF",
-                  "#90C7FF",
+                  // "#7DBEFF",
+                  // "#90C7FF",
+                  "#A2D1FF",
+                  "#B5DAFF",
+                  "#C7E3FF",
+                  "#DAECFF",
+                  "#ECF6FF"
+                ],
+                hoverBackgroundColor: [
+                  "#46A2FF",
+                  // "#58ACFF",
+                  "#6BB5FF",
+                  // "#7DBEFF",
+                  // "#90C7FF",
                   "#A2D1FF",
                   "#B5DAFF",
                   "#C7E3FF",
@@ -88,7 +96,7 @@ class Dashboard extends React.Component {
             responsive: true,
             maintainAspectRatio: true,
             legend: {
-              display: false
+              display: true
             }
           },
         });
@@ -98,7 +106,6 @@ class Dashboard extends React.Component {
         });
       }
     })
-    //working projects per manager
     axios.get(ROOT_URL + "/allManagers").then(response => {
       if (response.status == 200) {
         response.data.managers.map((manager) => {
@@ -124,7 +131,20 @@ class Dashboard extends React.Component {
                 "#C7E3FF",
                 "#DAECFF",
                 "#ECF6FF"],
+                hoverBackgroundColor: [
+                  "#46A2FF",
+                  "#58ACFF",
+                  "#6BB5FF",
+                  "#7DBEFF",
+                  "#90C7FF",
+                  "#A2D1FF",
+                  "#B5DAFF",
+                  "#C7E3FF",
+                  "#DAECFF",
+                  "#ECF6FF"]
+               // hoverBackgroundColor:['#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7']
               },
+              
             ],
           },
           pieOptions: {
@@ -140,8 +160,127 @@ class Dashboard extends React.Component {
             responsive: true,
             maintainAspectRatio: true,
             legend: {
-              display: false,
+              display: true,
             },
+          },
+        });
+      } else {
+        toast.error(response.data.message, {
+          position: toast.POSITION.TOP_CENTER
+        });
+      }
+    });
+    axios.get(ROOT_URL + "/scriptsPerTester").then(response => {
+      if (response.status == 200) {
+        this.setState({
+          dataDoughnut2: {
+            labels: response.data.testerName,
+            datasets: [
+              {
+                data: response.data.testerScriptLength,
+                backgroundColor: [
+                  "#FF1717",
+                  "#FF2E2E",
+                  "#FF4646",
+                  "#FF5D5D",
+                  "#FF7474",
+                  "#FF8B8B",
+                  "#FFA2A2",
+                  "#FFB9B9",
+                  "#FFD1D1",
+                  "#FFE8E8"
+                ]
+                ,
+                hoverBackgroundColor: [
+                  "#FF1717",
+                  "#FF2E2E",
+                  "#FF4646",
+                  "#FF5D5D",
+                  "#FF7474",
+                  "#FF8B8B",
+                  "#FFA2A2",
+                  "#FFB9B9",
+                  "#FFD1D1",
+                  "#FFE8E8"
+                ]
+               // hoverBackgroundColor:['#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30']
+              }
+            ]
+          },
+          donutOptions2: {
+            tooltips: {
+              callbacks: {
+                label(tooltipItems, data) {
+                  return data.datasets[0].data[tooltipItems.index] == 0? `${data.labels[tooltipItems.index]}` :`${data.labels[tooltipItems.index]} : ${
+                    data.datasets[0].data[tooltipItems.index]
+                    } Scripts`;
+                }
+              }
+            },
+            responsive: true,
+            maintainAspectRatio: true,
+            legend: {
+              display: true
+            }
+          },
+        });
+      } else {
+        toast.error(response.data.message, {
+          position: toast.POSITION.TOP_CENTER
+        });
+      }
+    });
+    axios.get(ROOT_URL + "/scriptsPerProject").then(response => {
+      if (response.status == 200) {
+        this.setState({
+          dataPie2: {
+            labels: response.data.projectName,
+            datasets: [
+              {
+                data: response.data.projectScriptLength,
+                backgroundColor: [
+                  "#FF1717",
+                  "#FF2E2E",
+                  "#FF4646",
+                  "#FF5D5D",
+                  "#FF7474",
+                  "#FF8B8B",
+                  "#FFA2A2",
+                  "#FFB9B9",
+                  "#FFD1D1",
+                  "#FFE8E8"],
+                  hoverBackgroundColor: [
+                    "#FF1717",
+                    "#FF2E2E",
+                    "#FF4646",
+                    "#FF5D5D",
+                    "#FF7474",
+                    "#FF8B8B",
+                    "#FFA2A2",
+                    "#FFB9B9",
+                    "#FFD1D1",
+                    "#FFE8E8"],
+                 // hoverBackgroundColor:['#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30','#BF0A30']
+                },
+            ],
+          },
+          pieOptions2: {
+            tooltips: {
+              callbacks: {
+                label(tooltipItems, data) {
+                  return `${data.labels[tooltipItems.index]} : ${
+                    data.datasets[0].data[tooltipItems.index]
+                    } Documents`;
+                },
+              },
+            },
+            responsive: true,
+            maintainAspectRatio: true,
+            legend: {
+              display: true,
+            },hover: {
+              backgroundColor: "#FFE8E8" // duration of animations when hovering an item
+          }
           },
         });
       } else {
@@ -152,81 +291,6 @@ class Dashboard extends React.Component {
     });
     
     
-    this.setState({
-      dataDoughnut2: {
-        labels: this.state.xAxisManager1,
-        datasets: [
-          {
-            data: this.state.yAxisManager1,
-            backgroundColor: [
-              "#FF1717",
-              "#FF2E2E",
-              "#FF4646",
-              "#FF5D5D",
-              "#FF7474",
-              "#FF8B8B",
-              "#FFA2A2",
-              "#FFB9B9",
-              "#FFD1D1",
-              "#FFE8E8"
-            ]
-          }
-        ]
-      },
-      donutOptions2: {
-        tooltips: {
-          callbacks: {
-            label(tooltipItems, data) {
-              return `${data.labels[tooltipItems.index]} : ${
-                data.datasets[0].data[tooltipItems.index]
-                } Scripts`;
-            }
-          }
-        },
-        responsive: true,
-        maintainAspectRatio: true,
-        legend: {
-          display: false
-        }
-      },
-    });
-    this.setState({
-      dataPie2: {
-        labels: this.state.xAxisTester1,
-        datasets: [
-          {
-            data: this.state.yAxisTester1,
-            backgroundColor: [
-              "#FF1717",
-              "#FF2E2E",
-              "#FF4646",
-              "#FF5D5D",
-              "#FF7474",
-              "#FF8B8B",
-              "#FFA2A2",
-              "#FFB9B9",
-              "#FFD1D1",
-              "#FFE8E8"],
-          },
-        ],
-      },
-      pieOptions2: {
-        tooltips: {
-          callbacks: {
-            label(tooltipItems, data) {
-              return `${data.labels[tooltipItems.index]} : ${
-                data.datasets[0].data[tooltipItems.index]
-                } Documents`;
-            },
-          },
-        },
-        responsive: true,
-        maintainAspectRatio: true,
-        legend: {
-          display: false,
-        },
-      },
-    });
   }
 
   render() {
