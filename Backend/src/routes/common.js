@@ -178,6 +178,34 @@ router.get('/billing/(:id)', function (req, res, next) {
         }
     });
 });
+router.get('/scriptsPerTester', function (req, res, next) {
+    tester.find().exec((err, testers) => {
+        if (err) {
+            next();
+        } else {
+            var array = {}
+            testers.forEach((tester)=>{
+                array[tester.name] = tester.s3files.length;
+
+            })
+            res.status(200).send({ testerName: Object.keys(array), testerScriptLength:Object.values(array) });
+        }
+    });
+});
+router.get('/scriptsPerProject', function (req, res, next) {
+    project.find().exec((err, projects) => {
+        if (err) {
+            next();
+        } else {
+            var array = {}
+            projects.forEach((project)=>{
+                array[project.name] = project.commanfiles.length;
+
+            })
+            res.status(200).send({ projectName: Object.keys(array), projectScriptLength:Object.values(array) });
+        }
+    });
+});
 router.use((error, req, res, next) => {
     res.writeHead(201, {
         'Content-Type': 'text/plain'
