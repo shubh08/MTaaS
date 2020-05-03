@@ -198,7 +198,7 @@ class TesterFilesView extends React.Component {
                             Download: <i className="fa fa-download" aria-hidden="true" />
                         }}
                         onDeleteFile={this.onDeleteFileHandler}
-                        onDownloadFile={(fileKey) => { window.location = this.state.base_url + fileKey }}
+                        onDownloadFile={(fileKey) => { window.location = 'https://mtaasbucket.s3.us-east-2.amazonaws.com/' + fileKey }}
                     />
                     
                 </div>
