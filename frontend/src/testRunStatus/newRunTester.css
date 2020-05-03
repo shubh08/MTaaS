@@ -14,6 +14,9 @@
   width: 20%;
   float: left;
 }
+.statusRight{
+  margin-left:300px
+}
 .OHAEI {
   margin-left: 700px !important;
   padding-top: 30px !important;
