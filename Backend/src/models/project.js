@@ -42,6 +42,7 @@ const projectSchema = new Schema(
       ref: 'tester',
     }],
     commanfiles: [],
+    adminDocs:[]
   }
 );
 projectSchema.plugin(uniqueValidator);

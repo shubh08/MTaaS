@@ -43,6 +43,7 @@ import ViewProjectManager from './project/viewProjectsManager';
 import ViewProjectTester from './project/viewProjectsTester';
 import DashboardManager from './dashboard/dashboardManager';
 import EmulatorTestRunStatus from './testRunStatus/emulatorRunStatus';
+import AdminFileBrowser from './filesUpload/adminFileBrowser';
 
 class Routes extends React.Component {
 
@@ -87,6 +88,7 @@ class Routes extends React.Component {
           <Route exact path='/viewProjectTester' component={ViewProjectTester}/>
           <Route exact path='/dashboardManager' component={DashboardManager}/>
           <Route exact path='/loadEmulatorTestStatus' component={EmulatorTestRunStatus}/>
+          <Route exact path='/loadAdminFiles' component={AdminFileBrowser}/>
 
 
         </Switch>

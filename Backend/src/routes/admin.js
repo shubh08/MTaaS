@@ -4,9 +4,29 @@ var admin = require('../models/admin');
 var manager = require('../models/manager');
 var tester = require('../models/tester');
 var project = require('../models/project');
-
+const AWS = require('aws-sdk');
+const awsConfig = require('../helpers/AWSConfig')
 const bcrypt = require('bcrypt');
+const multerS3 = require('multer-s3')
+const multer = require('multer')
 const saltRounds = 10;
+
+const s3 = new AWS.S3({
+    apiVersion: '2006-03-01',
+    accessKeyId: awsConfig.AWS_KEY,
+    secretAccessKey: awsConfig.AWS_SECRET,
+    region: 'us-east-2'
+});
+
+const adminFilesUploadToS3 = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: 'mtaasbucket',
+        key: function (req, file, cb) {
+            cb(null, req.body.projectName + '/' + 'AdminDocs/' + file.originalname)
+        }
+    })
+})
 
 
 router.post('/signup', function (req, res, next) {
@@ -128,6 +148,55 @@ router.put('/unblockProject', function (req, res, next) {
             next();
         } else {
             res.status(200).send({ message: "Succesfully unblocked"});
+        }
+    });
+});
+router.get('/loadFiles/:name', function (req, res, next) {
+    console.log('in the loadfiles',req.params.name)
+      let bucketParams={
+        Bucket:'mtaasbucket',
+        Prefix:req.params.name+'/'
+    }
+  console.log('in the loadfiles admin!!!:)')
+  s3.listObjects(bucketParams, function(err, data) {
+           if (err) {
+               console.log("Error in fetching contents of Bucket: "+err);
+               res.status(400).json("Error in fetching contents of Bucket: "+err)
+           } else {
+               let files=[]
+               files=data.Contents.map((el)=>{
+                   return {
+                       key:el.Key,
+                       modified:el.LastModified,
+                       size:el.Size,
+
+                   }
+               })
+               res.json(files)
+           }
+      });
+});
+
+router.get('/projectsForAdmin', function (req, res, next) {
+    project.find().populate("testerID").exec((err, projects) => {
+        if (err) {
+            next();
+        } else {
+            res.status(200).send({ projects: projects });
+        }
+    });
+});
+router.post('/upload', adminFilesUploadToS3.single('file'), function (req, res, next) {
+    console.log('File here', req.body)
+    let filePath = { filePath: req.body.projectName + '/' + 'AdminDocs/' + req.file.originalname, fileName: req.file.originalname }
+    console.log(filePath)
+    //console.log('id', req.body.id)
+    project.findOneAndUpdate({"name":req.body.projectName}, { $push: { adminDocs: filePath } }).exec((err, project) => {
+        if (err) {
+            next(err);
+        } else {
+            console.log('File Uploaded for admin success!!!');
+            res.status(200).send({ message: "Succesfully Uploaded file to AWS S3" });
         }
     });
 });
