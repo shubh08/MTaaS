@@ -150,48 +150,60 @@ router.get('/billing/(:id)', function (req, res, next) {
         if (err) {
             next();
         } else {
-            var array = {}
-            const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
-            const endOfMonth = moment().endOf('month').format('YYYY-MM-DD');
-            var date = startOfMonth;
-            var time = 0;
-            var totalCost = 0;
-            var totalTimeAWS = 0;
-            var totalTimeEmulator = 0;
-            var totalCostAWS = 0;
-            var totalCostEmulator = 0;
-            while (date >= startOfMonth && date <= endOfMonth) {
-                array[date] = 0;
-                date = moment(date).add(1, 'days').format("YYYY-MM-DD");
-            }
-            bills.forEach(bill => {
-                var dateDay = moment(bill.date).format('YYYY-MM-DD');
-                if (dateDay >= startOfMonth && dateDay <= endOfMonth) {
-                    var val = array[dateDay]
-                    time = time + bill.totalMinutes;
-                    totalCost = totalCost + bill.cost;
-                    totalCost = Math.round(totalCost * 100) / 100
-                    if (bill.type == "Emulator") {
-                        totalTimeEmulator = totalTimeEmulator + bill.totalMinutes;
-                        totalTimeEmulator = Math.round(totalTimeEmulator * 100) / 100;
-                        totalCostEmulator = totalCostEmulator + bill.cost;
-                        totalCostEmulator = Math.round(totalCostEmulator * 100) / 100;
-                    } else {
-                        totalTimeAWS = totalTimeAWS + bill.totalMinutes;
-                        totalTimeAWS = Math.round(totalTimeAWS * 100) / 100;
-                        totalCostAWS = totalCostAWS + bill.cost;
-                        totalCostAWS = Math.round(totalCostAWS * 100) / 100;
+            project.findById(req.params.id).populate("testerID").exec((err, proj) => {
+                if (err) {
+                    next(err);
+                } else {
+                    var filesCount = proj.commanfiles.length;
+                    proj.testerID.forEach((test)=>{
+                        filesCount +=  test.s3files.length;
+                        
+                    })
+                    var array = {}
+                    const startOfMonth = moment().subtract(30, 'd').format('YYYY-MM-DD');
+                    const endOfMonth = moment().format('YYYY-MM-DD');
+                    var date = startOfMonth;
+                    var time = 0;
+                    var totalCost = 0;
+                    var totalTimeAWS = 0;
+                    var totalTimeEmulator = 0;
+                    var totalCostAWS = 0;
+                    var totalCostEmulator = 0;
+                    while (date >= startOfMonth && date <= endOfMonth) {
+                        array[date] = 0;
+                        date = moment(date).add(1, 'days').format("YYYY-MM-DD");
                     }
+                    bills.forEach(bill => {
+                        var dateDay = moment(bill.date).format('YYYY-MM-DD');
+                        if (dateDay >= startOfMonth && dateDay <= endOfMonth) {
+                            var val = array[dateDay]
+                            time = time + bill.totalMinutes;
+                            totalCost = totalCost + bill.cost;
+                            totalCost = Math.round(totalCost * 100) / 100
+                            if (bill.type == "Emulator") {
+                                totalTimeEmulator = totalTimeEmulator + bill.totalMinutes;
+                                totalTimeEmulator = Math.round(totalTimeEmulator * 100) / 100;
+                                totalCostEmulator = totalCostEmulator + bill.cost;
+                                totalCostEmulator = Math.round(totalCostEmulator * 100) / 100;
+                            } else {
+                                totalTimeAWS = totalTimeAWS + bill.totalMinutes;
+                                totalTimeAWS = Math.round(totalTimeAWS * 100) / 100;
+                                totalCostAWS = totalCostAWS + bill.cost;
+                                totalCostAWS = Math.round(totalCostAWS * 100) / 100;
+                            }
 
-                    if (val == undefined) {
-                        array[dateDay] = bill.cost;
-                    } else {
-                        val = val + bill.cost
-                        array[dateDay] = Math.round(val * 100) / 100
-                    }
+                            if (val == undefined) {
+                                array[dateDay] = bill.cost;
+                            } else {
+                                val = val + bill.cost
+                                array[dateDay] = Math.round(val * 100) / 100
+                            }
+                        }
+                    });
+                    res.status(200).send({ days: Object.keys(array), costs: Object.values(array), totalTimeEmulator: totalTimeEmulator, totalCostEmulator: totalCostEmulator, totalTimeAWS: totalTimeAWS, totalCostAWS: totalCostAWS, filesCount: filesCount, filesAmount : filesCount*0.5 });
+
                 }
             });
-            res.status(200).send({ days: Object.keys(array), costs: Object.values(array), totalTimeEmulator: totalTimeEmulator, totalCostEmulator: totalCostEmulator, totalTimeAWS: totalTimeAWS, totalCostAWS: totalCostAWS });
         }
     });
 });

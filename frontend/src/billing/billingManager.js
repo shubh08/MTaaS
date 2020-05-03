@@ -27,7 +27,9 @@ class BillingManager extends React.Component {
       timeEmulator: 0,
       costDeviceFarm: 0,
       costEmulator: 0,
-      totalCost: 0
+      totalCost: 0,
+      filesCount:0,
+      filesCost:0
     };
   }
   componentWillMount() {
@@ -119,7 +121,8 @@ class BillingManager extends React.Component {
     axios.get(ROOT_URL + "/billing/" + e.target.value).then(response => {
       console.log(response.data)
       if (response.status == 200) {
-        this.setState({ timeEmulator: response.data.totalTimeEmulator, costEmulator: response.data.totalCostEmulator, timeDeviceFarm: response.data.totalTimeAWS, costDeviceFarm: response.data.totalCostAWS, totalCost: response.data.totalCostAWS+response.data.totalCostEmulator })
+        var total = (response.data.totalCostAWS + response.data.totalCostEmulator+ response.data.filesAmount )
+        this.setState({ timeEmulator: response.data.totalTimeEmulator, costEmulator: response.data.totalCostEmulator, timeDeviceFarm: response.data.totalTimeAWS, costDeviceFarm: response.data.totalCostAWS, totalCost: Math.round(total * 100) / 100, filesCount:response.data.filesCount, filesCost:response.data.filesAmount })
         this.setState({
           dataLine: {
             labels: response.data.days,
@@ -198,15 +201,17 @@ class BillingManager extends React.Component {
         optionsList.push(<option value={project._id} >{project.name}</option>)
     })
     return (
-      <div className="billingManager">
+      
+      <div className="billingManager ">
         <div>
           <TopNavManager />
         </div>
         <div className="billingManager-left">
           <SideNavManager />
         </div>
+        
         <div className="billingManager-right">
-          <div className="">
+        <div className="scroll-billingManager">
             <Row className="billingManager-select">
               <Col></Col>
               <Col>
@@ -216,7 +221,7 @@ class BillingManager extends React.Component {
             </Row>
 
 
-          </div>
+          
           <Row className="billingManager-marginBottom">
             <MDBContainer>
               <h5 className="billingManager-marginTop">Current Month's Billing details
@@ -237,7 +242,7 @@ class BillingManager extends React.Component {
                 <FormGroup className="billingManager-box-item" row>
                   <Label md={6}> Total Device Farm Minutes </Label>
                   <Col md={6}>
-                    {this.state.timeDeviceFarm} Hours
+                    {this.state.timeDeviceFarm} Minutes
                   </Col>
                 </FormGroup>
 
@@ -245,6 +250,12 @@ class BillingManager extends React.Component {
                   <Label md={6}> Total Emulator Instance Minutes </Label>
                   <Col md={6}>
                     {this.state.timeEmulator} Minutes
+                  </Col>
+                </FormGroup>
+                <FormGroup className="billingManager-box-item" row>
+                  <Label md={6}> Total Number of files uploaded for this project </Label>
+                  <Col md={6}>
+                    {this.state.filesCount} files
                   </Col>
                 </FormGroup>
                 <FormGroup className="billingManager-box-item" row>
@@ -260,20 +271,28 @@ class BillingManager extends React.Component {
                     $ {this.state.costEmulator} 
                   </Col>
                 </FormGroup>
-
+                <FormGroup className="billingManager-box-item" row>
+                  <Label md={6}>S3 files Cost </Label>
+                  <Col md={6}>
+                    $ {this.state.filesCost} 
+                  </Col>
+                </FormGroup>
                 <FormGroup className="billingManager-box-item" row>
                 <Label md={6}> <strong>Total Project Cost</strong> </Label>
                   <Col md={6}>
                    <strong> $ {this.state.totalCost}</strong>
                   </Col>
                 </FormGroup>
+                
               </Form>
             </div>
             </Col>
           </Row>
 
         </div>
+        
       </div>
+</div>
     )
   }
 }
