@@ -90,11 +90,11 @@ class AllocateDeviceTester extends React.Component {
     })
     var deviceDropDown = [];
     if (this.state.deviceOS == "2") {
-      deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:58D6FB12B3624256AED26D0F940D4427">Google Pixel 2 - OS 9</option>)
-      deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:E64D26FE27644A39A4BCEF009CDD8645">Google Pixel 2 XL - OS 9</option>)
-      deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:CF6DC11E4C99430BA9A1BABAE5B45364">Google Pixel 3 - OS 9</option>)
-      deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:E1F3149FDC33484D824BCFF66003E609">Google Pixel 3 XL - OS 9</option>)
-      deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:2B6903A2FEBA4AD68E79F7BCD0B81FBA">Samsung Galaxy A70 - OS 9</option>)
+      deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:58D6FB12B3624256AED26D0F940D4427">Google Pixel 2</option>)
+      deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:E64D26FE27644A39A4BCEF009CDD8645">Google Pixel 4 (Unlocked)</option>)
+      deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:CF6DC11E4C99430BA9A1BABAE5B45364">Google Pixel 4XL (Unlocked)</option>)
+      deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:E1F3149FDC33484D824BCFF66003E609">Samsung Galaxy S10+</option>)
+      deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:2B6903A2FEBA4AD68E79F7BCD0B81FBA">Samsung Galaxy Tab S6 (Wifi)</option>)
       deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:DD61B8C65B1C46A9B3D5285A448BB4A4">Samsung Galaxy A40 - OS 9</option>)
       deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:E4438F5D016544A8BB8557C459084F9D">Samsung Galaxy A50 - OS 9</option>)
       deviceDropDown.push(<option value="arn:aws:devicefarm:us-west-2::device:CE68825ABE5A4740B56F10111FD47844">Samsung Galaxy S9 (Unlocked) - OS 9</option>)

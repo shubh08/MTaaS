@@ -60,7 +60,7 @@ toast.success('Data refresh request sent. Please refresh this page after 1 minut
           <td>{el.name}</td>
           <td>{el.type}</td>
           <td>{el.platform}</td>
-         <td><Badge color="info">{el.status}</Badge>{el.status!='SCHEDULING'?<button value={el.arn}onClick={this.myFunction}>View Device breakdown results</button>:''}
+         <td><Badge color="info">{el.status}</Badge>{el.status!='SCHEDULING'?<button value={el.arn}onClick={this.myFunction}>Device</button>:''}
          
          <div id={el.arn} style={{display:"none"}}>
      {el.status!='SCHEDULING'? <Table>
@@ -146,7 +146,7 @@ projectChangeHandler = e => {
       <td>{el.name}</td>
       <td>{el.type}</td>
       <td>{el.platform}</td>
-      <td><Badge color="info">{el.status}</Badge>{el.status!='SCHEDULING'?<button value={el.arn}onClick={this.myFunction}>View Device breakdown results</button>:''}
+      <td><Badge color="info">{el.status}</Badge>{el.status!='SCHEDULING'?<button value={el.arn}onClick={this.myFunction}>Device</button>:''}
          
          <div id={el.arn} style={{display:"none"}}>
      {el.status!='SCHEDULING'? <Table>
