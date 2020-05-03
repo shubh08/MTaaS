@@ -27,7 +27,9 @@ class BillingAdmin extends React.Component {
       timeEmulator: 0,
       costDeviceFarm: 0,
       costEmulator: 0,
-      totalCost: 0
+      totalCost: 0,
+      filesCount:0,
+      filesCost:0
     };
   }
   componentWillMount() {
@@ -118,9 +120,9 @@ class BillingAdmin extends React.Component {
     this.setState({ optionSelected: e.target.value });
     this.setState({ yAxis: [] })
     axios.get(ROOT_URL + "/billing/" + e.target.value).then(response => {
-      console.log(response.data)
       if (response.status == 200) {
-        this.setState({ timeEmulator: response.data.totalTimeEmulator, costEmulator: response.data.totalCostEmulator, timeDeviceFarm: response.data.totalTimeAWS, costDeviceFarm: response.data.totalCostAWS, totalCost: response.data.totalCostAWS + response.data.totalCostEmulator })
+        var total = (response.data.totalCostAWS + response.data.totalCostEmulator+ response.data.filesAmount )
+        this.setState({ timeEmulator: response.data.totalTimeEmulator, costEmulator: response.data.totalCostEmulator, timeDeviceFarm: response.data.totalTimeAWS, costDeviceFarm: response.data.totalCostAWS, totalCost: Math.round(total * 100) / 100, filesCount:response.data.filesCount, filesCost:response.data.filesAmount })
         this.setState({
           dataLine: {
             labels: response.data.days,
@@ -282,6 +284,7 @@ class BillingAdmin extends React.Component {
           <SideNavAdmin />
         </div>
         <div className="billingAdmin-right">
+        <div className="scroll-billingManager">
           <Row className="billingAdmin-select">
             <Col></Col>
             <Col>
@@ -315,7 +318,7 @@ class BillingAdmin extends React.Component {
                 <FormGroup className="billingAdmin-box-item" row>
                   <Label md={6}> Total Device Farm Minutes </Label>
                   <Col md={6}>
-                    {this.state.timeDeviceFarm} Hours
+                    {this.state.timeDeviceFarm} Minutes
                   </Col>
                 </FormGroup>
 
@@ -323,6 +326,12 @@ class BillingAdmin extends React.Component {
                   <Label md={6}> Total Emulator Instance Minutes </Label>
                   <Col md={6}>
                     {this.state.timeEmulator} Minutes
+                  </Col>
+                </FormGroup>
+                <FormGroup className="billingAdmin-box-item" row>
+                  <Label md={6}> Total Number of files uploaded for this project </Label>
+                  <Col md={6}>
+                    {this.state.filesCount} files
                   </Col>
                 </FormGroup>
                 <FormGroup className="billingAdmin-box-item" row>
@@ -338,6 +347,12 @@ class BillingAdmin extends React.Component {
                     $ {this.state.costEmulator} 
                   </Col>
                 </FormGroup>
+                <FormGroup className="billingAdmin-box-item" row>
+                  <Label md={6}>S3 files Cost </Label>
+                  <Col md={6}>
+                    $ {this.state.filesCost} 
+                  </Col>
+                </FormGroup>
 
                 <FormGroup className="billingAdmin-box-item" row>
                   <Label md={6}> <strong>Total Project Cost</strong> </Label>
@@ -349,6 +364,7 @@ class BillingAdmin extends React.Component {
             </div>
             </Col>
           </Row>
+          </div>
           </div>
         </div>
         )

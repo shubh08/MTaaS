@@ -202,7 +202,7 @@ class DashboardManager extends React.Component {
                 label(tooltipItems, data) {
                   return data.datasets[0].data[tooltipItems.index] == 0? `${data.labels[tooltipItems.index]}` :`${data.labels[tooltipItems.index]} : ${
                     data.datasets[0].data[tooltipItems.index]
-                    } Scripts`;
+                    } Test Runs`;
                 }
               }
             },
