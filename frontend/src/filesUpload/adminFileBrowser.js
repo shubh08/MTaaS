@@ -3,55 +3,39 @@ import { Jumbotron, Container, Button } from 'reactstrap';
 import './signup.css';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
-
 import '../../node_modules/react-keyed-file-browser/dist/react-keyed-file-browser.css'
 import FileBrowser from 'react-keyed-file-browser'
 import React from 'react';
 
 import axios from 'axios'
 import Moment from 'moment'
-
 import './signup.css';
 import { ROOT_URL } from '../config/config.js'
 import SideNavManager from '../navigation/sidenavManager';
 import TopNavManager from '../navigation/topnavManager';
-import { toast } from 'react-toastify';
-import SideNavTester from '../navigation/sidenavTester';
+import SideNavAdmin from '../navigation/sidenavAdmin';
 
 
-class TesterFilesView extends React.Component {
+class AdminFileBrowser extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             fileSelected: null,
             filesfromS3: [],
-            options: [],
-            projectName: null,
-            projectsOptions:[],
-            name:''
+            options:[],
+            projectName:null,
+            projectsOptions:[]
             
-
         }
 
     }
 
-    projectChangeHandler = (e) => {
-        if(e.target.value!='dummy')
-        {
+    projectChangeHandler=(e)=>{
         this.setState({
-            projectName: e.target.value
-        },()=>{
-            this.loadProjects()
+            projectName:e.target.value
         });
-        console.log('Project Name Set',e.target.value)
-       
-    }
-    }
-
-    loadProjects = () => {
-        console.log('Project Name',this.state.projectName)
-        let data = { projectName: this.state.projectName, testerName: this.state.name }
-        axios.post(ROOT_URL + '/tester/loadFiles/', data).then(res => {
+        console.log(e.target.value)
+        axios.get(ROOT_URL + '/admin/loadFiles/'+e.target.value).then(res => {
             console.log(res.data)
             this.setState({
                 filesfromS3: res.data.map((el) => {
@@ -71,15 +55,13 @@ class TesterFilesView extends React.Component {
 
         e.preventDefault()
         let fd = new FormData()
-        fd.append('testerName', this.state.name);
-        fd.append('testerID', localStorage.getItem('TesterID'));
         fd.append('projectName', this.state.projectName);
         fd.append('file', this.state.fileSelected);
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-        axios.post(ROOT_URL + '/tester/upload', fd, config).then((res) => {
+        axios.post(ROOT_URL + '/admin/upload', fd, config).then((res) => {
             console.log(res.data);
             alert('File Uploaded Successfully')
-            this.loadProjects()
+            window.location.reload();
 
         }).catch(error => { console.log("Error while uploading file " + error) })
 
@@ -93,57 +75,52 @@ class TesterFilesView extends React.Component {
 
     componentDidMount() {
 
+        let data = {
+            userName: this.state.username,
+            projectName: this.state.projectName
+        }
 
-        axios.get(ROOT_URL + '/testerByTesterID/' + localStorage.getItem('TesterID')).then((response) => {
-            if (response.status == 200) {
-              let tester = response.data.testers;
-              axios.get(ROOT_URL + '/projectsForTester/'+localStorage.getItem('TesterID')).then(res => {
-                console.log('result from the load projects', res)
-                let projectsOpts = []
-                projectsOpts = res.data.projects.map(el => {
-                    return (<option key={el.name} value={el.name}>{el.name}</option>)
-                })
-                projectsOpts.unshift(<option key='dummy' value='dummy'>Select Project</option>)
-                this.setState({ name: tester.name, email: tester.email, projectsOptions: projectsOpts});
-    
-            }).catch(err => console.log(err))
-            } else {
-              toast.error(response.data.message, {
-                position: toast.POSITION.TOP_CENTER
-              });
-            }
-          }).catch(error => {
-            toast.error('Something went wrong!', {
-              position: toast.POSITION.TOP_CENTER
-            });
-          })
+        axios.get(ROOT_URL+'/admin/projectsForAdmin').then(res=>{
+            console.log('result from the load projects',res)
+            let projectsOpts = res.data.projects.map(el =>{
+            return (<option key={el.name} value={el.name}>{el.name}</option>)
+            })
+            this.setState({projectsOptions:projectsOpts})
+
+        }).catch(err=>console.log(err))
 
         
-       
-
-       
     }
 
 
 
     onDeleteFileHandler(e) {
-  
+        console.log('Event',e)
+        axios.post(ROOT_URL+'/manager/deleteFile',{file_key:e}).then((response)=>{
+            alert('File Deleted Successfully')
+            // window.location.reload()
+        }).catch((err)=>{
+            alert('Error in deleting the file '+err)})
     }
 
-  
+
 
 
     render() {
         return (
+
             <div className="homepage">
-            <div>
-              <TopNavManager/>
-            </div>
-            <div className="homepage-left">
-              <SideNavTester/>
-            </div>
+      <div>
+        <TopNavManager/>
+      </div>
+      <div className="homepage-left">
+        <SideNavAdmin/>
+      </div>
+      <div className="homepage-right">
+        <div>
+          <div>
             
-            <div className="homepage-right">
+          <div>
                 <div className="">
                     <Jumbotron fluid>
                         <Container fluid>
@@ -160,7 +137,7 @@ class TesterFilesView extends React.Component {
                                     </FormGroup>
                                 </FormGroup>
                                 <FormGroup>
-                                <Label for="exampleSelect">Upload you files!</Label>
+                                    <Label for="exampleSelect">Upload you files!</Label>
                                     <Input type="file" name="file" id="file" placeholder="Select file to upload"
                                         onChange={this.fileChangeHandle}
                                         required
@@ -200,17 +177,20 @@ class TesterFilesView extends React.Component {
                         onDeleteFile={this.onDeleteFileHandler}
                         onDownloadFile={(fileKey) => { window.location = 'https://mtaasbucket.s3.us-east-2.amazonaws.com/' + fileKey }}
                     />
-                    
                 </div>
                     </Jumbotron>
-                    
+
                 </div>
-     
+               
+              
             </div>
-            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
         )
     }
 }
 
-export default TesterFilesView
+export default AdminFileBrowser

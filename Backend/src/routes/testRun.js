@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var testerRun = require('../models/TestRun');
+var emulatortestRun = require('../models/emulatorTestRun')
 var notification = require('../models/notification');
 var devicePool = require('../models/devicePool');
 var project = require('../models/project');
@@ -14,7 +15,7 @@ var fs = require('fs')
 const { promisify } = require('util')
 const unlinkAsync = promisify(fs.unlink)
 var Request = require('request');
-
+const { fork } = require('child_process');
 const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 
 var devicefarm = new AWS.DeviceFarm({
@@ -72,16 +73,17 @@ createRun = async (req, res) => {
     const devicePoolName = req.body.devicePoolName
     const devicePoolARNs = req.body.devicePoolARNs
     let DEVICE_POOL_ARN = 'arn:aws:devicefarm:us-west-2::devicepool:082d10e5-d7d7-48a5-ba5c-b33d66efa1f5'
-    // 'arn:aws:devicefarm:us-west-2::devicepool:082d10e5-d7d7-48a5-ba5c-b33d66efa1f5'
+    //'arn:aws:devicefarm:us-west-2::devicepool:fbe9a5ad-f451-4ae9-99a4-bc938a15d88a'
+    //'arn:aws:devicefarm:us-west-2::devicepool:082d10e5-d7d7-48a5-ba5c-b33d66efa1f5'
     const testType = req.body.testType
     const testPackageFileName = 'zip-with-dependencies.zip'
     const testPackageFileType = req.body.testPackageFileType
 
     const testPackageFile = 'testScriptFolder/zip-with-dependencies.zip'
     console.log('Request body is', req.body)
-    res.status(200).send({message:'ok'})
+    res.status(200).send({ message: 'ok' })
 
-    
+
     let project_params = {
         name: userName + '_' + projectName + '_' + runname
     }
@@ -381,8 +383,8 @@ async function listTestArtifacts(TEST_ARN, type, nextToken, artifactsArray) {
                 await listTestArtifacts(TEST_ARN, type, data.nextToken.artifactsArray)
             }
         }, function (error) {
-        console.log(error, error.stack)
-    }
+            console.log(error, error.stack)
+        }
     )
 }
 
@@ -445,7 +447,7 @@ triggerJob = async (arn, data, res, projectID, next) => {
     //console.log('Jobs returned',jobs[0])
     data.jobs = jobs
     // console.log('deviceeeeeeeeeeeeeeeeeeeeeeee minssssssssssss',data.run)
-    let deviceMinutes1 = data.run.deviceMinutes.total
+    let deviceMinutes1 = data.run.deviceMinutes.metered
     console.log('Run device minutesssssssss are hereeeeeeeeeeeeeeeee', deviceMinutes1)
     let runParentObj = data.run
 
@@ -464,20 +466,21 @@ triggerJob = async (arn, data, res, projectID, next) => {
     testerRun.findOneAndDelete({ "arn": arn }).exec((err, data) => {
         if (err)
             next(err)
-        console.log('Deleted document is',data)
-        let userName=''
-        let projectName=''
-        if(data!=null)
-        { userName = data.userName
-         projectName = data.projectName}
+        console.log('Deleted document is', data)
+        let userName = ''
+        let projectName = ''
+        if (data != null) {
+            userName = data.userName
+            projectName = data.projectName
+        }
         const testerRunObj = new testerRun({ userName, projectName, arn, name, type, platform, status, result, counters, totalJobs, deviceMinutes, jobs })
         testerRunObj.save()
             .then(() => {
                 console.log("Inside then of testerRun save")
                 let cost = (0.01 * deviceMinutes1)
                 let totalMinutes = deviceMinutes1
-                let type='AWS_DEVICE_FARM'
-                const billingObj = new billing({ projectID, totalMinutes, cost,type })
+                let type = 'AWS_DEVICE_FARM'
+                const billingObj = new billing({ projectID, totalMinutes, cost, type })
                 billingObj.save((err, billing) => {
                     console.log('Inside Billing!')
                     if (err) {
@@ -568,21 +571,21 @@ getArtifactsOfTestOfSuiteOfDeviceOfRun = (req, res) => {
 }
 
 router.post('/allocateDevice', function (req, res, next) {
-    let devicePoolRules=[
-         {
-             "attribute": "ARN", 
-             "operator": "IN",
-             "value": JSON.stringify(req.body.poolList)
-         }
-     ]
-     let device_pool_params = {
-         projectArn: "arn:aws:devicefarm:us-west-2:767528473708:project:fbe9a5ad-f451-4ae9-99a4-bc938a15d88a",
-         name: req.body.devicePoolName,
-         rules: devicePoolRules
-     }
+    let devicePoolRules = [
+        {
+            "attribute": "ARN",
+            "operator": "IN",
+            "value": JSON.stringify(req.body.poolList)
+        }
+    ]
+    let device_pool_params = {
+        projectArn: "arn:aws:devicefarm:us-west-2:767528473708:project:fbe9a5ad-f451-4ae9-99a4-bc938a15d88a",
+        name: req.body.devicePoolName,
+        rules: devicePoolRules
+    }
 
     devicefarm.createDevicePool(device_pool_params).promise().then(
-        function(data){
+        function (data) {
             const devicePoolName = req.body.devicePoolName;
             const devicePoolARN = data.devicePool.arn;
             const projectID = req.body.projectID;
@@ -593,51 +596,121 @@ router.post('/allocateDevice', function (req, res, next) {
             });
             newPool.save((err, pool) => {
                 if (err) {
-                    res.status(400).send({message:"Device Allocation Unsuccessful"}) ; 
+                    res.status(400).send({ message: "Device Allocation Unsuccessful" });
                 } else {
-                    res.status(200).send({message:"Device Successfully Allocated"}) ; 
-             }
+                    res.status(200).send({ message: "Device Successfully Allocated" });
+                }
             })
-            
-         },function(error){
+
+        }, function (error) {
             console.log(error)
             res.status(400).json({ message: error })
-         }
-    ); 
+        }
+    );
 });
 
 router.get('/getDevicePool', function (req, res, next) {
-    let poolName = {"arn": req.query.id}
+    let poolName = { "arn": req.query.id }
     devicefarm.getDevicePool(poolName).promise().then(
-        function(data){
-            res.status(200).send({arn : data}) ; 
-         },function(error){
+        function (data) {
+            res.status(200).send({ arn: data });
+        }, function (error) {
             res.status(400).json({ message: error })
-         }
-     ); 
+        }
+    );
 })
 router.post('/deleteDevicePool', function (req, res, next) {
-    let poolName = {"arn": req.body.poolID}
+    let poolName = { "arn": req.body.poolID }
     devicefarm.deleteDevicePool(poolName).promise().then(
-        function(data){
-            devicePool.findOneAndDelete({devicePoolARN :req.body.poolID}).exec((err,device)=>{
-                res.status(200).send("removed") ; 
+        function (data) {
+            devicePool.findOneAndDelete({ devicePoolARN: req.body.poolID }).exec((err, device) => {
+                res.status(200).send("removed");
             })
-            
-         },function(error){
+
+        }, function (error) {
             res.status(400).json({ message: error })
-         }
-     ); 
+        }
+    );
 })
 router.get('/getDevicePoolByProject/(:id)', function (req, res, next) {
-    let project = {"projectID": req.params.id}
+    let project = { "projectID": req.params.id }
     devicePool.find(project).populate("projectID").exec((err, devicePools) => {
         if (err) {
             next();
         } else {
-            res.status(200).send({devicePools : devicePools});
+            res.status(200).send({ devicePools: devicePools });
         }
     });
 });
+
+router.post('/createRunEmulator', upload.single('file'), function (req, res, next) {
+    console.log('res objects', req.body)
+    // userName: 'John Snows',
+    // projectName: 'Proj_2',
+    // runName: 'Emulator 2',
+    // appFileType: 'IOS_APP',
+    // testType: 'BUILTIN_EXPLORER',
+    // testPackageFileType: '' 
+
+    const forked = fork('indexAndroidEmulator.js');
+    forked.on('message', (msg) => {
+        console.log('Message from child', msg);
+        let userName = req.body.userName
+        let name = req.body.runName
+        let projectName = req.body.projectName
+        let platform = req.body.appFileType
+        let status = 'Completed'//msg.status
+        let result = 'PASSED' //msg.result
+        let deviceMinutes = 10
+        let totalJobs = 1
+        let passed = 1
+        let failed = 1
+        const emulatortest = new emulatortestRun({ userName, projectName, name, platform, status, result, totalJobs, deviceMinutes, })
+
+        emulatortest.save()
+            .then((data) => {
+                console.log("Inside then of testerRun save")
+                let projectID = req.body.projectID
+                let type = 'Emulator'
+                let totalMinutes = deviceMinutes
+                let cost = (0.01 * totalMinutes)
+                const billingObj = new billing({ projectID, totalMinutes, cost, type })
+                billingObj.save().then((billing, err) => {
+                    console.log('Inside Billing!')
+                    if (err) {
+                        next(err);
+                    } else {
+                        res.status(200).send({ message: 'Test and Billing  Success!', billing });
+                    }
+                }).catch((err) => {
+                    console.log('error inside billing save', err)
+
+                })
+
+            })
+            .catch((err) => {
+                console.log('errorasdasdasdas', err)
+                console.log("Inside catch of testerRun save")
+                //res.status(400).json({ message: "Error in save of testerRun inside createRun: " + err });
+            })
+    });
+
+
+    forked.send({ hello: 'world' });
+
+})
+
+router.post('/emulatorLoadRunData', function (req, res, next) {
+    console.log('here in the eumlatorloadRunData')
+    emulatortestRun.find({ "projectName": req.body.projectName }).exec((err, data) => {
+        if (err)
+            next(err)
+        //console.log("Run data is ",data)
+        res.status(200).send({ data: data })
+
+    })
+    // getRunStatus(req,res,next)
+});
+
 module.exports = router;
 

@@ -15,7 +15,7 @@ class NewEmulatorRunTester extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: 'Jon Snows',
+      username: '',
       projectID: '',
       projects: [],
       projectName: '',
@@ -39,10 +39,25 @@ class NewEmulatorRunTester extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(ROOT_URL + '/projectsForTester/' + localStorage.getItem("TesterID")).then((response) => {
+
+
+    axios.get(ROOT_URL + '/testerByTesterID/' + localStorage.getItem('TesterID')).then((response) => {
       if (response.status == 200) {
-        console.log(response.data)
-        this.setState({ projects: response.data.projects });
+        let tester = response.data.testers;
+        axios.get(ROOT_URL + '/projectsForTester/' + localStorage.getItem("TesterID")).then((response) => {
+          if (response.status == 200) {
+            console.log(response.data)
+            this.setState({ projects: response.data.projects, username:tester.name });
+          } else {
+            toast.error(response.data.message, {
+              position: toast.POSITION.TOP_CENTER
+            });
+          }
+        }).catch(error => {
+          toast.error('Something went wrong!', {
+            position: toast.POSITION.TOP_CENTER
+          });
+        })
       } else {
         toast.error(response.data.message, {
           position: toast.POSITION.TOP_CENTER
@@ -53,6 +68,10 @@ class NewEmulatorRunTester extends React.Component {
         position: toast.POSITION.TOP_CENTER
       });
     })
+
+
+
+
   }
 
   fileChangeHandle = (e) => {
@@ -63,52 +82,42 @@ class NewEmulatorRunTester extends React.Component {
 
   submitTest = (e) => {
     e.preventDefault();
-    setTimeout(() => {
-        toast.success('Your test Emulator run scheduled successfully !. Please wait for 5-10 minutes for test run results', {
-                position: toast.POSITION.TOP_CENTER
-              });
-    }, 2000);
-    //window.location.reload()
-    // this.setState({
-    //   loading: true
-    // })
-
-    // console.log('This selected devide arns', this.state.selectedDevices)
-    // let fd = new FormData();
-    // fd.append('userName', this.state.username);
-    // fd.append('projectName', this.state.projectName);
-    // fd.append('runName', this.state.runName)
-    // fd.append('appFileName', this.state.appFileName)
-    // fd.append('appFileType', this.state.deviceOS == '1' ? 'IOS_APP' : 'ANDROID_APP')
+    this.setState({
+      loading: true
+    })
+   // console.log('This selected devide arns', this.state.selectedDevices)
+    let fd = new FormData();
+    fd.append('userName', this.state.username);
+    fd.append('projectName', this.state.projectName);
+    fd.append('runName', this.state.runName)
+    //fd.append('appFileName', this.state.appFileName)
+    fd.append('appFileType', this.state.deviceOS == '1' ? 'IOS_APP' : 'ANDROID_APP')
     // fd.append('devicePoolName', this.state.devicePoolName)
-    // fd.append('devicePoolARNs', this.state.devicePoolArn)
-    // fd.append('testType', this.state.selectedTestType)
-    // fd.append('testPackageFileType', this.state.testPackageFileTypes[this.state.testTypes.indexOf(this.state.selectedTestType)])
-    // fd.append('file', this.state.fileSelected);
-    // console.log('final data', fd)
-    // const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+    fd.append('projectID', this.state.projectID)
+    fd.append('testType', this.state.selectedTestType)
+    fd.append('testPackageFileType', this.state.testPackageFileTypes[this.state.testTypes.indexOf(this.state.selectedTestType)])
+    fd.append('file', this.state.fileSelected);
+    console.log('final data', fd)
+    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
-    // axios.post(ROOT_URL + '/testRun/createRun', fd, config).then((res) => {
-    //   this.setState({
-    //     loading: false
-    //   })
-    //   console.log(res.data);
-    //   toast.success('Your test run scheduled successfully!. Please wait for 5-10 minutes for test run results', {
-    //     position: toast.POSITION.TOP_CENTER
-    //   });
-    //   setTimeout(() => {
-    //     window.location.reload()
-    //   }, 2000);
-    //   // window.location.reload();
-    // }).catch(error => {
-    //   this.setState({
-    //     loading: false
-    //   })
-    //   console.log("Error in scheduling new run: " + error)
-    // })
-    // toast.error('Something went wrong!', {
-    //   position: toast.POSITION.TOP_CENTER
-    // });
+    axios.post(ROOT_URL + '/testRun/createRunEmulator', fd, config).then((res) => {
+      this.setState({
+        loading: false
+      })
+      console.log(res.data);
+      toast.success('Your test run completed successfully!. Please visit page test run status page', {
+        position: toast.POSITION.TOP_CENTER
+      });
+      setTimeout(() => {
+        window.location.reload()
+      }, 2000);
+      // window.location.reload();
+    }).catch(error => {
+      this.setState({
+        loading: false
+      })
+      console.log("Error in scheduling new run: " + error)
+    })
 
   }
 
@@ -286,7 +295,7 @@ class NewEmulatorRunTester extends React.Component {
               </Input>
             </FormGroup>
             <FormGroup>
-              <Label>Add your test file</Label>
+              <Label>Upload your .apk File</Label>
               <Input type="file" onChange={this.fileChangeHandle} />
               <FormText color="muted">
                 Upload a .apk/.isa file only!

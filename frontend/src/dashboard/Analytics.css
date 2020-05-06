@@ -53,3 +53,19 @@
     transform: rotate(360deg);
   }
 }
+.scroll-dashboard{
+  max-height: 100vh;
+  overflow: scroll;
+}
+.analytics-left {
+  text-align: center;
+  position: fixed;
+  top: 6.9%;
+  left: 0;
+  background-color: #e9ecef;
+  width: 20%;
+  float: left;
+
+  /* max-height: 94vh;
+  overflow: scroll; */
+}

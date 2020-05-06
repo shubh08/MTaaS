@@ -23,9 +23,13 @@ class BillingAdmin extends React.Component {
       optionSelected: '',
       cost: [],
       all_days: [],
-      timeDeviceFarm:0,
-      timeEmulator:0,
-      totalCost:0
+      timeDeviceFarm: 0,
+      timeEmulator: 0,
+      costDeviceFarm: 0,
+      costEmulator: 0,
+      totalCost: 0,
+      filesCount:0,
+      filesCost:0
     };
   }
   componentWillMount() {
@@ -114,11 +118,11 @@ class BillingAdmin extends React.Component {
   }
   listChangeHandler = (e) => {
     this.setState({ optionSelected: e.target.value });
-    this.setState({yAxis:[]})
+    this.setState({ yAxis: [] })
     axios.get(ROOT_URL + "/billing/" + e.target.value).then(response => {
-      console.log(response.data)
       if (response.status == 200) {
-        this.setState({totalCost:response.data.totalCost,timeDeviceFarm:response.data.time/60,timeEmulator:0})
+        var total = (response.data.totalCostAWS + response.data.totalCostEmulator+ response.data.filesAmount )
+        this.setState({ timeEmulator: response.data.totalTimeEmulator, costEmulator: response.data.totalCostEmulator, timeDeviceFarm: response.data.totalTimeAWS, costDeviceFarm: response.data.totalCostAWS, totalCost: Math.round(total * 100) / 100, filesCount:response.data.filesCount, filesCost:response.data.filesAmount })
         this.setState({
           dataLine: {
             labels: response.data.days,
@@ -187,8 +191,8 @@ class BillingAdmin extends React.Component {
         });
       }
     })
-      
-    
+
+
   }
   // listChangeHandler = (e) => {
   //   this.setState({ optionSelected: e.target.value });
@@ -268,8 +272,8 @@ class BillingAdmin extends React.Component {
   render() {
     let optionsList = [<option value={0} >Select</option>]
     this.state.projects && this.state.projects.map((project) => {
-      if(project.active)
-      optionsList.push(<option value={project._id} >{project.name}</option>)
+      if (project.active)
+        optionsList.push(<option value={project._id} >{project.name}</option>)
     })
     return (
       <div className="billingAdmin">
@@ -280,7 +284,8 @@ class BillingAdmin extends React.Component {
           <SideNavAdmin />
         </div>
         <div className="billingAdmin-right">
-          <Row className="billingManager-select">
+        <div className="scroll-billingManager">
+          <Row className="billingAdmin-select">
             <Col></Col>
             <Col>
               <Input type="select" style={{ fontWeight: "bolder" }} onChange={this.listChangeHandler}>{optionsList}</Input>
@@ -294,9 +299,9 @@ class BillingAdmin extends React.Component {
             </Col>
             <Col></Col>
           </Row>
-          <Row className="billingManager-marginBottom">
+          <Row className="billingAdmin-marginBottom">
             <MDBContainer>
-              <h5 className="billingManager-marginTop">Current Month's Billing details
+              <h5 className="billingAdmin-marginTop">Current Month's Billing details
               </h5>
               <Line data={this.state.dataLine} width={800} options={this.state.lineChartOptions} />
             </MDBContainer>
@@ -307,34 +312,63 @@ class BillingAdmin extends React.Component {
               The following billing details are applicable for cost associated with project runs.
               </h5>
           </div>
-          <div className="billingAdmin-box">
-            <Form>
-              <FormGroup className="billingAdmin-box-item" row>
-                <Label sm={5}> Total Device Farm Hours </Label>
-                <Col sm={3}>
-                {this.state.timeDeviceFarm} Hours
-                </Col>
-              </FormGroup>
+          <Row>
+            <Col><div className="billingAdmin-box">
+              <Form>
+                <FormGroup className="billingAdmin-box-item" row>
+                  <Label md={6}> Total Device Farm Minutes </Label>
+                  <Col md={6}>
+                    {this.state.timeDeviceFarm} Minutes
+                  </Col>
+                </FormGroup>
 
-              <FormGroup className="billingAdmin-box-item" row>
-                <Label sm={5}> Total Emulator Instance Hours </Label>
-                <Col sm={3}>
-                {this.state.timeEmulator} Hours
-                </Col>
-              </FormGroup>
+                <FormGroup className="billingAdmin-box-item" row>
+                  <Label md={6}> Total Emulator Instance Minutes </Label>
+                  <Col md={6}>
+                    {this.state.timeEmulator} Minutes
+                  </Col>
+                </FormGroup>
+                <FormGroup className="billingAdmin-box-item" row>
+                  <Label md={6}> Total Number of files uploaded for this project </Label>
+                  <Col md={6}>
+                    {this.state.filesCount} files
+                  </Col>
+                </FormGroup>
+                <FormGroup className="billingAdmin-box-item" row>
+                  <Label md={6}>Device Farm Cost </Label>
+                  <Col md={6}>
+                    $ {this.state.costDeviceFarm} 
+                  </Col>
+                </FormGroup>
 
-              <FormGroup className="billingAdmin-box-item" row>
-                <Label sm={5}> Total Project Cost </Label>
-                <Col sm={3}>
-                $ {this.state.totalCost} 
-                </Col>
-              </FormGroup>
-            </Form>
+                <FormGroup className="billingAdmin-box-item" row>
+                  <Label md={6}>Emulator Cost </Label>
+                  <Col md={6}>
+                    $ {this.state.costEmulator} 
+                  </Col>
+                </FormGroup>
+                <FormGroup className="billingAdmin-box-item" row>
+                  <Label md={6}>S3 files Cost </Label>
+                  <Col md={6}>
+                    $ {this.state.filesCost} 
+                  </Col>
+                </FormGroup>
+
+                <FormGroup className="billingAdmin-box-item" row>
+                  <Label md={6}> <strong>Total Project Cost</strong> </Label>
+                  <Col md={6}>
+                   <strong> $ {this.state.totalCost}</strong>
+                  </Col>
+                </FormGroup>
+              </Form>
+            </div>
+            </Col>
+          </Row>
+          </div>
           </div>
         </div>
-      </div>
-    )
-  }
-}
-
-export default BillingAdmin;
+        )
+      }
+    }
+    
+    export default BillingAdmin;

@@ -1,5 +1,5 @@
-import TopNav from "../navigation/topnavAdmin";
-import SideNav from "../navigation/sidenavAdmin";
+import TopNav from "../navigation/topnavManager";
+import SideNav from "../navigation/sidenavManager";
 import "./Analytics.css";
 import React, { Component } from "react";
 import { Doughnut, Pie } from "react-chartjs-2";
@@ -9,7 +9,7 @@ import { ROOT_URL } from "../config/config.js";
 import { toast } from "react-toastify";
 import { Row, Col } from 'reactstrap';
 
-class Dashboard extends React.Component {
+class DashboardManager extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,9 +41,9 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(ROOT_URL + "/testerPerProject").then(response => {
+    axios.get(ROOT_URL + "/testerPerProject/"+localStorage.getItem("ManagerID")).then(response => {
       if (response.status == 200) {
-    
+     
         this.setState({
           dataDoughnut: {
             labels: response.data.projectName,
@@ -101,15 +101,14 @@ class Dashboard extends React.Component {
         });
       }
     })
-    axios.get(ROOT_URL + "/projectPerManager").then(response => {
+    axios.get(ROOT_URL + "/bugsPerProject/"+localStorage.getItem("ManagerID")).then(response => {
       if (response.status == 200) {
-      
         this.setState({
           dataPie: {
             labels: response.data.projectName,
             datasets: [
               {
-                data: response.data.projectLength,
+                data: response.data.projectBugLength,
                 backgroundColor: [
                 "#46A2FF",
                 "#58ACFF",
@@ -143,7 +142,7 @@ class Dashboard extends React.Component {
                 label(tooltipItems, data) {
                   return `${data.labels[tooltipItems.index]} : ${
                     data.datasets[0].data[tooltipItems.index]
-                    } Projects`;
+                    } Bugs`;
                 },
               },
             },
@@ -160,14 +159,14 @@ class Dashboard extends React.Component {
         });
       }
     });
-    axios.get(ROOT_URL + "/scriptsPerTester").then(response => {
+    axios.get(ROOT_URL + "/testrunPerProject/"+localStorage.getItem("ManagerID")).then(response => {
       if (response.status == 200) {
         this.setState({
           dataDoughnut2: {
-            labels: response.data.testerName,
+            labels: response.data.projectName,
             datasets: [
               {
-                data: response.data.testerScriptLength,
+                data: response.data.testRunLength,
                 backgroundColor: [
                   "#FF1717",
                   "#FF2E2E",
@@ -203,7 +202,7 @@ class Dashboard extends React.Component {
                 label(tooltipItems, data) {
                   return data.datasets[0].data[tooltipItems.index] == 0? `${data.labels[tooltipItems.index]}` :`${data.labels[tooltipItems.index]} : ${
                     data.datasets[0].data[tooltipItems.index]
-                    } Scripts`;
+                    } Test Runs`;
                 }
               }
             },
@@ -220,7 +219,7 @@ class Dashboard extends React.Component {
         });
       }
     });
-    axios.get(ROOT_URL + "/scriptsPerProject").then(response => {
+    axios.get(ROOT_URL + "/scriptsPerProject/"+localStorage.getItem("ManagerID")).then(response => {
       if (response.status == 200) {
         this.setState({
           dataPie2: {
@@ -268,9 +267,7 @@ class Dashboard extends React.Component {
             maintainAspectRatio: true,
             legend: {
               display: true,
-            },hover: {
-              backgroundColor: "#FFE8E8" // duration of animations when hovering an item
-          }
+            }
           },
         });
       } else {
@@ -289,7 +286,7 @@ class Dashboard extends React.Component {
         <div>
           <TopNav />
         </div>
-        <div className="bugtracker-left">
+        <div className="analytics-left">
           <SideNav />
         </div>
         <div className="bugtracker-right">
@@ -308,7 +305,7 @@ class Dashboard extends React.Component {
                 </Col>
                 <Col>
                   <MDBContainer>
-                    <div className="fontChanges">Project count per Manager</div>
+                    <div className="fontChanges">Bugs per Project</div>
                     <Pie
                       data={this.state.dataPie}
                       width={300}
@@ -321,7 +318,7 @@ class Dashboard extends React.Component {
               <Row>
                 <Col>
                   <MDBContainer>
-                    <div className="fontChanges">Script count per tester</div>
+                    <div className="fontChanges">Test runs per project</div>
                     <Doughnut
                       data={this.state.dataDoughnut2}
                       width={300}
@@ -348,4 +345,4 @@ class Dashboard extends React.Component {
   }
 }
 
-export default Dashboard;
+export default DashboardManager;

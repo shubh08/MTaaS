@@ -3,8 +3,8 @@ import './allocateDevice.css';
 import { Button } from 'reactstrap';
 import { Popover, PopoverHeader, PopoverBody} from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormText, Row, Col, Container, Table } from 'reactstrap';
-import TopNav from '../navigation/topnavManager';
-import SideNav from '../navigation/sidenavManager';
+import TopNav from '../navigation/topnavTester';
+import SideNav from '../navigation/sidenavTester';
 import axios from 'axios';
 import { ROOT_URL } from '../config/config.js'
 import { toast } from 'react-toastify';
@@ -120,15 +120,15 @@ class DeallocateTester extends React.Component {
         if (val.length) {
             for (var i = 0; i < val.length; i++) {
                 if (val[i] == "arn:aws:devicefarm:us-west-2::device:58D6FB12B3624256AED26D0F940D4427") {
-                    displayarray.push("Google Pixel 2 - OS 9, ")
+                    displayarray.push("Google Pixel 2, ")
                 } else if (val[i] == "arn:aws:devicefarm:us-west-2::device:E64D26FE27644A39A4BCEF009CDD8645") {
-                    displayarray.push("Google Pixel 2 XL - OS 9, ")
+                    displayarray.push("Google Pixel 4 (Unlocked), ")
                 } else if (val[i] == "arn:aws:devicefarm:us-west-2::device:CF6DC11E4C99430BA9A1BABAE5B45364") {
-                    displayarray.push("Google Pixel 3 - OS 9, ")
+                    displayarray.push("Google Pixel 4XL (Unlocked), ")
                 } else if (val[i] == "arn:aws:devicefarm:us-west-2::device:E1F3149FDC33484D824BCFF66003E609") {
-                    displayarray.push("Google Pixel 3 XL - OS 9, ")
+                    displayarray.push("Samsung Galaxy S10+, ")
                 } else if (val[i] == "arn:aws:devicefarm:us-west-2::device:2B6903A2FEBA4AD68E79F7BCD0B81FBA") {
-                    displayarray.push("Samsung Galaxy A70 - OS 9, ")
+                    displayarray.push("Samsung Galaxy Tab S6 (Wifi), ")
                 } else if (val[i] == "arn:aws:devicefarm:us-west-2::device:DD61B8C65B1C46A9B3D5285A448BB4A4") {
                     displayarray.push("Samsung Galaxy A40 - OS 9, ")
                 } else if (val[i] == "arn:aws:devicefarm:us-west-2::device:E4438F5D016544A8BB8557C459084F9D") {
