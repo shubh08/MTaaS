@@ -2,7 +2,7 @@
   text-align: center;
   background-color: #e9ecef;
   width: 100%;
-  overflow: hidden;
+  overflow-y: scroll;
 }
 
 .profile-left {

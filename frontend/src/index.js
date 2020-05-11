@@ -19,6 +19,7 @@ import BugTrackerAdmin from './bugTracker/bugtrackerAdmin.js';
 import BillingManager from './billing/billingManager.js';
 import BillingAdmin from './billing/billingAdmin.js';
 import NewRunTester from './newRun/newRunTester.js';
+import BugCreator from './bugTracker/bug.js';
 
 import { ToastContainer } from 'react-toastify';
 import * as serviceWorker from './serviceWorker';
@@ -89,7 +90,7 @@ class Routes extends React.Component {
           <Route exact path='/dashboardManager' component={DashboardManager}/>
           <Route exact path='/loadEmulatorTestStatus' component={EmulatorTestRunStatus}/>
           <Route exact path='/loadAdminFiles' component={AdminFileBrowser}/>
-
+          <Route exact path='/newBug' component={BugCreator}/>
 
         </Switch>
       </Router>

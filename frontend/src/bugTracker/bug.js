@@ -10,7 +10,7 @@ import { ROOT_URL } from '../config/config.js'
 import { toast } from 'react-toastify';
 import { FaEdit } from 'react-icons/fa';
 
-class Bug extends React.Component {
+class BugCreator extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,8 +56,9 @@ class Bug extends React.Component {
   //
   createBug = (e) =>{
     e.preventDefault();
-    var testData = {name: this.state.name, about: this.state.about, DOB: this.state.DOB, technologies: this.state.technologies, email: this.state.email, id : localStorage.getItem('TesterID')}
-    axios.put(ROOT_URL + '/common/bugs', testData ).then((response) => {
+    var testData = { projectName: this.state.projectName, severity: this.state.severity, operatingSystem: this.state.operatingSystem, operatingSystemVersion: this.state.operatingSystemVersion, bugDescription: this.state.bugDescription, date: this.state.date, testerID: localStorage.getItem('TesterID') }
+    //var testData = {name: this.state.name, about: this.state.about, DOB: this.state.DOB, technologies: this.state.technologies, email: this.state.email, id : localStorage.getItem('TesterID')}
+    axios.post(ROOT_URL + '/tester/createBug', testData ).then((response) => {
       if (response.status == 200) {
         toast.success(response.data.message, {
           position: toast.POSITION.TOP_CENTER
@@ -106,7 +107,7 @@ class Bug extends React.Component {
                       </FormGroup>
                       <FormGroup>
                         <h5>Severity</h5>
-                        <Input type="email" placeholder="severity"
+                        <Input type="text" placeholder="severity"
                           value={this.state.severity}
                           onChange={this.severityChangeHandler}
                           required/>
@@ -146,7 +147,7 @@ class Bug extends React.Component {
                       </FormGroup>
                       <Row>
                         <Col></Col>
-                        <Col><Button id="updateButton" color="success" className="updateButton" type="submit" >Update</Button></Col>
+                        <Col><Button id="updateButton" color="success" className="updateButton" type="submit">Create Bug</Button></Col>
                         <Col></Col>
                       </Row>
                     </Form>
@@ -162,4 +163,4 @@ class Bug extends React.Component {
   }
 }
 
-export default TesterProfile;
+export default BugCreator;

@@ -26,7 +26,7 @@ class SideNavTester extends React.Component {
         <div className="Button-Padding">
           <Button className="NavButton" href="/newEmulatorRun">Create Emulator Run</Button>
         </div>
-        
+
         <div className="Button-Padding">
           <Button className="NavButton" href="/getRunStatus">View Run Results</Button>
         </div>
@@ -34,7 +34,7 @@ class SideNavTester extends React.Component {
         <div className="Button-Padding">
           <Button className="NavButton" href="/loadEmulatorTestStatus">View Emulator Run Results</Button>
         </div>
-        
+
 
         <div className="Button-Padding">
           <Button className="NavButton" href="/testerUpload">Upload Files</Button>
@@ -46,6 +46,10 @@ class SideNavTester extends React.Component {
 
         <div className="Button-Padding">
           <Button className="NavButton" href="/notificationTester">My Notifications</Button>
+        </div>
+
+        <div className="Button-Padding">
+          <Button className="NavButton" href="/newBug">Create Bug</Button>
         </div>
 
         <div className="Button-Padding">

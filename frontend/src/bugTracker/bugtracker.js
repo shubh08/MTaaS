@@ -15,13 +15,7 @@ class BugTracker extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      data : [],
-      projectName: '',
-      severity: '',
-      operatingSystem: '',
-      operatingSystemVersion: '',
-      bugDescription: '',
-      date: ''
+      array : []
     };
   }
   componentDidMount() {
@@ -31,14 +25,16 @@ class BugTracker extends React.Component{
       //5eb904f63c334651900b837d
       if (response.status == 200) {
         let bugreports = response.data.bugreport;
+        this.setState({ array: response.data.bugreport});
         console.log(response.data);
-        this.setState({ projectName: bugreports.projectName, severity: bugreports.severity, operatingSystem: bugreports.operatingSystem, operatingSystemVersion: bugreports.operatingSystemVersion, bugDescription: bugreports.bugDescription, date: bugreports.date });
-        console.log(this.state.projectName)
-        console.log(this.state.severity)
-        console.log(this.state.operatingSystem)
-        console.log(this.state.operatingSystemVersion)
-        console.log(this.state.bugDescription)
-        console.log(this.state.date)
+        //this.setState({ projectName: bugreports.projectName, severity: bugreports.severity, operatingSystem: bugreports.operatingSystem, operatingSystemVersion: bugreports.operatingSystemVersion, bugDescription: bugreports.bugDescription, date: bugreports.date });
+        // console.log(this.state.projectName)
+        // console.log(this.state.severity)
+        // console.log(this.state.operatingSystem)
+        // console.log(this.state.operatingSystemVersion)
+        // console.log(this.state.bugDescription)
+        // console.log(this.state.date)
+        console.log(this.state.array)
       } else {
         toast.error(response.data.message, {
           position: toast.POSITION.TOP_CENTER
@@ -80,54 +76,52 @@ class BugTracker extends React.Component{
             </div>
 
             <div className="bugtracker-right">
+            {this.state.array.map(buggy =>
                <div>
                 <Form className = "bug-padding">
                   <FormGroup >
                     <h5 > Project Name </h5>
-                    <Input name="text"
-                      id="projectName"
-                      value={this.state.projectName}
+                    <Input
+                      value={buggy.projectName}
                       readOnly> </Input>
                   </FormGroup>
                   <FormGroup >
                     <h5 > Severity </h5>
-                    <Input name="text"
-                      id="severity"
-                      value={this.state.severity}
+                    <Input
+                      value={buggy.severity}
                       readOnly> </Input>
                   </FormGroup>
                   <FormGroup >
                     <h5 > Operating System </h5>
-                    <Input name="text"
-                      id="operatingSystem"
-                      value={this.state.operatingSystem}
+                    <Input
+                      value={buggy.operatingSystem}
                       readOnly> </Input>
                   </FormGroup>
                   <FormGroup >
                     <h5 > Operating System Version </h5>
-                    <Input name="text"
-                      id="operatingSystemVersion"
-                      value={this.state.operatingSystemVersion}
+                    <Input
+                      value={buggy.operatingSystemVersion}
                       readOnly> </Input>
                   </FormGroup>
                   <FormGroup>
                     <h5> Bug Description </h5>
-                    <Input type="textarea" name="text"
-                      value={this.state.bugDescription}
-                      id="bugDescription"
-                      readOnly>  </Input>
+                    <Input type="textarea"
+                      value={buggy.bugDescription}
+                      readOnly>
+                    </Input>
                   </FormGroup>
                   <FormGroup>
                     <h5> Date </h5>
                     <Input name="text"
-                      value={this.state.date}
-                      id="bugDescription"
-                      readOnly> </Input>
+                      value={buggy.date}
+                      readOnly>
+                    </Input>
                   </FormGroup>
                 </Form>
                 </div>
+                )}
+              </div>
 
-            </div>
             {/*
             <div>
               <Badge color="danger">Bug ID</Badge>
