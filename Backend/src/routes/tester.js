@@ -236,17 +236,23 @@ router.post('/loadFiles', function (req, res, next) {
 
 router.post('/createBug', function (req, res, next) {
     console.log(req.body);
+    const projectName = req.body.projectName;
     const severity = req.body.severity;
+    const operatingSystem = req.body.operatingSystem;
+    const operatingSystemVersion = req.body.operatingSystemVersion;
     const bugDescription = req.body.bugDescription;
-    const projectID = req.body.projectID;
+    const date = req.body.date;
+    const testerID = req.body.testerID;
     const testID = req.body.testID;
-    const path = req.body.path;
     const newBug = new bugreport({
+        projectName,
         severity,
+        operatingSystem,
+        operatingSystemVersion,
         bugDescription,
-        projectID,
-        testID,
-        path
+        date,
+        testerID,
+        testID
     });
 
     newBug.save((err, bugreport) => {

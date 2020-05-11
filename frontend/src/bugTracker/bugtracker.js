@@ -16,20 +16,29 @@ class BugTracker extends React.Component{
     super(props);
     this.state = {
       data : [],
-      severity : '',
-      bugDescription : '',
-      path: ''
+      projectName: '',
+      severity: '',
+      operatingSystem: '',
+      operatingSystemVersion: '',
+      bugDescription: '',
+      date: ''
     };
   }
   componentDidMount() {
-    axios.get(ROOT_URL + '/bugs/5e97d4fc466ce968df734e38').then((response) => {
+    axios.get(ROOT_URL + '/bugs/'+ localStorage.getItem('TesterID')).then((response) => {
+      //5e97d4fc466ce968df734e38 5e884c3ce7a72f7dac73b426
+      //5eb8fd8595f0864e4e02fb9b
+      //5eb904f63c334651900b837d
       if (response.status == 200) {
         let bugreports = response.data.bugreport;
         console.log(response.data);
-        this.setState({ severity: bugreports.severity, bugDescription: bugreports.bugDescription, path: bugreports.path });
+        this.setState({ projectName: bugreports.projectName, severity: bugreports.severity, operatingSystem: bugreports.operatingSystem, operatingSystemVersion: bugreports.operatingSystemVersion, bugDescription: bugreports.bugDescription, date: bugreports.date });
+        console.log(this.state.projectName)
         console.log(this.state.severity)
+        console.log(this.state.operatingSystem)
+        console.log(this.state.operatingSystemVersion)
         console.log(this.state.bugDescription)
-        console.log(this.state.path)
+        console.log(this.state.date)
       } else {
         toast.error(response.data.message, {
           position: toast.POSITION.TOP_CENTER
@@ -41,15 +50,24 @@ class BugTracker extends React.Component{
       });
     })
   }
-  bugreportSeverityChangeHandler = e => {
-    this.setState({ severity: e.target.value });
-  };
-  bugreportBugDescriptionChangeHandler = e => {
-    this.setState({ bugDescription: e.target.value });
-  };
-  bugreportPathChangeHandler = e => {
-    this.setState({ path: e.target.value })
-  };
+  // bugreportProjectNameChangeHandler = e => {
+  //   this.setState({ projectName: e.target.value });
+  // };
+  // bugreportSeverityChangeHandler = e => {
+  //   this.setState({ severity: e.target.value });
+  // };
+  // bugreportOperatingSystemChangeHandler = e => {
+  //   this.setState({ operatingSystem: e.target.value });
+  // };
+  // bugreportOperatingSystemVersionChangeHandler = e => {
+  //   this.setState({ operatingSystemVersion: e.target.value });
+  // };
+  // bugreportBugDescriptionChangeHandler = e => {
+  //   this.setState({ bugDescription: e.target.value });
+  // };
+  // bugreportDateChangeHandler = e => {
+  //   this.setState({ date: e.target.value })
+  // };
 
   render(){
     return (
@@ -65,10 +83,31 @@ class BugTracker extends React.Component{
                <div>
                 <Form className = "bug-padding">
                   <FormGroup >
+                    <h5 > Project Name </h5>
+                    <Input name="text"
+                      id="projectName"
+                      value={this.state.projectName}
+                      readOnly> </Input>
+                  </FormGroup>
+                  <FormGroup >
                     <h5 > Severity </h5>
                     <Input name="text"
                       id="severity"
                       value={this.state.severity}
+                      readOnly> </Input>
+                  </FormGroup>
+                  <FormGroup >
+                    <h5 > Operating System </h5>
+                    <Input name="text"
+                      id="operatingSystem"
+                      value={this.state.operatingSystem}
+                      readOnly> </Input>
+                  </FormGroup>
+                  <FormGroup >
+                    <h5 > Operating System Version </h5>
+                    <Input name="text"
+                      id="operatingSystemVersion"
+                      value={this.state.operatingSystemVersion}
                       readOnly> </Input>
                   </FormGroup>
                   <FormGroup>
@@ -79,9 +118,9 @@ class BugTracker extends React.Component{
                       readOnly>  </Input>
                   </FormGroup>
                   <FormGroup>
-                    <h5> Path </h5>
+                    <h5> Date </h5>
                     <Input name="text"
-                      value={this.state.path}
+                      value={this.state.date}
                       id="bugDescription"
                       readOnly> </Input>
                   </FormGroup>

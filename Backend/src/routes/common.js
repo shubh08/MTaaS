@@ -33,7 +33,9 @@ router.get('/managerByManagerID/(:id)', function (req, res, next) {
 router.get('/bugs/:id', function (req, res, next) {
     console.log("Inside Bugs");
     console.log(req.params.id);
-    bugreports.findById(req.params.id).exec((err, bugreport) => {
+    //bugreports.findById(req.params.id).exec((err, bugreport) => {
+    bugreports.find({ testerID: req.params.id}).exec((err, bugreport) => {
+    //bugreports.find({ testerID: { $in: [req.params.id] } }).populate("testerID").exec((err, bugreport) => {
         if (err) {
             console.log(err);
             next();
@@ -45,6 +47,25 @@ router.get('/bugs/:id', function (req, res, next) {
         }
     });
 });
+
+// router.post('/bugs', function (req, res, next) {
+//     console.log("Inside Bugs");
+//     console.log(req.params.id);
+//
+//     var update = { projectName: req.body.projectName, severity: req.body.severity, operatingSystem: req.body.operatingSystem, operatingSystemVersion: req.body.operatingSystemVersion, bugDescription: req.body.bugDescription, date: req.body.date }
+//
+//     bugreports.findByIdAndUpdate(req.params.id, update).exec((err, bugreport) => {
+//         if (err) {
+//             console.log(err);
+//             next();
+//         } else {
+//             console.log("bug reports")
+//             res.status(200).send({ message: "Succesfully Updated"});
+//             //res.status(200).send({ bugreport: bugreport });
+//             console.log(res.body);
+//         }
+//     });
+// });
 
 router.get('/managerByProjectID/(:id)', function (req, res, next) {
     manager.find({ projectID: { $in: [req.params.id] } }).populate("projectID").exec((err, manager) => {
@@ -157,7 +178,7 @@ router.get('/billing/(:id)', function (req, res, next) {
                     var filesCount = proj.commanfiles.length;
                     proj.testerID.forEach((test)=>{
                         filesCount +=  test.s3files.length;
-                        
+
                     })
                     var array = {}
                     const startOfMonth = moment().subtract(30, 'd').format('YYYY-MM-DD');
