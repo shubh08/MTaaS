@@ -2,7 +2,6 @@
   background-color: #343a40;
   min-height: 100vh;
   width: 100%;
-  //float: none;
   display: flex;
   flex-direction: column;
   align-items:flex-start;
@@ -13,8 +12,8 @@
 }
 
 .Button-Padding{
-  padding-top: 5%;
-  padding-right: 5%;
+  padding-top: 3%;
+  padding-right: 3%;
   background-color: #343a40;
 }
 

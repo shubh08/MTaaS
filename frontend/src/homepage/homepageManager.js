@@ -8,9 +8,7 @@ class HomepageManager extends React.Component{
   render(){
     return(
       <div className="homepage">
-        <div>
-          <TopNavManager/>
-        </div>
+        <TopNavManager/>
         <div className="homepage-left">
           <SideNavManager/>
         </div>

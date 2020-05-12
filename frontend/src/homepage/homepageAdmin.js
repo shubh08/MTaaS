@@ -8,19 +8,17 @@ class HomepageAdmin extends React.Component{
   render(){
     return(
       <div className="homepage">
-      <div>
         <TopNavAdmin/>
-      </div>
-      <div className="homepage-left">
-        <SideNavAdmin/>
-      </div>
-      <div className="homepage-right">
-        <div>
+        <div className="homepage-left">
+          <SideNavAdmin/>
+        </div>
+        <div className="homepage-right">
           <div>
+            <div>
 
+            </div>
           </div>
         </div>
-      </div>
     </div>
     )
   }
