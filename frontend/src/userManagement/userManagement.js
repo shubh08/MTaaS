@@ -358,7 +358,7 @@ class UserManagement extends React.Component {
         var projManager = []
         if (this.state.manager) {
             this.state.manager.projectID.map((project) => {
-                
+
                 projManager.push(<p className="hyperlink" onClick={() => { this.viewProject(project._id) }}>{project.name}</p>)
             })
         }
@@ -368,15 +368,11 @@ class UserManagement extends React.Component {
                 projTester.push(<p className="hyperlink" onClick={() => { this.viewProject(project._id) }}>{project.name}</p>)
             })
         }
-        
+
         return (
             <div className="profile">
-                <div>
-                    <TopNav />
-                </div>
-                <div className="profile-left">
-                    <SideNav />
-                </div>
+                  <TopNav />
+                  <SideNav />
                 <div className="profile-right">
                     <div>
                         <div>
@@ -525,7 +521,7 @@ class UserManagement extends React.Component {
                                                     <td className="colorGreen" >Company Name</td>
                                                     <td>{this.state.project.managerID.company}</td>
                                                 </tr>
-                                                
+
                                             </tbody>
                                         </Table>
                                     </Form>

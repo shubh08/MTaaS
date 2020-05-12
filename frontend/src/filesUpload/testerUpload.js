@@ -29,7 +29,7 @@ class TesterFilesView extends React.Component {
             projectName: null,
             projectsOptions:[],
             name:''
-            
+
 
         }
 
@@ -44,7 +44,7 @@ class TesterFilesView extends React.Component {
             this.loadProjects()
         });
         console.log('Project Name Set',e.target.value)
-       
+
     }
     }
 
@@ -105,7 +105,7 @@ class TesterFilesView extends React.Component {
                 })
                 projectsOpts.unshift(<option key='dummy' value='dummy'>Select Project</option>)
                 this.setState({ name: tester.name, email: tester.email, projectsOptions: projectsOpts});
-    
+
             }).catch(err => console.log(err))
             } else {
               toast.error(response.data.message, {
@@ -118,36 +118,31 @@ class TesterFilesView extends React.Component {
             });
           })
 
-        
-       
 
-       
+
+
+
     }
 
 
 
     onDeleteFileHandler(e) {
-  
+
     }
 
-  
+
 
 
     render() {
         return (
-            <div className="homepage">
-            <div>
+            <div className="signup">
               <TopNavManager/>
-            </div>
-            <div className="homepage-left">
               <SideNavTester/>
-            </div>
-            
-            <div className="homepage-right">
-                <div className="">
-                    <Jumbotron fluid>
+            <div className="signup-right">
+                <div className="fileupload">
+                    
                         <Container fluid>
-                            <h1 center className="display-3">Mobile Testing as a Service</h1>
+                            <h1 center className="display-5">Test File Upload</h1>
                         </Container>
                         <header className="">
                             <Form onSubmit={this.uploadFile}>
@@ -200,12 +195,12 @@ class TesterFilesView extends React.Component {
                         onDeleteFile={this.onDeleteFileHandler}
                         onDownloadFile={(fileKey) => { window.location = 'https://mtaasbucket.s3.us-east-2.amazonaws.com/' + fileKey }}
                     />
-                    
+
                 </div>
-                    </Jumbotron>
-                    
+
+
                 </div>
-     
+
             </div>
             </div>
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Card, CardTitle, CardText, Alert } from 'reactstrap';
-import './Notification.css'
+import './notification.css'
 import { Form, FormGroup, Label, Input, FormText, Row, Col, Container } from 'reactstrap';
 import TopNav from '../navigation/topnavManager';
 import SideNav from '../navigation/sidenavManager';
@@ -70,14 +70,14 @@ class NotificationManager extends React.Component {
         if(this.state.projectID == ''){
             toast.error('Please select project', {
                 position: toast.POSITION.TOP_CENTER
-            });  
+            });
         } else if(this.state.severity == '' ){
             toast.error('Please select severity', {
                 position: toast.POSITION.TOP_CENTER
-            });  
-        } 
+            });
+        }
         var notifData ={ description : this.state.description, managerID : localStorage.getItem('ManagerID'), projectID : this.state.projectID, severity : this.state.severity}
-        
+
         axios.post(ROOT_URL + '/manager/createNotification',notifData).then((response) => {
             console.log(response)
             if (response.status == 200) {
@@ -152,12 +152,8 @@ class NotificationManager extends React.Component {
         })
         return (
             <div className="createProject">
-                <div>
-                    <TopNav />
-                </div>
-                <div className="createProject-left">
-                    <SideNav />
-                </div>
+                <TopNav />
+                <SideNav/>
                 <div className="createProject-right">
 
                     <Container className="profile-margin-top">
@@ -172,7 +168,7 @@ class NotificationManager extends React.Component {
                             <Col > {allNotifications}</Col>
                             <Col md={2}></Col>
                         </Row>
-                        </div> 
+                        </div>
                     </Container>
 
                     <Modal isOpen={this.state.modal} toggle={this.toggle} >
@@ -198,7 +194,7 @@ class NotificationManager extends React.Component {
                                 </FormGroup>
                                 <FormGroup >
                                     <h5 >Description </h5>
-                                    <Input type="textarea" name="text" 
+                                    <Input type="textarea" name="text"
                                     value={this.state.description}
                                     onChange={this.descriptionChangeHandler}
                                         required />

@@ -3,6 +3,8 @@
   background-color: #e9ecef;
   width: 100%;
   overflow: hidden;
+  margin: auto;
+  padding: auto;
 }
 
 .billingAdmin-dropdown{
@@ -36,13 +38,14 @@
 
 .billingAdmin-right {
   text-align: center;
-  position: fixed;
+  margin-top: 5%;
   top: 6.9%;
   right: 0;
   background-color: #e9ecef;
   width: 80%;
   float: right;
-  min-height: 100%;
+  overflow: scroll;
+  min-height: 100vh;
 }
 
 .billingAdmin-header {

@@ -1,5 +1,7 @@
 .signup {
   text-align: center;
+  width: 100%;
+  overflow: hidden;
   margin: auto;
   padding: auto;
 }
@@ -13,6 +15,23 @@
   .signup-logo {
     animation: signup-logo-spin infinite 20s linear;
   }
+}
+
+.fileupload{
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.signup-right{
+  text-align: center;
+  top: 20%;
+  right: 0;
+  width: 80%;
+  float: right;
+  min-height: 122.5vh;
+  margin-top: 4%;
+  background-color: #e9ecef;
+  padding-top: 3%;
 }
 
 .project-header {

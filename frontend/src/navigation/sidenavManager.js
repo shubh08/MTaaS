@@ -8,7 +8,7 @@ class SideNavManager extends React.Component {
 
   render(){
     return (
-      <div className="App-header">
+      <div className="SideNavBar">
         <div className="Button-Padding">
           <Button className="NavButton" href="/homeManager">My Home</Button>
         </div>
@@ -35,7 +35,7 @@ class SideNavManager extends React.Component {
         </div>
 
         <div className="Button-Padding">
-          <Button className="NavButton" href="/bugtracker">Bug Tracker</Button>
+          <Button className="NavButton" href="/bugtrackerManager">Bug Tracker</Button>
         </div>
         {/*
         <div className="Button-Padding">

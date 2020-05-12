@@ -69,21 +69,13 @@ class ViewProjectManager extends React.Component {
         })
         return (
             <div className="homepage">
+                <TopNav />
+                <SideNav />
                 <div>
-                    <TopNav />
-                </div>
-                <div className="homepage-left">
-                    <SideNav />
-                </div>
-                <div className="homepage-right">
-                    <div className="">
-                        <header className="">
-                            <h1>My Projects</h1>
-                            <Container className="scroll-viewProject">
-                                {projects}
-                            </Container>
-                        </header>
-                    </div>
+                  <h1>My Projects</h1>
+                      <Container className="scroll-viewProject">    
+                          {projects}
+                      </Container>
                 </div>
             </div>
 

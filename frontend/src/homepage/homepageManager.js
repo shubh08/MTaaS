@@ -7,11 +7,9 @@ import './homepage.css';
 class HomepageManager extends React.Component{
   render(){
     return(
-      <div className="homepage">
+    <div className="homepage">
         <TopNavManager/>
-        <div className="homepage-left">
-          <SideNavManager/>
-        </div>
+        <SideNavManager/>
         <div className="homepage-right">
           <LoadApplications/>
         </div>

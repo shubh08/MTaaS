@@ -80,14 +80,9 @@ class BugCreator extends React.Component {
   render() {
     return (
       <div className="profile">
-        <div>
-          <TopNav />
-        </div>
-        <div className="profile-left">
-          <SideNav />
-        </div>
+        <TopNav />
+        <SideNav />
         <div className="profile-right">
-          <div>
             <div>
               <Container className="profile-margin-top">
                 <Row>
@@ -158,7 +153,6 @@ class BugCreator extends React.Component {
             </div>
           </div>
         </div>
-      </div>
     )
   }
 }

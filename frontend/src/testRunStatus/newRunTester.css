@@ -15,8 +15,15 @@
   float: left;
 }
 .statusRight{
-  margin-left:300px
+  margin-left: 290px;
+  font-size: 14px;
 }
+
+.statusRightEmu{
+  margin-left: 290px;
+  font-size: 14px;
+}
+
 .OHAEI {
   margin-left: 700px !important;
   padding-top: 30px !important;
@@ -35,7 +42,7 @@
   padding-left: 25%;
   padding-right: 25%;
   padding-top: 1%;
-  
+
 }
 
 .newRunTester-box {

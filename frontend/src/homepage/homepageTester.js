@@ -10,13 +10,11 @@ class HomepageTester extends React.Component{
     return(
       <div className="homepage">
         <TopNav/>
-        <div className="homepage-left">
-          <SideNav/>
-        </div>
+        <SideNav/>
         <div className="homepage-right">
           <ProjectApplications/>
         </div>
-    </div>
+      </div>
     )
   }
 }

@@ -1,8 +1,9 @@
 .createProject {
   text-align: center;
-  background-color: #e9ecef;
   width: 100%;
   overflow: hidden;
+  margin: auto;
+  padding: auto;
 }
 
 .createProject-left {
@@ -22,6 +23,8 @@
   background-color: white;
   width: 80%;
   float: right;
+  min-height: 106.5vh;
+  margin-top: 4%;
 }
 
 .createProject-header {
@@ -46,7 +49,7 @@ width: 100%;
 }
 .createProject-margin-top {
   margin-top: 2%;
-  
+
 }
 .createProject-div-border {
   border-style: ridge;

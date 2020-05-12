@@ -39,7 +39,7 @@ const ProjectTabs = (props) => {
 
   useEffect(() => {
 
-    axios.defaults.withCredentials = false; 
+    axios.defaults.withCredentials = false;
     axios.get(ROOT_URL+'/tester/loadProjects/'+localStorage.getItem('TesterID'))
       .then((response) => {
         let projects = []
@@ -76,7 +76,7 @@ const ProjectTabs = (props) => {
               </Card></Row>
           )
         })
-        
+
         let applicationsPending = []
         let applicationsDecisionMade = []
         console.log(response.data.applications)
@@ -84,13 +84,13 @@ const ProjectTabs = (props) => {
           if(el.projectID!=null)
           if(el.status=='Pending' && el.projectID.active)
           applicationsPending.push(
-          
+
             <Row >
             <Card style={{ width:"70%", marginTop: '2%',marginLeft:'12%',marginRight:'3%', color: 'black', fontSize: '15px' }}>
             <Card.Img variant="top" />
             <Card.Body>
               <Card.Title style={{marginBottom:'3%'}}>{el.projectID.name}</Card.Title>
-          
+
            <Row>
              <Col md ={1}></Col>
                 <Col>
@@ -108,7 +108,7 @@ const ProjectTabs = (props) => {
                 </Col>
                 <Col md={2}></Col>
                 </Row>
-                
+
    </Card.Body>
           </Card></Row>)
           else
@@ -137,7 +137,7 @@ const ProjectTabs = (props) => {
                     </Row>
                 </Card.Body>
               </Card></Row>
-            
+
             )
         })
         setProjectList(projects)
@@ -150,9 +150,9 @@ const ProjectTabs = (props) => {
 
   return (
     <div>
-      <Nav tabs>
-        <NavItem style={{marginTop:'5%',fontWeight:'bolder'}}>
-          <NavLink 
+      <Nav tabs className="navtabstopthing">
+        <NavItem style={{marginTop:'5%',fontWeight:'bolder', border: '1px'}}>
+          <NavLink
             className={classnames({ active: activeTab === '1' })}
             onClick={() => { toggle('1'); }}
           >
@@ -160,16 +160,16 @@ const ProjectTabs = (props) => {
 
           </NavLink>
         </NavItem>
-        <NavItem style={{marginTop:'5%',fontWeight:'bolder'}}>
-          <NavLink 
+        <NavItem style={{marginTop:'5%',fontWeight:'bolder', border: '1px'}}>
+          <NavLink
             className={classnames({ active: activeTab === '2' })}
             onClick={() => { toggle('2'); }}
           >
             My Pending Applications
           </NavLink>
         </NavItem>
-        <NavItem style={{marginTop:'5%',fontWeight:'bolder'}}>
-          <NavLink 
+        <NavItem style={{marginTop:'5%',fontWeight:'bolder', border: '1px'}}>
+          <NavLink
             className={classnames({ active: activeTab === '3' })}
             onClick={() => { toggle('3'); }}
           >
@@ -178,14 +178,14 @@ const ProjectTabs = (props) => {
         </NavItem>
       </Nav>
       <TabContent activeTab={activeTab}>
-        
+
         <TabPane tabId="1">
         <Container className="scroll-projectApplication">
-      
+
         {projectList}
         </Container>
         </TabPane>
-        
+
         <TabPane tabId="2">
         <Container className="scroll-projectApplication">
           {applicationsPending}
@@ -204,12 +204,10 @@ const ProjectTabs = (props) => {
 class ProjectApplications extends React.Component {
   render() {
     return (
-      <div className="">
-        <header className="">
-        <Container>
+      <div>
+        <div className="ProjectApplicationsDiv">
           <ProjectTabs />
-          </Container>
-        </header>
+        </div>
       </div>
     )
   }

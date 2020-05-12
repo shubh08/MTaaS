@@ -215,77 +215,74 @@ class NewRunTester extends React.Component {
 
     return (
       <div className="newRunTester">
-        <div>
           <TopNavTester />
-        </div>
-        <div className="newRunTester-left">
           <SideNavTester />
-        </div>
-        <div className="form-group" >
-          <Form className="newRunTester-right" onSubmit={this.submitTest}>
-            <FormGroup>
-              <Label style={{ marginTop: '5%' }}>Project</Label>
-              <Input type="select" name='projectID' onChange={this.projectChangeHandler} >
-                <option value={0}>Select Project</option>
-                {addDropDown}
-              </Input>
-            </FormGroup>
-            <FormGroup>
-              <Label>Name of your test run</Label>
-              <Input placeholder="Enter the name of the test run" onChange={this.onChangeHandler} name='runName' />
-            </FormGroup>
-            <FormGroup>
-              <Label for="exampleSelect">Select Device Pool</Label>
-              <Input type="select" name="devicePoolArn" id="select" onChange={this.onChangeHandler}>>
-                {this.state.projectArns}
-              </Input>
-            </FormGroup>
-            {/* <FormGroup>
-              <Label>Device OS</Label>
-              <Input type="select" name='deviceOS' onChange={this.onChangeHandler}>
-                <option value="1">iOS</option>
-                <option value="2">Android</option>
-              </Input>
-            </FormGroup> */}
-         
-            <FormGroup>
-              <Label>Select a type of test</Label>
-              <Input type="select" name='selectedTestType' onChange={this.onChangeHandler}>
-                <option value='BUILTIN_FUZZ'>BUILTIN_FUZZ</option>
-                <option value='BUILTIN_EXPLORER'>BUILTIN_EXPLORER</option>
-                <option value='APPIUM_JAVA_JUNIT'>APPIUM_JAVA_JUNIT</option>
-                <option value='APPIUM_JAVA_TESTING'>APPIUM_JAVA_TESTING</option>
-                <option value='APPIUM_PYTHON'>APPIUM_PYTHON</option>
-                <option value='APPIUM_NODE'>APPIUM_NODE</option>
-                <option value='APPIUM_RUBY'>APPIUM_RUBY</option>
-                <option value='CALABASH'>CALABASH</option>
-                <option value='INSTRUMENTATION'>INSTRUMENTATION</option>
-                <option value='UIAUTOMATION'>UIAUTOMATION</option>
-                <option value='UIAUTOMATOR'>UIAUTOMATOR</option>
-                <option value='XCTEST'>XCTEST</option>
-                <option value='XCTEST_UI'>XCTEST_UI</option>
-              </Input>
-            </FormGroup>
-            <FormGroup>
-              <Label>Select Testing File</Label>
-              <Input type="select" multiple style={{ height: 40 }} name='selectedTestFile' onChange={this.onChangeHandler}>
-                <option value='ANDROID TEST'>ANDROID TEST</option>
-                <option value='ANDROID TEST - 1'>ANDROID TEST - 1</option>
-                <option value='iOS TEST'>iOS TEST</option>
-                <option value='iOS TEST - 1'>iOS TEST - 1</option>
-              </Input>
-            </FormGroup>
-            <FormGroup>
-              <Label>Add your test file</Label>
-              <Input type="file" onChange={this.fileChangeHandle} />
-              <FormText color="muted">
-                Upload a .apk/.isa file only!
-                </FormText>
-            </FormGroup>
-            <Button loading={this.state.loading} type="submit">Schedule Run</Button>
-          </Form>
 
-        </div>
+            <div className="form-group" >
+              <Form className="newRunTester-right" onSubmit={this.submitTest}>
+                <FormGroup className="newRunTester-Each">
+                  <Label style={{ marginTop: '5%' }}>Project</Label>
+                  <Input type="select" name='projectID' onChange={this.projectChangeHandler} >
+                    <option value={0}>Select Project</option>
+                    {addDropDown}
+                  </Input>
+                </FormGroup>
+                <FormGroup className="newRunTester-Each">
+                  <Label>Name of your test run</Label>
+                  <Input placeholder="Enter the name of the test run" onChange={this.onChangeHandler} name='runName' />
+                </FormGroup>
+                <FormGroup className="newRunTester-Each">
+                  <Label for="exampleSelect">Select Device Pool</Label>
+                  <Input type="select" name="devicePoolArn" id="select" onChange={this.onChangeHandler}>>
+                    {this.state.projectArns}
+                  </Input>
+                </FormGroup>
+                {/* <FormGroup>
+                  <Label>Device OS</Label>
+                  <Input type="select" name='deviceOS' onChange={this.onChangeHandler}>
+                    <option value="1">iOS</option>
+                    <option value="2">Android</option>
+                  </Input>
+                </FormGroup> */}
+
+                <FormGroup className="newRunTester-Each">
+                  <Label>Select a type of test</Label>
+                  <Input type="select" name='selectedTestType' onChange={this.onChangeHandler}>
+                    <option value='BUILTIN_FUZZ'>BUILTIN_FUZZ</option>
+                    <option value='BUILTIN_EXPLORER'>BUILTIN_EXPLORER</option>
+                    <option value='APPIUM_JAVA_JUNIT'>APPIUM_JAVA_JUNIT</option>
+                    <option value='APPIUM_JAVA_TESTING'>APPIUM_JAVA_TESTING</option>
+                    <option value='APPIUM_PYTHON'>APPIUM_PYTHON</option>
+                    <option value='APPIUM_NODE'>APPIUM_NODE</option>
+                    <option value='APPIUM_RUBY'>APPIUM_RUBY</option>
+                    <option value='CALABASH'>CALABASH</option>
+                    <option value='INSTRUMENTATION'>INSTRUMENTATION</option>
+                    <option value='UIAUTOMATION'>UIAUTOMATION</option>
+                    <option value='UIAUTOMATOR'>UIAUTOMATOR</option>
+                    <option value='XCTEST'>XCTEST</option>
+                    <option value='XCTEST_UI'>XCTEST_UI</option>
+                  </Input>
+                </FormGroup>
+                <FormGroup className="newRunTester-Each">
+                  <Label>Select Testing File</Label>
+                  <Input type="select" multiple style={{ height: 40 }} name='selectedTestFile' onChange={this.onChangeHandler}>
+                    <option value='ANDROID TEST'>ANDROID TEST</option>
+                    <option value='ANDROID TEST - 1'>ANDROID TEST - 1</option>
+                    <option value='iOS TEST'>iOS TEST</option>
+                    <option value='iOS TEST - 1'>iOS TEST - 1</option>
+                  </Input>
+                </FormGroup>
+                <FormGroup className="newRunTester-Each">
+                  <Label>Add your test file</Label>
+                  <Input type="file" onChange={this.fileChangeHandle} />
+                  <FormText color="muted">
+                    Upload a .apk/.isa file only!
+                    </FormText>
+                </FormGroup>
+                <Button loading={this.state.loading} type="submit">Schedule Run</Button>
+              </Form>
+
+            </div>
 
       </div>
     )

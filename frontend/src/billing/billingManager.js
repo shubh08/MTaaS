@@ -201,15 +201,9 @@ class BillingManager extends React.Component {
         optionsList.push(<option value={project._id} >{project.name}</option>)
     })
     return (
-      
-      <div className="billingManager ">
-        <div>
-          <TopNavManager />
-        </div>
-        <div className="billingManager-left">
-          <SideNavManager />
-        </div>
-        
+      <div className="billingManager">
+          <TopNavManager/>
+          <SideNavManager/>
         <div className="billingManager-right">
         <div className="scroll-billingManager">
             <Row className="billingManager-select">
@@ -221,7 +215,7 @@ class BillingManager extends React.Component {
             </Row>
 
 
-          
+
           <Row className="billingManager-marginBottom">
             <MDBContainer>
               <h5 className="billingManager-marginTop">Current Month's Billing details
@@ -261,20 +255,20 @@ class BillingManager extends React.Component {
                 <FormGroup className="billingManager-box-item" row>
                   <Label md={6}>Device Farm Cost </Label>
                   <Col md={6}>
-                    $ {this.state.costDeviceFarm} 
+                    $ {this.state.costDeviceFarm}
                   </Col>
                 </FormGroup>
 
                 <FormGroup className="billingManager-box-item" row>
                   <Label md={6}>Emulator Cost </Label>
                   <Col md={6}>
-                    $ {this.state.costEmulator} 
+                    $ {this.state.costEmulator}
                   </Col>
                 </FormGroup>
                 <FormGroup className="billingManager-box-item" row>
                   <Label md={6}>S3 files Cost </Label>
                   <Col md={6}>
-                    $ {this.state.filesCost} 
+                    $ {this.state.filesCost}
                   </Col>
                 </FormGroup>
                 <FormGroup className="billingManager-box-item" row>
@@ -283,14 +277,14 @@ class BillingManager extends React.Component {
                    <strong> $ {this.state.totalCost}</strong>
                   </Col>
                 </FormGroup>
-                
+
               </Form>
             </div>
             </Col>
           </Row>
 
         </div>
-        
+
       </div>
 </div>
     )

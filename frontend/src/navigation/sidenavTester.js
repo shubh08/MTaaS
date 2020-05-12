@@ -8,7 +8,8 @@ class SideNavTester extends React.Component {
 
   render(){
     return (
-      <div className="App-header">
+      <div className="SideNavBar">
+        <div className="SideNavBarSpace">
         <div className="Button-Padding">
           <Button className="NavButton" href="/homeTester">My Home</Button>
         </div>
@@ -40,10 +41,6 @@ class SideNavTester extends React.Component {
         </div>
 
         <div className="Button-Padding">
-          <Button className="NavButton" href="/runtracker">Run Tracker</Button>
-        </div>
-
-        <div className="Button-Padding">
           <Button className="NavButton" href="/notificationTester">My Notifications</Button>
         </div>
 
@@ -62,6 +59,7 @@ class SideNavTester extends React.Component {
         </div>
         <div className="Button-Padding">
           <Button className="NavButton" href="/">Log Out</Button>
+        </div>
         </div>
       </div>
     )}

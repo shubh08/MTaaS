@@ -3,6 +3,8 @@
   background-color: #e9ecef;
   width: 100%;
   overflow: hidden;
+  margin: auto;
+  padding: auto;
 }
 
 .profile-left {
@@ -46,7 +48,7 @@ width: 100%;
 }
 .profile-margin-top {
   margin-top: 5%;
-  
+
 }
 .div-border {
   border-style: ridge;
@@ -76,5 +78,5 @@ overflow: scroll;
 }
 .hyperlink{
   text-decoration: underline;
-  color: #EE0000 
+  color: #EE0000
 }

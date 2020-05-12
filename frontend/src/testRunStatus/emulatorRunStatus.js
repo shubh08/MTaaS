@@ -24,7 +24,7 @@ constructor(props)
     projects:[],
     projectName:'',
     tableData:[]
-  
+
 
 
   }
@@ -58,7 +58,7 @@ projectChangeHandler = e => {
     if(el._id==e.target.value)
     projectName=el.name
   })
- 
+
   //this.setState({ projectID: e.target.value, projectName:projectName});
   axios.post(ROOT_URL+'/testRun/emulatorLoadRunData',{projectName:projectName}).then((res)=>{
     console.log('result is',res);
@@ -93,51 +93,46 @@ projectChangeHandler = e => {
 
     return (
       <div className="newRunTester">
-        <div>
-          <TopNavTester/>
-        </div>
-        <div className="newRunTester-left">
-          <SideNavTester/>
-        </div>
-       
+        <TopNavTester/>
+        <SideNavTester/>
         <div className="form-group" >
           <Form className="newRunTester-right" onSubmit={this.submitTest}>
-          <h2 align='center'>Get Run Status</h2>
-          <FormGroup>
-              <Label style={{marginTop:'5%'}}>Project</Label>
-              <Input type="select" name='projectID' onChange={this.projectChangeHandler} >
-                <option value={0}>Select Project</option>
-                {addDropDown}
-              </Input>
-            </FormGroup>
-              {/* <Input  type="submit">Get Run Status</Input> */}
-            </Form>
-            </div>
-            <div>
-              <br/><br/>
-              <Table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>User</th>
-          <th>Project</th>
-          <th>Test Name</th>
-          <th>Platform</th>
-          <th>Status</th>
-          <th>Run Result</th>
-          <th>Total Jobs</th>
-          <th>Device Minutes</th>
-          <th>Passed</th>
-          <th>Failed</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tableData}
-        </tbody>
-        </Table>
-      </div>
-        
-        
+              <h2 align='center'>Get Run Status</h2>
+              <FormGroup>
+                <Label style={{marginTop:'5%'}}>Project</Label>
+                <Input type="select" name='projectID' onChange={this.projectChangeHandler} >
+                  <option value={0}>Select Project</option>
+                  {addDropDown}
+                </Input>
+              </FormGroup>
+            {/* <Input  type="submit">Get Run Status</Input> */}
+          </Form>
+        </div>
+        <div>
+          <br/><br/>
+          <div className="statusRightEmu">
+            <Table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>User</th>
+                  <th>Project</th>
+                  <th>Test Name</th>
+                  <th>Platform</th>
+                  <th>Status</th>
+                  <th>Run Result</th>
+                  <th>Total Jobs</th>
+                  <th>Device Minutes</th>
+                  <th>Passed</th>
+                  <th>Failed</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tableData}
+              </tbody>
+            </Table>
+          </div>
+        </div>
       </div>
     )
   }

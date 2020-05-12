@@ -7,11 +7,9 @@ import './homepage.css';
 class HomepageAdmin extends React.Component{
   render(){
     return(
-      <div className="homepage">
+    <div className="homepage">
         <TopNavAdmin/>
-        <div className="homepage-left">
-          <SideNavAdmin/>
-        </div>
+        <SideNavAdmin/>
         <div className="homepage-right">
           <div>
             <div>

@@ -14,8 +14,8 @@ import CreateProject from './createProject/createProject';
 import SignUp from './signup/signup.js';
 import Login from './login/login.js';
 import BugTracker from './bugTracker/bugtracker.js';
-//import BugTrackerManager from './bugTracker/bugtrackerManager.js';
-//import BugTrackerAdmin from './bugTracker/bugtrackerAdmin.js';
+import BugTrackerManager from './bugTracker/bugtrackerManager.js';
+import BugTrackerAdmin from './bugTracker/bugtrackerAdmin.js';
 import BillingManager from './billing/billingManager.js';
 import BillingAdmin from './billing/billingAdmin.js';
 import NewRunTester from './newRun/newRunTester.js';
@@ -66,6 +66,8 @@ class Routes extends React.Component {
           <Route exact path='/signup' component={SignUp}/>
           <Route exact path='/login' component={Login}/>
           <Route exact path='/bugtracker' component={BugTracker}/>
+          <Route exact path='/bugtrackerManager' component={BugTrackerManager}/>
+          <Route exact path='/bugtrackerAdmin' component={BugTrackerAdmin}/>
           <Route exact path='/billingManager' component={BillingManager}/>
           <Route exact path='/createRunTester' component={NewRunTester}/>
           <Route exact path='/billingAdmin' component={BillingAdmin}/>

@@ -25,7 +25,7 @@ class AdminFileBrowser extends React.Component {
             options:[],
             projectName:null,
             projectsOptions:[]
-            
+
         }
 
     }
@@ -89,7 +89,7 @@ class AdminFileBrowser extends React.Component {
 
         }).catch(err=>console.log(err))
 
-        
+
     }
 
 
@@ -108,21 +108,12 @@ class AdminFileBrowser extends React.Component {
 
     render() {
         return (
+          <div className="signup">
+            <TopNavManager/>
+            <SideNavAdmin/>
+          <div className="signup-right">
+                <div className="fileupload">
 
-            <div className="homepage">
-      <div>
-        <TopNavManager/>
-      </div>
-      <div className="homepage-left">
-        <SideNavAdmin/>
-      </div>
-      <div className="homepage-right">
-        <div>
-          <div>
-            
-          <div>
-                <div className="">
-                    <Jumbotron fluid>
                         <Container fluid>
                             <h1 center className="display-3">Mobile Testing as a Service</h1>
                         </Container>
@@ -178,17 +169,9 @@ class AdminFileBrowser extends React.Component {
                         onDownloadFile={(fileKey) => { window.location = 'https://mtaasbucket.s3.us-east-2.amazonaws.com/' + fileKey }}
                     />
                 </div>
-                    </Jumbotron>
-
                 </div>
-               
-              
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-
         )
     }
 }
