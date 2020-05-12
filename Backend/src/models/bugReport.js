@@ -32,6 +32,10 @@ const bugReportSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'tester',
     },
+    managerID: {
+      type: Schema.Types.ObjectId,
+      ref: 'manager',
+    },
     testID: {
       type: Schema.Types.ObjectId,
       ref: 'test',

@@ -3,6 +3,7 @@ import './bugtrackerManager.css';
 import { Button } from 'reactstrap';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormText, Row, Col, Container } from 'reactstrap';
+import { Card, CardTitle, CardText } from 'reactstrap';
 import { Badge } from 'reactstrap';
 import TopNav from '../navigation/topnavManager';
 import SideNav from '../navigation/sidenavManager';
@@ -19,7 +20,7 @@ class BugTrackerManager extends React.Component{
     };
   }
   componentDidMount() {
-    axios.get(ROOT_URL + '/bugs/'+ localStorage.getItem('TesterID')).then((response) => {
+    axios.get(ROOT_URL + '/managerBugs/'+ localStorage.getItem('ManagerID')).then((response) => {
       //5e97d4fc466ce968df734e38 5e884c3ce7a72f7dac73b426
       //5eb8fd8595f0864e4e02fb9b
       //5eb904f63c334651900b837d
@@ -46,24 +47,6 @@ class BugTrackerManager extends React.Component{
       });
     })
   }
-  // bugreportProjectNameChangeHandler = e => {
-  //   this.setState({ projectName: e.target.value });
-  // };
-  // bugreportSeverityChangeHandler = e => {
-  //   this.setState({ severity: e.target.value });
-  // };
-  // bugreportOperatingSystemChangeHandler = e => {
-  //   this.setState({ operatingSystem: e.target.value });
-  // };
-  // bugreportOperatingSystemVersionChangeHandler = e => {
-  //   this.setState({ operatingSystemVersion: e.target.value });
-  // };
-  // bugreportBugDescriptionChangeHandler = e => {
-  //   this.setState({ bugDescription: e.target.value });
-  // };
-  // bugreportDateChangeHandler = e => {
-  //   this.setState({ date: e.target.value })
-  // };
 
   render(){
     return (
@@ -71,50 +54,19 @@ class BugTrackerManager extends React.Component{
         <TopNav/>
         <SideNav/>
           <div className="bugtracker-right">
-            {this.state.array.map(buggy =>
-               <div>
-                <Form className = "bug-padding">
-                  <FormGroup >
-                    <h5 > Project Name </h5>
-                    <Input
-                      value={buggy.projectName}
-                      readOnly> </Input>
-                  </FormGroup>
-                  <FormGroup >
-                    <h5 > Severity </h5>
-                    <Input
-                      value={buggy.severity}
-                      readOnly> </Input>
-                  </FormGroup>
-                  <FormGroup >
-                    <h5 > Operating System </h5>
-                    <Input
-                      value={buggy.operatingSystem}
-                      readOnly> </Input>
-                  </FormGroup>
-                  <FormGroup >
-                    <h5 > Operating System Version </h5>
-                    <Input
-                      value={buggy.operatingSystemVersion}
-                      readOnly> </Input>
-                  </FormGroup>
-                  <FormGroup>
-                    <h5> Bug Description </h5>
-                    <Input type="textarea"
-                      value={buggy.bugDescription}
-                      readOnly>
-                    </Input>
-                  </FormGroup>
-                  <FormGroup>
-                    <h5> Date </h5>
-                    <Input name="text"
-                      value={buggy.date}
-                      readOnly>
-                    </Input>
-                  </FormGroup>
-                </Form>
-                </div>
-                )}
+          {this.state.array.map(buggy =>
+             <div className="bugCard">
+               <Card body className="text-center" >
+                 <CardTitle>{buggy.projectID.name}</CardTitle>
+                 <CardText>{buggy.severity}</CardText>
+                 <CardText>{buggy.operatingSystem}</CardText>
+                 <CardText>{buggy.operatingSystemVersion}</CardText>
+                 <CardText>{buggy.bugDescription}</CardText>
+                 <CardText>{buggy.date}</CardText>
+                {/* <Button color="danger" className="deleteBug" >Delete Bug</Button> */}
+               </Card>
+              </div>
+              )}
               </div>
 
             {/*

@@ -14,7 +14,9 @@ class BugCreator extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      projectName: '',
+      projects: [],
+      projectid: '',
+      managerID: '',
       severity: '',
       operatingSystem: '',
       operatingSystemVersion: '',
@@ -23,12 +25,30 @@ class BugCreator extends React.Component {
     };
   }
   componentDidMount() {
-
+    axios.get(ROOT_URL + '/projectsForTester/' + localStorage.getItem("TesterID")).then((response) => {
+      if (response.status == 200) {
+        console.log(response.data)
+        this.setState({ projects: response.data.projects });
+      } else {
+        toast.error(response.data.message, {
+          position: toast.POSITION.TOP_CENTER
+        });
+      }
+    }).catch(error => {
+      toast.error('You are not part of any projects', {
+        position: toast.POSITION.TOP_CENTER
+      });
+    })
   }
 
   projectNameChangeHandler = e => {
-    this.setState({ projectName: e.target.value });
+    this.setState({ projectid: e.target.value });
   };
+
+  managerNameChangeHandler = e => {
+    this.setState({ managerID: e.target.value });
+  };
+
   severityChangeHandler = e => {
     this.setState({ severity: e.target.value });
   };
@@ -56,7 +76,8 @@ class BugCreator extends React.Component {
   //
   createBug = (e) =>{
     e.preventDefault();
-    var testData = { projectName: this.state.projectName, severity: this.state.severity, operatingSystem: this.state.operatingSystem, operatingSystemVersion: this.state.operatingSystemVersion, bugDescription: this.state.bugDescription, date: this.state.date, testerID: localStorage.getItem('TesterID') }
+    var testData = { severity: this.state.severity, operatingSystem: this.state.operatingSystem, operatingSystemVersion: this.state.operatingSystemVersion, bugDescription: this.state.bugDescription, date: this.state.date, projectID: this.state.projectid, testerID: localStorage.getItem('TesterID'), managerID: this.state.managerID }
+    // projectName: this.state.projects.name,
     //var testData = {name: this.state.name, about: this.state.about, DOB: this.state.DOB, technologies: this.state.technologies, email: this.state.email, id : localStorage.getItem('TesterID')}
     axios.post(ROOT_URL + '/tester/createBug', testData ).then((response) => {
       if (response.status == 200) {
@@ -78,6 +99,19 @@ class BugCreator extends React.Component {
     })
   }
   render() {
+
+    var projectsDropDown = this.state.projects.map((project) => {
+      return (
+        <option value={project._id}>{project.name}</option>
+      )
+    })
+
+    var managerDropDown = this.state.projects.map((project) => {
+      return (
+        <option value={project.managerID._id}>{project.managerID.name}</option>
+      )
+    })
+
     return (
       <div className="profile">
         <TopNav />
@@ -94,11 +128,31 @@ class BugCreator extends React.Component {
                     <Form className="profile-margin-increase-top" onSubmit = {this.createBug}>
                       <FormGroup >
                         <h5> Project Name </h5>
+                        <Input type="select" name='projectID' onChange={this.projectNameChangeHandler} >
+                          <option value={0}>Select Project</option>
+                          {projectsDropDown}
+                        </Input>
+
+                        {/*
                         <Input placeholder="project name"
                           id="name"
                           value={this.state.projectName}
                           onChange={this.projectNameChangeHandler}
-                          required/>
+                          required/>*/}
+                      </FormGroup>
+                      <FormGroup >
+                        <h5> Manager Name </h5>
+                        <Input type="select" name='managerID' onChange={this.managerNameChangeHandler} >
+                          <option value={0}>Verify Manager</option>
+                          {managerDropDown}
+                        </Input>
+
+                        {/*
+                        <Input placeholder="project name"
+                          id="name"
+                          value={this.state.projectName}
+                          onChange={this.projectNameChangeHandler}
+                          required/>*/}
                       </FormGroup>
                       <FormGroup>
                         <h5>Severity</h5>
