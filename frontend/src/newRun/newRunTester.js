@@ -281,7 +281,7 @@ class NewRunTester extends React.Component {
                 </FormGroup>
                 <Button loading={this.state.loading} type="submit">Schedule Run</Button>
               </Form>
-
+              { this.state.showStop ? <div className="newRunTester-right"><button class='btn btn-danger' style={{marginLeft:'10px'}} onClick={this.stopRun} >Stop Run</button></div>:<div></div>}
             </div>
 
       </div>
