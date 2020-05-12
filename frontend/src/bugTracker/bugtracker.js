@@ -77,7 +77,7 @@ class BugTracker extends React.Component{
                   <FormGroup >
                     <h5 > Project Name </h5>
                     <Input
-                      value={buggy.projectName}
+                      value={buggy.projectID.name}
                       readOnly> </Input>
                   </FormGroup>
                   <FormGroup >

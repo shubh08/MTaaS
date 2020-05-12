@@ -34,7 +34,7 @@ router.get('/bugs/:id', function (req, res, next) {
     console.log("Inside Bugs");
     console.log(req.params.id);
     //bugreports.findById(req.params.id).exec((err, bugreport) => {
-    bugreports.find({ testerID: req.params.id}).exec((err, bugreport) => {
+    bugreports.find({ testerID: req.params.id}).populate('projectID').exec((err, bugreport) => {
     //bugreports.find({ testerID: { $in: [req.params.id] } }).populate("testerID").exec((err, bugreport) => {
         if (err) {
             console.log(err);
