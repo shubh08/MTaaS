@@ -4,10 +4,7 @@ const { Schema } = mongoose;
 
 const bugReportSchema = new Schema(
   {
-    projectName: {
-      type: String,
-      default : ''
-    },
+    
     severity: {
       type: String,
       default : ''
