@@ -123,12 +123,11 @@ class AllocateDeviceTester extends React.Component {
     }
     return (
       <div className="allocateDevice">
-        <div>
+        
           <TopNavTester />
-        </div>
-        <div className="allocateDevice-left">
+
           <SideNavTester />
-        </div>
+
         <div className="form-group" >
           <Form className="allocateDevice-right" onSubmit={this.allocate}>
           <h1>Allocate Device</h1>
@@ -162,7 +161,7 @@ class AllocateDeviceTester extends React.Component {
             </FormGroup>
             <Button type="submit" style={{marginBottom:'5%'}}>Submit</Button>
           </Form>
-          
+
         </div>
       </div>
     )

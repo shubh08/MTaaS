@@ -8,7 +8,8 @@ class SideNavAdmin extends React.Component {
 
   render(){
     return (
-      <div className="App-header">
+      <div className="SideNavBar">
+
         <div className="Button-Padding">
           <Button className="NavButton" href="/homeAdmin">My Home</Button>
         </div>
@@ -27,9 +28,11 @@ class SideNavAdmin extends React.Component {
         <div className="Button-Padding">
           <Button className="NavButton" href="/dashboardAdmin">Admin Dashboard</Button>
         </div>
+        {/*
         <div className="Button-Padding">
-          <Button className="NavButton" href="/bugTrackerAdmin">Bug Tracker</Button>
+          <Button className="NavButton" href="/bugtrackerAdmin">Bug Tracker</Button>
         </div>
+        */}
         <div className="Button-Padding">
           <Button className="NavButton" href="/">Log Out</Button>
         </div>

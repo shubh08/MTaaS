@@ -4,6 +4,19 @@
   padding: auto;
 }
 
+.ProjectApplicationsDiv{
+  padding-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  min-height: 129.5vh;
+}
+.navtabstopthing{
+  margin-left: 15%;
+  margin-right: 10%;
+  margin-top: 1%;
+  border-radius: 1px;
+}
+
 .projectApplication-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -16,8 +29,8 @@
   padding-bottom: 6.9%;
 }
 .scroll-projectApplication{
-  max-height: 80vh;
-overflow: scroll;
+  max-height: 120vh;
+  overflow-y: scroll;
 }
 .projectApplication-card{
   width:70%;
@@ -25,5 +38,6 @@ overflow: scroll;
   margin-left:'3%';
   margin-right:'13%';
   color: 'black';
-   font-size: '15px' ;
+  font-size: '15px';
+  overflow-y: auto;
 }

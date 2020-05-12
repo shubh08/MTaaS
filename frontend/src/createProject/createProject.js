@@ -29,7 +29,7 @@ class CreateProject extends React.Component {
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
         this.setState({today : yyyy + '-' + mm + '-' + dd })
-        
+
     }
     projectNameChangeHandler = e => {
         this.setState({ name: e.target.value });
@@ -73,15 +73,11 @@ class CreateProject extends React.Component {
         })
     }
     render() {
-       
+
         return (
             <div className="createProject">
-                <div>
-                    <TopNav />
-                </div>
-                <div className="createProject-left">
-                    <SideNav />
-                </div>
+                <TopNav />
+                <SideNav />
                 <div className="createProject-right">
                     <div>
                         <div>
@@ -130,7 +126,7 @@ class CreateProject extends React.Component {
                                                 <Input placeholder="Project Description"
                                                     value={this.state.description}
                                                     onChange={this.projectDescriptionChangeHandler}
-                                                    type="textarea" 
+                                                    type="textarea"
                                                     name="text" required />
                                             </FormGroup>
 

@@ -183,7 +183,7 @@ const LoginTabs = (props) => {
             </FormGroup>
             <Row>
               <Col></Col>
-              <Col><Button className="textCenterLogin" type="submit">Submit</Button></Col>
+              <Col><Button className="textCenterLogin" type="submit">Login!</Button></Col>
               <Col></Col>
             </Row>
           </Form>
@@ -209,7 +209,7 @@ const LoginTabs = (props) => {
             </FormGroup>
             <Row>
               <Col></Col>
-              <Col><Button className="textCenterLogin" type="submit">Submit</Button></Col>
+              <Col><Button className="textCenterLogin" type="submit">Login!</Button></Col>
               <Col></Col>
             </Row>
           </Form>
@@ -235,7 +235,7 @@ const LoginTabs = (props) => {
             </FormGroup>
             <Row>
               <Col></Col>
-              <Col><Button className="textCenterLogin" type="submit">Submit</Button></Col>
+              <Col><Button className="textCenterLogin" type="submit">Login!</Button></Col>
               <Col></Col>
             </Row>
           </Form>
@@ -250,15 +250,13 @@ class Login extends React.Component {
   render() {
     return (
       <div className="login">
-        <Jumbotron fluid>
           <Container fluid>
             <h1 center className="display-3">Mobile Testing as a Service</h1>
             <p center className="lead">Login as a freelance mobile tester, project manager, or MTaaS administrator!</p>
           </Container>
-          <header className="login-header">
-            <LoginTabs />
-          </header>
-        </Jumbotron>
+        <header className="login-header">
+          <LoginTabs />
+        </header>
       </div>
     )
   }

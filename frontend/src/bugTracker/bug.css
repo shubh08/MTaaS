@@ -1,33 +1,30 @@
-.createProject {
+.profile {
   text-align: center;
+  background-color: #e9ecef;
   width: 100%;
-  overflow: hidden;
-  margin: auto;
-  padding: auto;
+  overflow-y: scroll;
 }
 
-.createProject-left {
+.profile-left {
   text-align: center;
   position: fixed;
   top: 6.9%;
   left: 0;
-  background-color: #282c34;
+  background-color: #e9ecef;
   width: 20%;
   float: left;
 }
 
-.createProject-right {
+.profile-right {
   text-align: left;
   top: 20%;
   right: 0;
   background-color: white;
   width: 80%;
   float: right;
-  min-height: 106.5vh;
-  margin-top: 4%;
 }
 
-.createProject-header {
+.profile-header {
   background-color: #282c34;
   width: auto;
   float: right;
@@ -37,23 +34,24 @@
   justify-content: center;
   color: white;
 }
-.createProject-white {
+.profile-white {
   background-color:white;
 }
 .updateButton{
 text-align: center;
 width: 100%;
 }
-.createProject-margin-increase-top {
+.profile-margin-increase-top {
   margin-top: 5%;
+  margin-bottom: 5%;
 }
-.createProject-margin-top {
-  margin-top: 2%;
+.profile-margin-top {
+  margin-top: 5%;
 
 }
-.createProject-div-border {
+.div-border {
   border-style: ridge;
 }
-.createProject-text-center {
+.text-center {
   text-align: center;
 }

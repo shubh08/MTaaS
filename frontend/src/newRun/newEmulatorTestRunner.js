@@ -233,23 +233,19 @@ class NewEmulatorRunTester extends React.Component {
 
     return (
       <div className="newRunTester">
-        <div>
-          <TopNavTester />
-        </div>
-        <div className="newRunTester-left">
-          <SideNavTester />
-        </div>
+        <TopNavTester />
+        <SideNavTester />
         {/* <h2 align='center'>Run Test On Emulator</h2> */}
         <div className="form-group" >
           <Form className="newRunTester-right" onSubmit={this.submitTest}>
-            <FormGroup>
+            <FormGroup className="newRunTester-Each">
               <Label style={{ marginTop: '5%' }}>Project</Label>
               <Input type="select" name='projectID' onChange={this.projectChangeHandler} >
                 <option value={0}>Select Project</option>
                 {addDropDown}
               </Input>
             </FormGroup>
-            <FormGroup>
+            <FormGroup className="newRunTester-Each">
               <Label>Name of your Emulator test run</Label>
               <Input placeholder="Enter the name of the test run" onChange={this.onChangeHandler} name='runName' />
             </FormGroup>
@@ -259,15 +255,14 @@ class NewEmulatorRunTester extends React.Component {
                 {this.state.projectArns}
               </Input>
             </FormGroup> */}
-            <FormGroup>
+            <FormGroup className="newRunTester-Each">
               <Label>Select Emulator Type</Label>
               <Input type="select" name='deviceOS' onChange={this.onChangeHandler}>
                 <option value="1">iOS Emulator</option>
                 <option value="2">Android Emulator</option>
               </Input>
             </FormGroup>
-         
-            <FormGroup>
+            <FormGroup className="newRunTester-Each">
               <Label>Select a type of Emulator test</Label>
               <Input type="select" name='selectedTestType' onChange={this.onChangeHandler}>
                 <option value='BUILTIN_FUZZ'>BUILTIN_FUZZ</option>
@@ -285,7 +280,7 @@ class NewEmulatorRunTester extends React.Component {
                 <option value='XCTEST_UI'>XCTEST_UI</option>
               </Input>
             </FormGroup>
-            <FormGroup>
+            <FormGroup className="newRunTester-Each">
               <Label>Select Testing File</Label>
               <Input type="select" multiple style={{ height: 40 }} name='selectedTestFile' onChange={this.onChangeHandler}>
                 <option value='ANDROID TEST'>ANDROID TEST</option>
@@ -294,7 +289,7 @@ class NewEmulatorRunTester extends React.Component {
                 <option value='iOS TEST - 1'>iOS TEST - 1</option>
               </Input>
             </FormGroup>
-            <FormGroup>
+            <FormGroup className="newRunTester-Each">
               <Label>Upload your .apk File</Label>
               <Input type="file" onChange={this.fileChangeHandle} />
               <FormText color="muted">

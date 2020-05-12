@@ -4,7 +4,19 @@ const { Schema } = mongoose;
 
 const bugReportSchema = new Schema(
   {
+    projectName: {
+      type: String,
+      default : ''
+    },
     severity: {
+      type: String,
+      default : ''
+    },
+    operatingSystem: {
+      type: String,
+      default : ''
+    },
+    operatingSystemVersion: {
       type: String,
       default : ''
     },
@@ -12,18 +24,18 @@ const bugReportSchema = new Schema(
       type: String,
       default : ''
     },
-    projectID: {
+    date: {
+      type: String,
+      default : ''
+    },
+    testerID: {
       type: Schema.Types.ObjectId,
-      ref: 'project',
+      ref: 'tester',
     },
     testID: {
       type: Schema.Types.ObjectId,
       ref: 'test',
-    },
-    path :{
-      type: String,
-      default : ''
-    },
+    }
   }
 );
 

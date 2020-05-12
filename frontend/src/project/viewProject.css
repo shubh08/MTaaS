@@ -16,14 +16,16 @@
   padding-bottom: 6.9%;
 }
 .scroll-viewProject{
-  max-height: 90vh;
-overflow: scroll;
+  max-height: 129.5vh;
+  overflow: scroll;
+  padding-left: 5%;
 }
+
 .viewProject-card{
   width:70%;
-  margin-top: '2%';
-  margin-left:'3%';
-  margin-right:'13%';
+  margin-top: 2%;
+  margin-left: 10%;
+  margin-right: 10%;
   color: 'black';
-   font-size: '15px' ;
+  font-size: '15px' ;
 }

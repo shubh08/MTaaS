@@ -9,16 +9,12 @@ class HomepageTester extends React.Component{
   render(){
     return(
       <div className="homepage">
-        <div>
-          <TopNav/>
-        </div>
-        <div className="homepage-left">
-          <SideNav/>
-        </div>
+        <TopNav/>
+        <SideNav/>
         <div className="homepage-right">
           <ProjectApplications/>
         </div>
-    </div>
+      </div>
     )
   }
 }
