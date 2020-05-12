@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {  Alert } from 'reactstrap';
-import './notification.css'
+import './Notification.css'
 import {  Row, Col, Container } from 'reactstrap';
 import TopNav from '../navigation/topnavTester';
 import SideNav from '../navigation/sidenavTester';

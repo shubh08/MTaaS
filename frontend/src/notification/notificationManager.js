@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Card, CardTitle, CardText, Alert } from 'reactstrap';
-import './notification.css'
+import './Notification.css'
 import { Form, FormGroup, Label, Input, FormText, Row, Col, Container } from 'reactstrap';
 import TopNav from '../navigation/topnavManager';
 import SideNav from '../navigation/sidenavManager';
