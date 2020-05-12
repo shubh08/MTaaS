@@ -236,7 +236,7 @@ router.post('/loadFiles', function (req, res, next) {
 
 router.post('/createBug', function (req, res, next) {
     console.log(req.body);
-    const projectName = req.body.projectName;
+    const projectID = req.body.projectID;
     const severity = req.body.severity;
     const operatingSystem = req.body.operatingSystem;
     const operatingSystemVersion = req.body.operatingSystemVersion;
@@ -245,7 +245,7 @@ router.post('/createBug', function (req, res, next) {
     const testerID = req.body.testerID;
     const testID = req.body.testID;
     const newBug = new bugreport({
-        projectName,
+        projectID,
         severity,
         operatingSystem,
         operatingSystemVersion,
