@@ -33,7 +33,8 @@ const opts = {
 
   process.on('message', (msg) => {
     console.log('Message from parent:', msg);
-    main(msg);
+   let result = await main(msg);
+   
   });
   
   async function main (msg) {
