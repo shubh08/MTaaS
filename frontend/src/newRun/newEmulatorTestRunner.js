@@ -143,7 +143,7 @@ class NewEmulatorRunTester extends React.Component {
     console.log('djashdjashjdkshd', params);
   }
   projectChangeHandler = (e) => {
-    console.log('jhererereererjdhfdshfjkhdsjkhfkjhdjfh')
+    console.log('kjk')
     let projectName = ''
     let projectID = e.target.value
     this.state.projects.forEach((el) => {

@@ -23,6 +23,7 @@ class NewRunTester extends React.Component {
       deviceOS: '',
       loading: false,
       projectArns: [],
+      showStop:true,
       devicePoolArn:'',
       selectedDevices: [],
       fileSelected: null,
@@ -90,9 +91,8 @@ class NewRunTester extends React.Component {
       toast.success('Your test run scheduled successfully!. Please wait for 5-10 minutes for test run results', {
         position: toast.POSITION.TOP_CENTER
       });
-      setTimeout(() => {
-        window.location.reload()
-      }, 2000);
+
+      this.setState({showStop:true})
       // window.location.reload();
     }).catch(error => {
       this.setState({
@@ -134,7 +134,7 @@ class NewRunTester extends React.Component {
     })
     axios.get(ROOT_URL + '/testRun/getDevicePoolByProject/' + projectID).then((response) => {
       if (response.status == 200) {
-        console.log(response.data.devicePools)
+        console.log('here device pool',response.data.devicePools)
 
         let projectArn = []
         projectArn = response.data.devicePools.map(el => {
@@ -156,6 +156,12 @@ class NewRunTester extends React.Component {
     })
 
   };
+
+  stopRun = ()=>{
+    toast.success('Test Stop Request Issued', {
+      position: toast.POSITION.TOP_CENTER
+    });
+  }
 
   onSelect = (params) => {
     let selectedDev = []
@@ -283,8 +289,9 @@ class NewRunTester extends React.Component {
                 </FormText>
             </FormGroup>
             <Button loading={this.state.loading} type="submit">Schedule Run</Button>
+         
           </Form>
-
+          { this.state.showStop ? <div className="newRunTester-right"><button class='btn btn-danger' style={{marginLeft:'10px'}} onClick={this.stopRun} >Stop Run</button></div>:<div></div>}
         </div>
 
       </div>
