@@ -17,11 +17,12 @@
 
 .profile-right {
   text-align: left;
-  top: 20%;
+  padding-top: 5%;
   right: 0;
   background-color: white;
   width: 80%;
   float: right;
+  min-height: 129.5vh;
 }
 
 .profile-header {
@@ -47,7 +48,7 @@ width: 100%;
 }
 .profile-margin-top {
   margin-top: 5%;
-  
+
 }
 .div-border {
   border-style: ridge;

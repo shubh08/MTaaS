@@ -43,7 +43,7 @@ class Dashboard extends React.Component {
   componentDidMount() {
     axios.get(ROOT_URL + "/testerPerProject").then(response => {
       if (response.status == 200) {
-    
+
         this.setState({
           dataDoughnut: {
             labels: response.data.projectName,
@@ -103,7 +103,7 @@ class Dashboard extends React.Component {
     })
     axios.get(ROOT_URL + "/projectPerManager").then(response => {
       if (response.status == 200) {
-      
+
         this.setState({
           dataPie: {
             labels: response.data.projectName,
@@ -134,7 +134,7 @@ class Dashboard extends React.Component {
                   "#ECF6FF"]
                // hoverBackgroundColor:['#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7']
               },
-              
+
             ],
           },
           pieOptions: {
@@ -279,20 +279,16 @@ class Dashboard extends React.Component {
         });
       }
     });
-    
-    
+
+
   }
 
   render() {
     return (
       <div className="homepage">
+        <TopNav />
+        <SideNav />
         <div>
-          <TopNav />
-        </div>
-        <div className="bugtracker-left">
-          <SideNav />
-        </div>
-        <div className="bugtracker-right">
           <div className="scroll-dashboard">
             <div>
               <Row>

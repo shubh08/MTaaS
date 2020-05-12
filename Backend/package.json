@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "dev": "nodemon index"
-  },
+    "dev": "nodemon index","test": "mocha --timeout 10000"
+  },  
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -42,6 +42,6 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.2.1"
+    "mocha": "^6.2.3"
   }
 }

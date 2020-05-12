@@ -43,7 +43,7 @@ class DashboardManager extends React.Component {
   componentDidMount() {
     axios.get(ROOT_URL + "/testerPerProject/"+localStorage.getItem("ManagerID")).then(response => {
       if (response.status == 200) {
-     
+
         this.setState({
           dataDoughnut: {
             labels: response.data.projectName,
@@ -133,7 +133,7 @@ class DashboardManager extends React.Component {
                   "#ECF6FF"]
                // hoverBackgroundColor:['#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7','#3784E7']
               },
-              
+
             ],
           },
           pieOptions: {
@@ -276,20 +276,16 @@ class DashboardManager extends React.Component {
         });
       }
     });
-    
-    
+
+
   }
 
   render() {
     return (
       <div className="homepage">
-        <div>
           <TopNav />
-        </div>
-        <div className="analytics-left">
           <SideNav />
-        </div>
-        <div className="bugtracker-right">
+        <div>
           <div className="scroll-dashboard">
             <div>
               <Row>

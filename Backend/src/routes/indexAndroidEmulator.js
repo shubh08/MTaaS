@@ -38,22 +38,22 @@ const opts = {
   
   async function main (msg) {
     console.log('Data from parent',msg)
+   
+    let res = await run('emulator -avd pixel2')
+    const client = await wdio.remote(opts);
+    
+    const field = await client.$("android.widget.EditText");
+    await field.setValue("Hello World!");
+    const value = await field.getText();
+    console.log('My reuslt is', assert.equal(value,"Hello World!"));
+
     process.send({ text: 'test done' });
-    //let res = await run('emulator -avd pixel2')
-    //const client = await wdio.remote(opts);
-    
-    // const field = await client.$("android.widget.EditText");
-    // await field.setValue("Hello World!");
-    // const value = await field.getText();
-    // console.log('My reuslt is', assert.equal(value,"Hello World!"));
-
-
-    // //Test 2
+    //Test 2
     
 
-    // //Test 3
+    //Test 3
   
-    // await client.deleteSession();
+    await client.deleteSession();
   }
   
   

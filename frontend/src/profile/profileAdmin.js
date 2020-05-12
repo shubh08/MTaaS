@@ -40,7 +40,7 @@ class AdminProfile extends React.Component{
   adminEmailChangeHandler = e => {
     this.setState({ email: e.target.value });
   };
-  
+
 
   editButtonHandler = () => {
     document.getElementById("name").readOnly = false;
@@ -72,12 +72,8 @@ class AdminProfile extends React.Component{
   render() {
     return (
       <div className="profile">
-        <div>
-          <TopNav />
-        </div>
-        <div className="profile-left">
-          <SideNav />
-        </div>
+        <TopNav />
+        <SideNav />
         <div className="profile-right">
           <div>
             <div>
@@ -106,8 +102,8 @@ class AdminProfile extends React.Component{
                           id="email"
                           required readOnly />
                       </FormGroup>
-      
-                      
+
+
                       <Row>
                         <Col></Col>
                         <Col><Button id="updateButton" color="success" className="updateButton" type="submit" >Update</Button></Col>

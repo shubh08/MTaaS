@@ -277,12 +277,8 @@ class BillingAdmin extends React.Component {
     })
     return (
       <div className="billingAdmin">
-        <div>
           <TopNavAdmin />
-        </div>
-        <div className="billingAdmin-left">
           <SideNavAdmin />
-        </div>
         <div className="billingAdmin-right">
         <div className="scroll-billingManager">
           <Row className="billingAdmin-select">
@@ -337,20 +333,20 @@ class BillingAdmin extends React.Component {
                 <FormGroup className="billingAdmin-box-item" row>
                   <Label md={6}>Device Farm Cost </Label>
                   <Col md={6}>
-                    $ {this.state.costDeviceFarm} 
+                    $ {this.state.costDeviceFarm}
                   </Col>
                 </FormGroup>
 
                 <FormGroup className="billingAdmin-box-item" row>
                   <Label md={6}>Emulator Cost </Label>
                   <Col md={6}>
-                    $ {this.state.costEmulator} 
+                    $ {this.state.costEmulator}
                   </Col>
                 </FormGroup>
                 <FormGroup className="billingAdmin-box-item" row>
                   <Label md={6}>S3 files Cost </Label>
                   <Col md={6}>
-                    $ {this.state.filesCost} 
+                    $ {this.state.filesCost}
                   </Col>
                 </FormGroup>
 
@@ -370,5 +366,5 @@ class BillingAdmin extends React.Component {
         )
       }
     }
-    
+
     export default BillingAdmin;

@@ -24,7 +24,7 @@ class ManagerFilesView extends React.Component {
             options:[],
             projectName:null,
             projectsOptions:[]
-            
+
         }
 
     }
@@ -89,7 +89,7 @@ class ManagerFilesView extends React.Component {
 
         }).catch(err=>console.log(err))
 
-        
+
     }
 
 
@@ -108,21 +108,12 @@ class ManagerFilesView extends React.Component {
 
     render() {
         return (
+          <div className="signup">
+            <TopNavManager/>
+            <SideNavManager/>
+          <div className="signup-right">
+                <div className="fileupload">
 
-            <div className="homepage">
-      <div>
-        <TopNavManager/>
-      </div>
-      <div className="homepage-left">
-        <SideNavManager/>
-      </div>
-      <div className="homepage-right">
-        <div>
-          <div>
-            
-          <div>
-                <div className="">
-                    <Jumbotron fluid>
                         <Container fluid>
                             <h1 center className="display-3">Mobile Testing as a Service</h1>
                         </Container>
@@ -178,14 +169,9 @@ class ManagerFilesView extends React.Component {
                         onDownloadFile={(fileKey) => { window.location = 'https://mtaasbucket.s3.us-east-2.amazonaws.com/' + fileKey }}
                     />
                 </div>
-                    </Jumbotron>
+
 
                 </div>
-               
-              
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 

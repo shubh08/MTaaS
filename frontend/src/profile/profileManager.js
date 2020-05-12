@@ -81,12 +81,8 @@ class ManagerProfile extends React.Component{
   render() {
     return (
       <div className="profile">
-        <div>
-          <TopNav />
-        </div>
-        <div className="profile-left">
-          <SideNav />
-        </div>
+        <TopNav />
+        <SideNav />
         <div className="profile-right">
           <div>
             <div>

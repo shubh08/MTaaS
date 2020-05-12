@@ -16,9 +16,9 @@ class NotificationTester extends React.Component {
             notifications: []
         };
     }
-    
+
     componentDidMount() {
-     
+
 
         axios.get(ROOT_URL + '/tester/notification/' + localStorage.getItem('TesterID')).then((response) => {
 
@@ -35,11 +35,11 @@ class NotificationTester extends React.Component {
             });
         })
     }
-    
-    
+
+
     render() {
 
-       
+
         var allNotifications = [];
         this.state.notifications.map((notif) => {
 
@@ -94,15 +94,10 @@ class NotificationTester extends React.Component {
         })
         return (
             <div className="createProject">
+                <TopNav />
+                <SideNav />
                 <div>
-                    <TopNav />
-                </div>
-                <div className="createProject-left">
-                    <SideNav />
-                </div>
-                <div className="createProject-right">
-
-                    <Container className="">
+                    <Container>
                         <Row className="notif-margin-bottom-2">
                         <Col md={2}></Col>
                             <Col > <h1>My Notifications</h1></Col>
@@ -113,9 +108,7 @@ class NotificationTester extends React.Component {
                             <Col > {allNotifications}</Col>
                             <Col md={2}></Col>
                         </Row>
-                       
                     </Container>
-
                 </div>
             </div>
         )

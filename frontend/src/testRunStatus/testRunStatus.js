@@ -24,7 +24,7 @@ constructor(props)
     projectName:'',
     tableData:[],
     loading:false
-  
+
 
 
   }
@@ -61,7 +61,7 @@ toast.success('Data refresh request sent. Please refresh this page after 1 minut
           <td>{el.type}</td>
           <td>{el.platform}</td>
          <td><Badge color="info">{el.status}</Badge>{el.status!='SCHEDULING'?<button value={el.arn}onClick={this.myFunction}>Device</button>:''}
-         
+
          <div id={el.arn} style={{display:"none"}}>
      {el.status!='SCHEDULING'? <Table>
       <thead>
@@ -69,7 +69,7 @@ toast.success('Data refresh request sent. Please refresh this page after 1 minut
           <th>Device Name</th>
           <th>Total Minutes</th>
          </tr>
-         </thead> 
+         </thead>
          {el.jobs.map((el1)=>{
            return(<tr><td>{el1.name}</td><td>{el1.deviceMinutes!=undefined?el1.deviceMinutes.total:0}</td></tr>)
          })}
@@ -133,7 +133,7 @@ projectChangeHandler = e => {
     if(el._id==e.target.value)
     projectName=el.name
   })
- 
+
   //this.setState({ projectID: e.target.value, projectName:projectName});
   axios.post(ROOT_URL+'/testRun/loadRunData',{projectName:projectName}).then((res)=>{
     console.log('result is',res);
@@ -147,7 +147,7 @@ projectChangeHandler = e => {
       <td>{el.type}</td>
       <td>{el.platform}</td>
       <td><Badge color="info">{el.status}</Badge>{el.status!='SCHEDULING'?<button value={el.arn}onClick={this.myFunction}>Device</button>:''}
-         
+
          <div id={el.arn} style={{display:"none"}}>
      {el.status!='SCHEDULING'? <Table>
       <thead>
@@ -155,7 +155,7 @@ projectChangeHandler = e => {
           <th>Device Name</th>
           <th>Total Minutes</th>
          </tr>
-         </thead> 
+         </thead>
          {el.jobs.map((el1)=>{
            return(<tr><td>{el1.name}</td><td>{el1.deviceMinutes!=undefined?el1.deviceMinutes.total:0}</td></tr>)
          })}
@@ -189,56 +189,48 @@ projectChangeHandler = e => {
 
     return (
       <div className="newRunTester">
-        <div>
           <TopNavTester/>
-        </div>
-        <div className="newRunTester-left">
           <SideNavTester/>
-        </div>
-       
-        <div className="form-group" >
-          <Form className="newRunTester-right" onSubmit={this.submitTest}>
-          <h2 align='center'>Get Run Status</h2>
-          <FormGroup>
-              <Label style={{marginTop:'5%'}}>Project</Label>
-              <Input type="select" name='projectID' onChange={this.projectChangeHandler} >
-                <option value={0}>Select Project</option>
-                {addDropDown}
-              </Input>
-            </FormGroup>
-              {/* <Input  type="submit">Get Run Status</Input> */}
+          <div className="form-group" >
+            <Form className="newRunTester-right" onSubmit={this.submitTest}>
+              <h2 align='center'>Get Run Status</h2>
+                  <FormGroup>
+                    <Label style={{marginTop:'5%'}}>Project</Label>
+                    <Input type="select" name='projectID' onChange={this.projectChangeHandler} >
+                      <option value={0}>Select Project</option>
+                      {addDropDown}
+                    </Input>
+                  </FormGroup>
+                  {/* <Input  type="submit">Get Run Status</Input> */}
             </Form>
+          </div>
+          <div>
+            <br/><br/>
+            <div className="statusRight">
+               <Table>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>User</th>
+                      <th>Project</th>
+                      <th>Test Name</th>
+                      <th>Test Type</th>
+                      <th>Platform</th>
+                      <th>Status</th>
+                      <th>Data Status</th>
+                      <th>Run Result</th>
+                      <th>Total Jobs</th>
+                      <th>Passed</th>
+                      <th>Failed</th>
+                      <th>Errored</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tableData}
+                  </tbody>
+              </Table>
             </div>
-            <div>
-              <br/><br/>
-              <div className="statusRight">             
-                 <Table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>User</th>
-          <th>Project</th>
-          <th>Test Name</th>
-          <th>Test Type</th>
-          <th>Platform</th>
-          <th>Status</th>
-          <th>Data Status</th>
-          <th>Run Result</th>
-          <th>Total Jobs</th>
-          <th>Passed</th>
-          <th>Failed</th>
-          <th>Errored</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tableData}
-        </tbody>
-        </Table>
-        </div>
-
-      </div>
-        
-        
+          </div>
       </div>
     )
   }

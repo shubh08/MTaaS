@@ -218,12 +218,11 @@ class DeallocateManager extends React.Component {
 
         return (
             <div className="profile">
-                <div>
+
                     <TopNav />
-                </div>
-                <div className="profile-left">
+
                     <SideNav />
-                </div>
+
                 <div className="profile-right">
                     <div>
                         <div>
