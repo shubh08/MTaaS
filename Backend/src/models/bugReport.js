@@ -28,6 +28,10 @@ const bugReportSchema = new Schema(
       type: String,
       default : ''
     },
+    projectID: {
+      type: Schema.Types.ObjectId,
+      ref: 'project',
+    },
     testerID: {
       type: Schema.Types.ObjectId,
       ref: 'tester',
