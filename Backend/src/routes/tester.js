@@ -234,24 +234,38 @@ router.post('/loadFiles', function (req, res, next) {
 
 });
 
+router.delete('/deleteBug', function (req, res, next) {
+  console.log(req.body);
+  console.log("inside delete bugs");
+  bugreport.findByIdAndRemove({ "_id": req.body.id }).exec((err, bugreport) => {
+      if (err) {
+          next();
+      } else {
+          res.status(200).send({ message: "Succesfully Deleted"});
+      }
+  });
+});
+
 router.post('/createBug', function (req, res, next) {
     console.log(req.body);
-    const projectName = req.body.projectName;
+    const projectID = req.body.projectID;
     const severity = req.body.severity;
     const operatingSystem = req.body.operatingSystem;
     const operatingSystemVersion = req.body.operatingSystemVersion;
     const bugDescription = req.body.bugDescription;
     const date = req.body.date;
     const testerID = req.body.testerID;
+    const managerID = req.body.managerID;
     const testID = req.body.testID;
     const newBug = new bugreport({
-        projectName,
+        projectID,
         severity,
         operatingSystem,
         operatingSystemVersion,
         bugDescription,
         date,
         testerID,
+        managerID,
         testID
     });
 

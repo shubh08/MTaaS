@@ -2,18 +2,23 @@
   text-align: center;
   background-color: #e9ecef;
   width: 100%;
-  overflow: hidden;
+  overflow-y: scroll;
+  margin: auto;
+  padding: auto;
 }
 
-.bugtracker-left {
-  text-align: center;
-  position: fixed;
-  top: 6.9%;
-  left: 0;
-  background-color: #e9ecef;
-  width: 20%;
-  float: left;
+.deleteBug{
+  margin-left: 40%;
+  margin-right: 40%;
 }
+
+.bugCard{
+  padding-left: 20%;
+  padding-right: 20%;
+  padding-top: 3%;
+  padding-bottom: 2%;
+}
+
 .bug-padding{
   padding-left: 10%;
   padding-right: 10%;
@@ -23,7 +28,6 @@
 
 .bugtracker-right {
   text-align: center;
-  position: fixed;
   top: 6.9%;
   right: 0;
   background-color: #e9ecef;

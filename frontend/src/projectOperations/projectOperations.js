@@ -141,7 +141,7 @@ class ProjectOperations extends React.Component {
         var count = 0;
         arrayProjectHeader.push(<thead>
             <tr>
-               
+
                 <th>Project Name</th>
                 <th>Description</th>
                 <th>Technologies</th>
@@ -156,7 +156,7 @@ class ProjectOperations extends React.Component {
             var enddate = project.endDate.split("T")[0];
             if(project.active){
                 arrayProject.push(<tr>
-                    
+
                     <td>{project.name}</td>
                     <td>{project.description}</td>
                     <td>{project.technologies}</td>
@@ -167,7 +167,7 @@ class ProjectOperations extends React.Component {
                 </tr>)
             }else{
                 arrayProject.push(<tr>
-                    
+
                     <td>{project.name}</td>
                     <td>{project.description}</td>
                     <td>{project.technologies}</td>
@@ -177,13 +177,13 @@ class ProjectOperations extends React.Component {
                     <th ><h4><FiPlusCircle style={{ color: "green" }} onClick={() => { this.unblockProject(project._id) }}></FiPlusCircle></h4></th>
                 </tr>)
             }
-        
+
         })
         count = 0;
         this.state.testers.map((tester) => {
             count = count + 1;
             arrayTester.push(<tr>
-                
+
                 <td>{tester.name}</td>
                 <td>{tester.email}</td>
                 <td>{tester.technologies}</td>
@@ -196,12 +196,8 @@ class ProjectOperations extends React.Component {
         }
         return (
             <div className="profile">
-                <div>
-                    <TopNav />
-                </div>
-                <div className="profile-left">
-                    <SideNav />
-                </div>
+                <TopNav />
+                <SideNav />
                 <div className="profile-right">
                     <div>
                         <div>

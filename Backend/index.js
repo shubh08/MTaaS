@@ -1,5 +1,5 @@
 const port = 3010;
-const rooturl = "http://3.95.24.183:3000";
+const rooturl = "http://localhost:3000";
 //const rooturl = "";
 const path = require('path');
 const fs = require('fs');
@@ -16,7 +16,7 @@ var jwt = require('jsonwebtoken');
 const AWS=require('aws-sdk');
 const multerS3 = require('multer-s3')
 const multer = require('multer')
- 
+
 
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true }) // Let us remove that nasty deprecation warrning :)
@@ -61,7 +61,7 @@ app.use("/tester", testerRoute);
 app.use("/testRun", testRunRoute);
 app.use("/", commonRoute);
 
-app.use('/uploads', express.static(path.join(__dirname, '/uploads/'))); 
+app.use('/uploads', express.static(path.join(__dirname, '/uploads/')));
 
 const s3 = new AWS.S3({
   apiVersion: '2006-03-01',

@@ -34,7 +34,7 @@ router.get('/bugs/:id', function (req, res, next) {
     console.log("Inside Bugs");
     console.log(req.params.id);
     //bugreports.findById(req.params.id).exec((err, bugreport) => {
-    bugreports.find({ testerID: req.params.id}).exec((err, bugreport) => {
+    bugreports.find({ testerID: req.params.id}).populate('projectID').exec((err, bugreport) => {
     //bugreports.find({ testerID: { $in: [req.params.id] } }).populate("testerID").exec((err, bugreport) => {
         if (err) {
             console.log(err);
@@ -47,6 +47,25 @@ router.get('/bugs/:id', function (req, res, next) {
         }
     });
 });
+
+router.get('/managerBugs/:id', function (req, res, next) {
+    console.log("Inside Bugs");
+    console.log(req.params.id);
+    //bugreports.findById(req.params.id).exec((err, bugreport) => {
+    bugreports.find({ managerID: req.params.id}).populate('projectID').exec((err, bugreport) => {
+    //bugreports.find({ testerID: { $in: [req.params.id] } }).populate("testerID").exec((err, bugreport) => {
+        if (err) {
+            console.log(err);
+            next();
+        } else {
+            console.log("bug reports manager")
+            res.status(200).send({ bugreport: bugreport });
+            console.log(res.body);
+
+        }
+    });
+});
+
 
 // router.post('/bugs', function (req, res, next) {
 //     console.log("Inside Bugs");

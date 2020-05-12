@@ -3,6 +3,7 @@ import './bugtracker.css';
 import { Button } from 'reactstrap';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormText, Row, Col, Container } from 'reactstrap';
+import { Card, CardTitle, CardText } from 'reactstrap';
 import { Badge } from 'reactstrap';
 import TopNav from '../navigation/topnavTester';
 import SideNav from '../navigation/sidenavTester';
@@ -15,7 +16,8 @@ class BugTracker extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      array : []
+      array : [],
+      id: ''
     };
   }
   componentDidMount() {
@@ -46,78 +48,76 @@ class BugTracker extends React.Component{
       });
     })
   }
-  // bugreportProjectNameChangeHandler = e => {
-  //   this.setState({ projectName: e.target.value });
-  // };
-  // bugreportSeverityChangeHandler = e => {
-  //   this.setState({ severity: e.target.value });
-  // };
-  // bugreportOperatingSystemChangeHandler = e => {
-  //   this.setState({ operatingSystem: e.target.value });
-  // };
-  // bugreportOperatingSystemVersionChangeHandler = e => {
-  //   this.setState({ operatingSystemVersion: e.target.value });
-  // };
-  // bugreportBugDescriptionChangeHandler = e => {
-  //   this.setState({ bugDescription: e.target.value });
-  // };
-  // bugreportDateChangeHandler = e => {
-  //   this.setState({ date: e.target.value })
-  // };
+
+  bugDeleteChangeHandler = e => {
+    this.setState({ id: e.target.value })
+  };
+
+  handleSubmit = (e) =>{
+    console.log(e);
+
+    axios.delete(ROOT_URL + '/tester/deleteBug'+ this.state.id).then((response) => {
+      if (response.status == 200) {
+          toast.success(response.data.message, {
+            position: toast.POSITION.TOP_CENTER
+          });
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000);
+        } else {
+          toast.error(response.data.message, {
+            position: toast.POSITION.TOP_CENTER
+          });
+        }
+      }).catch(error => {
+        toast.error('Bug not deleted!', {
+          position: toast.POSITION.TOP_CENTER
+        });
+      })
+  }
+
+  // deleteBuggy = async id => {
+  //   try {
+  //     this.setState({ id: id })
+  //     // const response = await axios.delete(
+  //     //   ROOT_URL + `'/tester/deleteBug/'+ ${id}`,
+  //     // );
+  //   }catch{
+  //     toast.error('Bug not deleted!', {
+  //       position: toast.POSITION.TOP_CENTER
+  //     });
+  //   }
+  // }
 
   render(){
+
+    console.log(this.state.array)
     return (
       <div className="bugtracker">
         <TopNav/>
         <SideNav/>
           <div className="bugtracker-right">
             {this.state.array.map(buggy =>
-               <div>
-                <Form className = "bug-padding">
-                  <FormGroup >
-                    <h5 > Project Name </h5>
-                    <Input
-                      value={buggy.projectName}
-                      readOnly> </Input>
-                  </FormGroup>
-                  <FormGroup >
-                    <h5 > Severity </h5>
-                    <Input
-                      value={buggy.severity}
-                      readOnly> </Input>
-                  </FormGroup>
-                  <FormGroup >
-                    <h5 > Operating System </h5>
-                    <Input
-                      value={buggy.operatingSystem}
-                      readOnly> </Input>
-                  </FormGroup>
-                  <FormGroup >
-                    <h5 > Operating System Version </h5>
-                    <Input
-                      value={buggy.operatingSystemVersion}
-                      readOnly> </Input>
-                  </FormGroup>
-                  <FormGroup>
-                    <h5> Bug Description </h5>
-                    <Input type="textarea"
-                      value={buggy.bugDescription}
-                      readOnly>
-                    </Input>
-                  </FormGroup>
-                  <FormGroup>
-                    <h5> Date </h5>
-                    <Input name="text"
-                      value={buggy.date}
-                      readOnly>
-                    </Input>
-                  </FormGroup>
-                </Form>
+               <div className="bugCard">
+                 <Card body className="text-center" >
+                   <CardText>{buggy.projectID.name}</CardText>
+                   <CardText>{buggy.severity}</CardText>
+                   <CardText>{buggy.operatingSystem}</CardText>
+                   <CardText>{buggy.operatingSystemVersion}</CardText>
+                   <CardText>{buggy.bugDescription}</CardText>
+                   <CardText>{buggy.date}</CardText>
+                   {/*<Button color="danger" className="deleteBug" >Delete Bug</Button>*/}
+                 </Card>
                 </div>
                 )}
               </div>
 
             {/*
+              onClick={this.bugDeleteChangeHandler(buggy._id)}
+              onSubmit={this.handleSubmit}
+              bugDeleteChangeHandler
+              onClick={() => this.handleSubmit(buggy._id)}
+
             <div>
               <Badge color="danger">Bug ID</Badge>
               <h4>
@@ -150,3 +150,45 @@ class BugTracker extends React.Component{
 }
 
 export default BugTracker;
+
+{/*
+<Form className = "bug-padding">
+ <FormGroup >
+   <h5 > Project Name </h5>
+   <Input
+     value={buggy.projectID.name}
+     readOnly> </Input>
+ </FormGroup>
+ <FormGroup >
+   <h5 > Severity </h5>
+   <Input
+     value={buggy.severity}
+     readOnly> </Input>
+ </FormGroup>
+ <FormGroup >
+   <h5 > Operating System </h5>
+   <Input
+     value={buggy.operatingSystem}
+     readOnly> </Input>
+ </FormGroup>
+ <FormGroup >
+   <h5 > Operating System Version </h5>
+   <Input
+     value={buggy.operatingSystemVersion}
+     readOnly> </Input>
+ </FormGroup>
+ <FormGroup>
+   <h5> Bug Description </h5>
+   <Input type="textarea"
+     value={buggy.bugDescription}
+     readOnly>
+   </Input>
+ </FormGroup>
+ <FormGroup>
+   <h5> Date </h5>
+   <Input name="text"
+     value={buggy.date}
+     readOnly>
+   </Input>
+ </FormGroup>
+</Form>*/}
