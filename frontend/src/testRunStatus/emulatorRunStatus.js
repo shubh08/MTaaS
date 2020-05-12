@@ -74,6 +74,8 @@ projectChangeHandler = e => {
      <td>{el.result=='PENDING'?<Badge color="warning">Pending</Badge>:(el.result=='PASSED'?<Badge color="success">{el.result}</Badge>:<Badge color="info">{el.result}</Badge>)}</td>
       <td>{el.totalJobs}</td>
       <td>{el.deviceMinutes}</td>
+      <td>1</td>
+      <td>0</td>
       </tr>)
     })
     this.setState({tableData:res.data.data,projectName:projectName,projectID:projectID})

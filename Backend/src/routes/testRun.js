@@ -661,7 +661,7 @@ router.post('/createRunEmulator', upload.single('file'), function (req, res, nex
         let platform = req.body.appFileType
         let status = 'Completed'//msg.status
         let result = 'PASSED' //msg.result
-        let deviceMinutes = 10
+        let deviceMinutes = 2
         let totalJobs = 1
         let passed = 1
         let failed = 1
