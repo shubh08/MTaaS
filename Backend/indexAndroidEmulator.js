@@ -1,17 +1,17 @@
 const wdio = require("webdriverio");
 var spawn = require('child_process').spawn;
  
-async function run(cmd, env, callback) {
-    if (!cmd) return callback();
-    var p = spawn('sh', ['-c', cmd], {
-        env: env,
-        stdio: 'inherit'
-    });
-    p.on('close', function (code) {
-        if (code !== 0) return callback(new Error('Command failed', code, cmd));
-        callback();
-    });
-}
+// async function run(cmd, env, callback) {
+//     if (!cmd) return callback();
+//     var p = spawn('sh', ['-c', cmd], {
+//         env: env,
+//         stdio: 'inherit'
+//     });
+//     p.on('close', function (code) {
+//         if (code !== 0) return callback(new Error('Command failed', code, cmd));
+//         callback();
+//     });
+// }
  
 
 
@@ -23,7 +23,7 @@ const opts = {
       platformName: "Android",
       platformVersion: "8",
       deviceName: "Android Emulator",
-      app: "C:\\Sem2\\281\\ApiDemos-debug.apk",
+      app: "/home/ec2-user/appium_test/ApiDemos-debug.apk",
       appPackage: "io.appium.android.apis",
       appActivity: ".view.TextFields",
       automationName: "UiAutomator2"
@@ -33,27 +33,30 @@ const opts = {
 
   process.on('message', (msg) => {
     console.log('Message from parent:', msg);
-    main(msg);
+   main(msg)
+   
   });
   
   async function main (msg) {
-    console.log('Data from parent',msg)
-    process.send({ text: 'test done' });
-    //let res = await run('emulator -avd pixel2')
-    //const client = await wdio.remote(opts);
-    
-    // const field = await client.$("android.widget.EditText");
-    // await field.setValue("Hello World!");
-    // const value = await field.getText();
-    // console.log('My reuslt is', assert.equal(value,"Hello World!"));
+ 
+    setTimeout(() => {
+      console.log('Data from parent emuletor outsideeeeeeeeeeeeeeeeeee',msg)
+   
+      // let res = await run('emulator -avd pixel2')
+      const client = await wdio.remote(opts);
+      
+      const field = await client.$("android.widget.EditText");
+      await field.setValue("Hello World!");
+      const value = await field.getText();
+      console.log('My reuslt is', assert.equal(value,"Hello World!"));
+      
+      setTimeout(() => {
+        await process.send({ text: 'test done' });      
+        await client.deleteSession();
+      }, 15000);
 
 
-    // //Test 2
-    
-
-    // //Test 3
-  
-    // await client.deleteSession();
+    }, 1000);
   }
   
   
