@@ -1,6 +1,6 @@
 const wdio = require("webdriverio");
 var spawn = require('child_process').spawn;
- 
+require('assert')
 // async function run(cmd, env, callback) {
 //     if (!cmd) return callback();
 //     var p = spawn('sh', ['-c', cmd], {
