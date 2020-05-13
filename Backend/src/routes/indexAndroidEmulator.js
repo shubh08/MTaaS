@@ -33,7 +33,7 @@ const opts = {
 
   process.on('message', (msg) => {
     console.log('Message from parent:', msg);
-   let result = await main(msg);
+   main(msg)
    
   });
   
@@ -48,7 +48,7 @@ const opts = {
     const value = await field.getText();
     console.log('My reuslt is', assert.equal(value,"Hello World!"));
 
-    process.send({ text: 'test done' });
+    await process.send({ text: 'test done' });
     //Test 2
     
 
