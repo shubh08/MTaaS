@@ -16,7 +16,11 @@ The following are the 3 set of users that the application would support:
 
 ![alt text](https://github.com/shubh08/MTaaS/blob/master/3.1-CloudSystemInfrastructure.jpg)
 
-Our system/application includes 3 types of users, them being Test Project Manager, Platform System Staff, Freelance Testers. They will be accessing our application hosted on the cloud. To access the users will be interacting with the client which will be designed using **ReactJs, Express.js and Node.js** and the application is deployed to **AWS** by publishing image through **Docker**. The client will be interacting with the Classic Load Balancer which will be in turn interacting with the cluster of EC2 instances. 
+Our system/application includes 3 types of users, them being Test Project Manager, Platform System Staff, Freelance Testers.
+
+They will be accessing our application hosted on the cloud. To access the users will be interacting with the client which will be designed using **ReactJs, Express.js and Node.js** and the application is deployed to **AWS** by publishing image through **Docker**. 
+
+The client will be interacting with the Classic Load Balancer which will be in turn interacting with the cluster of EC2 instances. 
 **Amazon S3, MongoDB, Amazon SNS and Amazon Device farm** will be a part of the infrastructure for test script storage, data storage, notification system and device/emulation procurement respectively.
 
 
