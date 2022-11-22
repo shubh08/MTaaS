@@ -24,7 +24,7 @@
     "react-loader": "^2.4.7",
     "react-object-list": "^0.2.9",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1",
+    "react-scripts": "5.0.1",
     "react-select": "^3.1.0",
     "react-table-view": "^1.1.1",
     "react-toastify": "^5.5.0",
